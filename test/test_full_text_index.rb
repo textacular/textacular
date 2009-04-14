@@ -42,14 +42,14 @@ class TestFullTextIndex < TexticleTestCase
     fti = Texticle::FullTextIndex.new('ft_index', fake_model) do
       name
     end
-    assert_equal "to_tsvector('english', name)", fti.to_s
+    assert_equal "to_tsvector('english', coalesce(name, ''))", fti.to_s
   end
 
   def test_to_s_A_weight
     fti = Texticle::FullTextIndex.new('ft_index', fake_model) do
       name 'A'
     end
-    assert_equal "setweight(to_tsvector('english', name), 'A')", fti.to_s
+    assert_equal "setweight(to_tsvector('english', coalesce(name, '')), 'A')", fti.to_s
   end
 
   def test_to_s_multi_weight
@@ -58,7 +58,7 @@ class TestFullTextIndex < TexticleTestCase
       value 'A'
       description 'B'
     end
-    assert_equal "setweight(to_tsvector('english', name, value), 'A') || ' ' || setweight(to_tsvector('english', description), 'B')", fti.to_s
+    assert_equal "setweight(to_tsvector('english', coalesce(name, '') || coalesce(value, '')), 'A') || ' ' || setweight(to_tsvector('english', coalesce(description, '')), 'B')", fti.to_s
   end
 
   def test_mixed_weight
@@ -66,6 +66,6 @@ class TestFullTextIndex < TexticleTestCase
       name
       value 'A'
     end
-    assert_equal "setweight(to_tsvector('english', value), 'A') || ' ' || to_tsvector('english', name)", fti.to_s
+    assert_equal "setweight(to_tsvector('english', coalesce(value, '')), 'A') || ' ' || to_tsvector('english', coalesce(name, ''))", fti.to_s
   end
 end

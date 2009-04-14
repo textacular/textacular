@@ -26,11 +26,12 @@ module Texticle
     def to_s
       vectors = []
       @index_columns.sort_by { |k,v| k }.each do |weight, columns|
+        c = columns.map { |x| "coalesce(#{x}, '')" }
         if weight == 'none'
-          vectors << "to_tsvector('english', #{columns.join(", ")})"
+          vectors << "to_tsvector('english', #{c.join(" || ")})"
         else
           vectors <<
-        "setweight(to_tsvector('english', #{columns.join(", ")}), '#{weight}')"
+        "setweight(to_tsvector('english', #{c.join(" || ")}), '#{weight}')"
         end
       end
       vectors.join(" || ' ' || ")
