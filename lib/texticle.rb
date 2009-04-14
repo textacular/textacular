@@ -11,7 +11,7 @@ module Texticle
     class_eval(<<-eoruby)
       named_scope :#{search_name}, lambda { |term|
         {
-          :select => "*, ts_rank_cd((\#{full_text_indexes.first.to_s}),
+          :select => "\#{table_name}.*, ts_rank_cd((\#{full_text_indexes.first.to_s}),
             plainto_tsquery(\#{connection.quote(term)\})) as rank",
           :conditions =>
             ["\#{full_text_indexes.first.to_s} @@ plainto_tsquery(?)", term],

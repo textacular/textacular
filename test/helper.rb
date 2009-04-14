@@ -33,6 +33,10 @@ class TexticleTestCase < Test::Unit::TestCase
         def named_scope *args
           @named_scopes << args
         end
+
+        def quote thing
+          "'#{thing}'"
+        end
       end
     end
   end
