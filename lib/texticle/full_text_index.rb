@@ -2,8 +2,9 @@ module Texticle
   class FullTextIndex
     attr_accessor :index_columns
 
-    def initialize name, model_class, &block
+    def initialize name, dictionary, model_class, &block
       @name           = name
+      @dictionary     = dictionary
       @model_class    = model_class
       @index_columns  = {}
       instance_eval(&block)
@@ -28,10 +29,10 @@ module Texticle
       @index_columns.sort_by { |k,v| k }.each do |weight, columns|
         c = columns.map { |x| "coalesce(#{x}, '')" }
         if weight == 'none'
-          vectors << "to_tsvector('english', #{c.join(" || ")})"
+          vectors << "to_tsvector('#{@dictionary}', #{c.join(" || ")})"
         else
           vectors <<
-        "setweight(to_tsvector('english', #{c.join(" || ")}), '#{weight}')"
+        "setweight(to_tsvector('#{@dictionary}', #{c.join(" || ")}), '#{weight}')"
         end
       end
       vectors.join(" || ' ' || ")

@@ -5,7 +5,7 @@ module Texticle
 
   attr_accessor :full_text_indexes
 
-  def index name = nil, &block
+  def index name = nil, dictionary = 'english', &block
     search_name = ['search', name].compact.join('_')
 
     class_eval(<<-eoruby)
@@ -21,6 +21,6 @@ module Texticle
     eoruby
     index_name = [table_name, name, 'fts_idx'].compact.join('_')
     (self.full_text_indexes ||= []) <<
-      FullTextIndex.new(index_name, self, &block)
+      FullTextIndex.new(index_name, dictionary, self, &block)
   end
 end
