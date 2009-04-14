@@ -1,21 +1,15 @@
-require "test/unit"
-require "texticle"
+require 'helper'
 
-class TestTexticle < Test::Unit::TestCase
+class TestTexticle < TexticleTestCase
   def test_index_method
-    x = Class.new {
+    x = fake_model
+    x.class_eval do
       extend Texticle
-      class << self; attr_accessor :ns; end
-
-      def self.named_scope *args
-        self.ns = [args]
-      end
-
       index do
         name
       end
-    }
+    end
     assert_equal 1, x.full_text_indexes.length
-    assert_equal 1, x.ns.length
+    assert_equal 1, x.named_scopes.length
   end
 end

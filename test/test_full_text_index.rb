@@ -1,30 +1,8 @@
-require "test/unit"
-require "texticle"
+require 'helper'
 
-class TestFullTextIndex < Test::Unit::TestCase
-  class FakeModel
-    attr_accessor :connected, :executed
-
-    def initialize
-      @connected = false
-      @executed  = []
-    end
-
-    def connection
-      @connected = true
-      self
-    end
-
-    def execute sql
-      @executed << sql
-    end
-
-    def table_name; 'fake_model'; end
-  end
-
+class TestFullTextIndex < TexticleTestCase
   def test_initialize
-    fm = FakeModel.new
-    fti = Texticle::FullTextIndex.new('ft_index', fm) do
+    fti = Texticle::FullTextIndex.new('ft_index', fake_model) do
       name
       value 'A'
     end
@@ -33,7 +11,7 @@ class TestFullTextIndex < Test::Unit::TestCase
   end
 
   def test_create
-    fm = FakeModel.new
+    fm = fake_model
     fti = Texticle::FullTextIndex.new('ft_index', fm) do
       name
       value 'A'
@@ -41,27 +19,28 @@ class TestFullTextIndex < Test::Unit::TestCase
     fti.create
     assert fm.connected
     assert_equal 1, fm.executed.length
+    executed = fm.executed.first
+    assert_match fti.to_s, executed
+    assert_match "CREATE index #{fti.instance_variable_get(:@name)}", executed
+    assert_match "ON #{fm.table_name}", executed
   end
 
   def test_to_s_no_weight
-    fm = FakeModel.new
-    fti = Texticle::FullTextIndex.new('ft_index', fm) do
+    fti = Texticle::FullTextIndex.new('ft_index', fake_model) do
       name
     end
     assert_equal "to_tsvector('english', name)", fti.to_s
   end
 
   def test_to_s_A_weight
-    fm = FakeModel.new
-    fti = Texticle::FullTextIndex.new('ft_index', fm) do
+    fti = Texticle::FullTextIndex.new('ft_index', fake_model) do
       name 'A'
     end
     assert_equal "setweight(to_tsvector('english', name), 'A')", fti.to_s
   end
 
   def test_to_s_multi_weight
-    fm = FakeModel.new
-    fti = Texticle::FullTextIndex.new('ft_index', fm) do
+    fti = Texticle::FullTextIndex.new('ft_index', fake_model) do
       name  'A'
       value 'A'
       description 'B'
@@ -70,8 +49,7 @@ class TestFullTextIndex < Test::Unit::TestCase
   end
 
   def test_mixed_weight
-    fm = FakeModel.new
-    fti = Texticle::FullTextIndex.new('ft_index', fm) do
+    fti = Texticle::FullTextIndex.new('ft_index', fake_model) do
       name
       value 'A'
     end
