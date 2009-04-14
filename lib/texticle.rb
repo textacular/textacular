@@ -17,6 +17,6 @@ module Texticle
         }
       }
     eoruby
-    (self.full_text_indexes ||= []) << FullTextIndex.new
+    (self.full_text_indexes ||= []) << FullTextIndex.new('idx', self, &block)
   end
 end
