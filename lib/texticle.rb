@@ -5,9 +5,11 @@ module Texticle
 
   attr_accessor :full_text_indexes
 
-  def index &block
+  def index name = nil, &block
+    search_name = ['search', name].compact.join('_')
+
     class_eval(<<-eoruby)
-      named_scope :search, lambda { |term|
+      named_scope :#{search_name}, lambda { |term|
         {
           :select => "*, ts_rank_cd((\#{full_text_indexes.first.to_s}),
             plainto_tsquery(\#{connection.quote(term)\})) as rank",
@@ -17,6 +19,8 @@ module Texticle
         }
       }
     eoruby
-    (self.full_text_indexes ||= []) << FullTextIndex.new('idx', self, &block)
+    index_name = [table_name, name, 'fts_idx'].compact.join('_')
+    (self.full_text_indexes ||= []) <<
+      FullTextIndex.new(index_name, self, &block)
   end
 end
