@@ -1,0 +1,7 @@
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+bin/texticle
+lib/texticle.rb
+test/test_texticle.rb
