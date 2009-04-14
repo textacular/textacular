@@ -1,32 +1,62 @@
 = texticle
 
-* FIX (url)
+* http://texticle.rubyforge.org/
 
 == DESCRIPTION:
 
-FIX (describe your package)
+Texticle exposes full text search capabilities from PostgreSQL, and allows
+you to declare full text indexes.  Texticle will extend ActiveRecord with
+named_scope methods making searching easy and fun!
 
 == FEATURES/PROBLEMS:
 
-* FIX (list of features or problems)
+* Only works with PostgreSQL
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+  ###
+  # In environment.rb
+
+  config.gem 'texticle'
+
+  ###
+  # Declare your index in your model
+
+  class Product < ActiveRecord::Base
+    index do
+      name
+      description
+    end
+  end
+
+  ###
+  # Use the search method
+
+  Product.search('hello world')
+
+  ###
+  # Full text searches can be sped up by creating indexes.  To create the
+  # indexes, add these lines to your Rakefile:
+  require 'rubygems'
+  require 'texticle/tasks'
+
+  # Then run:
+
+  $ rake texticle:create_indexes
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
+* Texticle may be used outside rails, but works best with rails.
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+* sudo gem install texticle
 
 == LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2009 FIX
+Copyright (c) 2009 Aaron Patterson
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

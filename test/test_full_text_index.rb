@@ -10,6 +10,19 @@ class TestFullTextIndex < TexticleTestCase
     assert_equal 'value', fti.index_columns['A'].first
   end
 
+  def test_destroy
+    fm = fake_model
+    fti = Texticle::FullTextIndex.new('ft_index', fm) do
+      name
+      value 'A'
+    end
+    fti.destroy
+    assert fm.connected
+    assert_equal 1, fm.executed.length
+    executed = fm.executed.first
+    assert_match "DROP index #{fti.instance_variable_get(:@name)}", executed
+  end
+
   def test_create
     fm = fake_model
     fti = Texticle::FullTextIndex.new('ft_index', fm) do

@@ -17,6 +17,12 @@ module Texticle
       eosql
     end
 
+    def destroy
+      @model_class.connection.execute(<<-eosql)
+        DROP index #{@name}
+      eosql
+    end
+
     def to_s
       vectors = []
       @index_columns.sort_by { |k,v| k }.each do |weight, columns|
