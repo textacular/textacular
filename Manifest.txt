@@ -3,9 +3,9 @@ CHANGELOG.rdoc
 Manifest.txt
 README.rdoc
 Rakefile
-bin/texticle
 lib/texticle.rb
 lib/texticle/full_text_index.rb
+lib/texticle/tasks.rb
 rails/init.rb
 test/helper.rb
 test/test_full_text_index.rb
