@@ -1,5 +1,5 @@
 module Texticle
-  class FullTextIndex
+  class FullTextIndex # :nodoc:
     attr_accessor :index_columns
 
     def initialize name, dictionary, model_class, &block
