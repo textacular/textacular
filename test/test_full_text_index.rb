@@ -61,7 +61,7 @@ class TestFullTextIndex < TexticleTestCase
       value 'A'
       description 'B'
     end
-    assert_equal "setweight(to_tsvector('english', coalesce(#{@fm.table_name}.name, '') || coalesce(#{@fm.table_name}.value, '')), 'A') || ' ' || setweight(to_tsvector('english', coalesce(#{@fm.table_name}.description, '')), 'B')", fti.to_s
+    assert_equal "setweight(to_tsvector('english', coalesce(#{@fm.table_name}.name, '') || ' ' || coalesce(#{@fm.table_name}.value, '')), 'A') || ' ' || setweight(to_tsvector('english', coalesce(#{@fm.table_name}.description, '')), 'B')", fti.to_s
   end
 
   def test_mixed_weight

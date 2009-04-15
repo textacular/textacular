@@ -31,10 +31,10 @@ module Texticle
       @index_columns.sort_by { |k,v| k }.each do |weight, columns|
         c = columns.map { |x| "coalesce(#{@model_class.table_name}.#{x}, '')" }
         if weight == 'none'
-          vectors << "to_tsvector('#{@dictionary}', #{c.join(" || ")})"
+          vectors << "to_tsvector('#{@dictionary}', #{c.join(" || ' ' || ")})"
         else
           vectors <<
-        "setweight(to_tsvector('#{@dictionary}', #{c.join(" || ")}), '#{weight}')"
+        "setweight(to_tsvector('#{@dictionary}', #{c.join(" || ' ' || ")}), '#{weight}')"
         end
       end
       @string = vectors.join(" || ' ' || ")
