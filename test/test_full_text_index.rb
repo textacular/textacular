@@ -24,7 +24,7 @@ class TestFullTextIndex < TexticleTestCase
     assert @fm.connected
     assert_equal 1, @fm.executed.length
     executed = @fm.executed.first
-    assert_match "DROP index #{fti.instance_variable_get(:@name)}", executed
+    assert_match "DROP index IF EXISTS #{fti.instance_variable_get(:@name)}", executed
   end
 
   def test_create

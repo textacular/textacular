@@ -21,7 +21,7 @@ module Texticle
 
     def destroy
       @model_class.connection.execute(<<-eosql)
-        DROP index #{@name}
+        DROP index IF EXISTS #{@name}
       eosql
     end
 

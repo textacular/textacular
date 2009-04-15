@@ -3,7 +3,7 @@ require 'texticle'
 
 namespace :texticle do
   desc "Create full text indexes"
-  task :create_indexes => [:environment] do
+  task :create_indexes => ['texticle:destroy_indexes'] do
     Dir[File.join(RAILS_ROOT, 'app', 'models', '*.rb')].each do |f|
       klass = File.basename(f, '.rb').classify.constantize
       if klass.respond_to?(:full_text_indexes)
