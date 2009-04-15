@@ -7,6 +7,7 @@ module Texticle
       @dictionary     = dictionary
       @model_class    = model_class
       @index_columns  = {}
+      @string         = nil
       instance_eval(&block)
     end
 
@@ -25,6 +26,7 @@ module Texticle
     end
 
     def to_s
+      return @string if @string
       vectors = []
       @index_columns.sort_by { |k,v| k }.each do |weight, columns|
         c = columns.map { |x| "coalesce(#{@model_class.table_name}.#{x}, '')" }
@@ -35,7 +37,7 @@ module Texticle
         "setweight(to_tsvector('#{@dictionary}', #{c.join(" || ")}), '#{weight}')"
         end
       end
-      vectors.join(" || ' ' || ")
+      @string = vectors.join(" || ' ' || ")
     end
 
     def method_missing name, *args
