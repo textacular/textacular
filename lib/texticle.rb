@@ -48,7 +48,7 @@ require 'texticle/full_text_index'
 #   end
 module Texticle
   # The version of Texticle you are using.
-  VERSION = '1.0.0'
+  VERSION = '1.0.1'
 
   # A list of full text indexes
   attr_accessor :full_text_indexes

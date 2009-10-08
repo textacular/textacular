@@ -12,17 +12,23 @@ module Texticle
     end
 
     def create
-      @model_class.connection.execute(<<-eosql)
+      @model_class.connection.execute create_sql
+    end
+
+    def destroy
+      @model_class.connection.execute destroy_sql
+    end
+
+    def create_sql
+      <<-eosql
         CREATE index #{@name}
         ON #{@model_class.table_name}
         USING gin((#{to_s}))
       eosql
     end
 
-    def destroy
-      @model_class.connection.execute(<<-eosql)
-        DROP index IF EXISTS #{@name}
-      eosql
+    def destroy_sql
+      "DROP index IF EXISTS #{@name}"
     end
 
     def to_s
