@@ -1,3 +1,9 @@
+=== 1.0.2 / 2009-10-17
+
+* 1 bugfix
+
+  * Generated migration now uses UTC time rather than local time.
+
 === 1.0.1 / 2009-04-14
 
 * 1 minor enhancement

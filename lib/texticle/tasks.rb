@@ -4,7 +4,7 @@ require 'texticle'
 namespace :texticle do
   desc "Create full text index migration"
   task :migration => :environment do
-    now = Time.now
+    now = Time.now.utc
     filename = "#{now.strftime('%Y%m%d%H%m%S')}_full_text_search_#{now.to_i}.rb"
     File.open(File.join(RAILS_ROOT, 'db', 'migrate', filename), 'wb') { |fh|
       fh.puts "class FullTextSearch#{now.to_i} < ActiveRecord::Migration"
