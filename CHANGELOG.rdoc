@@ -1,5 +1,13 @@
 === 1.0.0 / 2009-04-14
 
+* 1 minor enhancement
+
+  * Textical adds a rake task to generate FTS index migrations.  Just run:
+
+      rake textical:migration
+
+=== 1.0.0 / 2009-04-14
+
 * 1 major enhancement
 
   * Birthday!

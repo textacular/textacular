@@ -14,13 +14,11 @@ named_scope methods making searching easy and fun!
 
 == SYNOPSIS:
 
-  ###
-  # In environment.rb
+In environment.rb:
 
   config.gem 'texticle'
 
-  ###
-  # Declare your index in your model
+Declare your index in your model:
 
   class Product < ActiveRecord::Base
     index do
@@ -29,20 +27,23 @@ named_scope methods making searching easy and fun!
     end
   end
 
-  ###
-  # Use the search method
+Use the search method
 
   Product.search('hello world')
 
-  ###
-  # Full text searches can be sped up by creating indexes.  To create the
-  # indexes, add these lines to your Rakefile:
+Full text searches can be sped up by creating indexes.  To create the
+indexes, add these lines to your Rakefile:
+
   require 'rubygems'
   require 'texticle/tasks'
 
-  # Then run:
+Then run:
 
   $ rake texticle:create_indexes
+
+Alternatively, you can create a migration that will build your indexes:
+
+  $ rake texticle:migration
 
 == REQUIREMENTS:
 
