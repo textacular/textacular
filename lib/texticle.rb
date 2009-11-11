@@ -58,17 +58,19 @@ module Texticle
   def index name = nil, dictionary = 'english', &block
     search_name = ['search', name].compact.join('_')
 
-    class_eval(<<-eoruby)
-      named_scope :#{search_name}, lambda { |term|
+    class_eval do
+      named_scope search_name.to_sym, lambda { |term|
+        # Let's extract the individual terms to allow for quoted terms.
+        term = term.scan(/"([^"]+)"|(\S+)/).flatten.compact.map {|lex| "'#{lex}'"}.join(' & ')
         {
-          :select => "\#{table_name}.*, ts_rank_cd((\#{full_text_indexes.first.to_s}),
-            plainto_tsquery(\#{connection.quote(term)\})) as rank",
+          :select => "#{table_name}.*, ts_rank_cd((#{full_text_indexes.first.to_s}),
+            to_tsquery(#{connection.quote(term)})) as rank",
           :conditions =>
-            ["\#{full_text_indexes.first.to_s} @@ plainto_tsquery(?)", term],
+            ["#{full_text_indexes.first.to_s} @@ to_tsquery(?)", term],
           :order => 'rank DESC'
         }
       }
-    eoruby
+    end
     index_name = [table_name, name, 'fts_idx'].compact.join('_')
     (self.full_text_indexes ||= []) <<
       FullTextIndex.new(index_name, dictionary, self, &block)

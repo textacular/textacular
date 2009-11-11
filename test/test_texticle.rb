@@ -44,4 +44,17 @@ class TestTexticle < TexticleTestCase
     ns = x.named_scopes.first[1].call('foo')
     assert_match(/^#{x.table_name}\.\*/, ns[:select])
   end
+  
+  def test_double_quoted_queries
+    x = fake_model
+    x.class_eval do
+      extend Texticle
+      index('awesome') do
+        name
+      end
+    end
+    
+    ns = x.named_scopes.first[1].call('foo bar "foo bar"')
+    assert_match(/'foo' & 'bar' & 'foo bar'/, ns[:select])
+  end
 end
