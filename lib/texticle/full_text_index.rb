@@ -39,7 +39,7 @@ CREATE index #{@name}
       return @string if @string
       vectors = []
       @index_columns.sort_by { |k,v| k }.each do |weight, columns|
-        c = columns.map { |x| "coalesce(#{@model_class.table_name}.#{x}, '')" }
+        c = columns.map { |x| "coalesce(\"#{@model_class.table_name}\".\"#{x}\", '')" }
         if weight == 'none'
           vectors << "to_tsvector('#{@dictionary}', #{c.join(" || ' ' || ")})"
         else

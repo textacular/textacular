@@ -45,14 +45,14 @@ class TestFullTextIndex < TexticleTestCase
     fti = Texticle::FullTextIndex.new('ft_index', 'english', @fm) do
       name
     end
-    assert_equal "to_tsvector('english', coalesce(#{@fm.table_name}.name, ''))", fti.to_s
+    assert_equal "to_tsvector('english', coalesce(\"#{@fm.table_name}\".\"name\", ''))", fti.to_s
   end
 
   def test_to_s_A_weight
     fti = Texticle::FullTextIndex.new('ft_index', 'english', @fm) do
       name 'A'
     end
-    assert_equal "setweight(to_tsvector('english', coalesce(#{@fm.table_name}.name, '')), 'A')", fti.to_s
+    assert_equal "setweight(to_tsvector('english', coalesce(\"#{@fm.table_name}\".\"name\", '')), 'A')", fti.to_s
   end
 
   def test_to_s_multi_weight
@@ -61,7 +61,7 @@ class TestFullTextIndex < TexticleTestCase
       value 'A'
       description 'B'
     end
-    assert_equal "setweight(to_tsvector('english', coalesce(#{@fm.table_name}.name, '') || ' ' || coalesce(#{@fm.table_name}.value, '')), 'A') || ' ' || setweight(to_tsvector('english', coalesce(#{@fm.table_name}.description, '')), 'B')", fti.to_s
+    assert_equal "setweight(to_tsvector('english', coalesce(\"#{@fm.table_name}\".\"name\", '') || ' ' || coalesce(\"#{@fm.table_name}\".\"value\", '')), 'A') || ' ' || setweight(to_tsvector('english', coalesce(\"#{@fm.table_name}\".\"description\", '')), 'B')", fti.to_s
   end
 
   def test_mixed_weight
@@ -69,6 +69,6 @@ class TestFullTextIndex < TexticleTestCase
       name
       value 'A'
     end
-    assert_equal "setweight(to_tsvector('english', coalesce(#{@fm.table_name}.value, '')), 'A') || ' ' || to_tsvector('english', coalesce(#{@fm.table_name}.name, ''))", fti.to_s
+    assert_equal "setweight(to_tsvector('english', coalesce(\"#{@fm.table_name}\".\"value\", '')), 'A') || ' ' || to_tsvector('english', coalesce(\"#{@fm.table_name}\".\"name\", ''))", fti.to_s
   end
 end
