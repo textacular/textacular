@@ -1,4 +1,5 @@
 require 'texticle/full_text_index'
+require 'texticle/railtie' if defined?(Rails) and Rails::VERSION::MAJOR > 2
 
 ####
 # Texticle exposes full text search capabilities from PostgreSQL, and allows
