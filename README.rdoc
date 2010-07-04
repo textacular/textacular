@@ -14,9 +14,28 @@ named_scope methods making searching easy and fun!
 
 == SYNOPSIS:
 
+=== Rails 3 Configuration
+
+Until the gem is updated, clone this repository inside your @vendor@ directory with
+
+    git clone git@github.com:tenderlove/texticle.git
+
+and in the project's @Gemfile@ add
+
+    gem 'texticle', '1.0.2', :path => 'vendor/texticle'
+
+=== Rails 2 Configuration
+
 In environment.rb:
 
   config.gem 'texticle'
+
+In your Rakefile:
+
+  require 'rubygems'
+  require 'texticle/tasks'
+
+=== Usage
 
 Declare your index in your model:
 
@@ -31,13 +50,7 @@ Use the search method
 
   Product.search('hello world')
 
-Full text searches can be sped up by creating indexes.  To create the
-indexes, add these lines to your Rakefile:
-
-  require 'rubygems'
-  require 'texticle/tasks'
-
-Then run:
+Full text searches can be sped up by creating indexes. To create them, run:
 
   $ rake texticle:create_indexes
 
