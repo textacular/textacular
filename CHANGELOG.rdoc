@@ -1,3 +1,13 @@
+=== 1.0.3 / 2010-07-??
+
+* 1 major enhancement
+
+  * Added Rails 3 support.
+
+* 1 bugfix
+
+  * Model names that end in double 's's (like Address) don't choke the rake tasks anymore.
+
 === 1.0.2 / 2009-10-17
 
 * 1 bugfix
