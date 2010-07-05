@@ -9,8 +9,8 @@ namespace :texticle do
     File.open(File.join(RAILS_ROOT, 'db', 'migrate', filename), 'wb') { |fh|
       fh.puts "class FullTextSearch#{now.to_i} < ActiveRecord::Migration"
       fh.puts "  def self.up"
-      Dir.glob(RAILS_ROOT.to_s + '/app/models/*.rb').each {|file| require file}
-      ActiveRecord::Base.subclasses.each do |klass|
+      Dir[File.join(RAILS_ROOT, 'app', 'models', '*.rb')].each do |f|
+        klass = File.basename(f, '.rb').pluralize.classify.constantize
         if klass.respond_to?(:full_text_indexes)
           (klass.full_text_indexes || []).each do |fti|
             fh.puts <<-eostmt
@@ -31,8 +31,8 @@ namespace :texticle do
 
   desc "Create full text indexes"
   task :create_indexes => ['texticle:destroy_indexes'] do
-    Dir.glob(RAILS_ROOT.to_s + '/app/models/*.rb').each {|file| require file}
-    ActiveRecord::Base.subclasses.each do |klass|
+    Dir[File.join(RAILS_ROOT, 'app', 'models', '*.rb')].each do |f|
+      klass = File.basename(f, '.rb').pluralize.classify.constantize
       if klass.respond_to?(:full_text_indexes)
         (klass.full_text_indexes || []).each do |fti|
           begin
@@ -47,8 +47,8 @@ namespace :texticle do
 
   desc "Destroy full text indexes"
   task :destroy_indexes => [:environment] do
-    Dir.glob(RAILS_ROOT.to_s + '/app/models/*.rb').each {|file| require file}
-    ActiveRecord::Base.subclasses.each do |klass|
+    Dir[File.join(RAILS_ROOT, 'app', 'models', '*.rb')].each do |f|
+      klass = File.basename(f, '.rb').pluralize.classify.constantize
       if klass.respond_to?(:full_text_indexes)
         (klass.full_text_indexes || []).each do |fti|
           fti.destroy
