@@ -35,7 +35,11 @@ namespace :texticle do
     ActiveRecord::Base.subclasses.each do |klass|
       if klass.respond_to?(:full_text_indexes)
         (klass.full_text_indexes || []).each do |fti|
-          fti.create
+          begin
+            fti.create
+          rescue ActiveRecord::StatementInvalid => e
+            warn "WARNING: Couldn't create index for #{klass.to_s}, skipping..."
+          end
         end
       end
     end
