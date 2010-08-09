@@ -61,8 +61,11 @@ module Texticle
 
     class_eval do
       named_scope search_name.to_sym, lambda { |term|
-        # Let's extract the individual terms to allow for quoted terms.
-        term = term.scan(/"([^"]+)"|(\S+)/).flatten.compact.map {|lex| "'#{lex}'"}.join(' & ')
+        # Let's extract the individual terms to allow for quoted and wildcard terms.
+        term = term.scan(/"([^"]+)"|(\S+)/).flatten.compact.map do |lex| 
+          lex =~ /(.+)\*\s*$/ ? "'#{$1}':*" : "'#{lex}'"
+        end.join(' & ')
+        
         {
           :select => "#{table_name}.*, ts_rank_cd((#{full_text_indexes.first.to_s}),
             to_tsquery(#{connection.quote(term)})) as rank",
