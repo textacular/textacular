@@ -18,7 +18,7 @@ named_scope methods making searching easy and fun!
 
 In the project's Gemfile add
 
-    gem 'texticle', '1.0.2', :git => 'git://github.com/tenderlove/texticle'
+    gem 'texticle', '1.0.3', :git => 'git://github.com/tenderlove/texticle'
 
 === Rails 2 Configuration
 
