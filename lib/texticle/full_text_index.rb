@@ -20,10 +20,10 @@ module Texticle
     end
 
     def create_sql
-      <<-eosql
-        CREATE index #{@name}
-        ON #{@model_class.table_name}
-        USING gin((#{to_s}))
+      <<-eosql.chomp
+CREATE index #{@name}
+      ON #{@model_class.table_name}
+      USING gin((#{to_s}))
       eosql
     end
 
