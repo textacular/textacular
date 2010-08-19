@@ -11,6 +11,10 @@ module Texticle
       instance_eval(&block)
     end
 
+    def self.find_constant_of(filename)
+      File.basename(filename, '.rb').pluralize.classify.constantize
+    end
+
     def create
       @model_class.connection.execute create_sql
     end
