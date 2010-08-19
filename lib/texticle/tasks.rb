@@ -6,10 +6,10 @@ namespace :texticle do
   task :migration => :environment do
     now = Time.now.utc
     filename = "#{now.strftime('%Y%m%d%H%M%S')}_full_text_search_#{now.to_i}.rb"
-    File.open(File.join(RAILS_ROOT, 'db', 'migrate', filename), 'wb') { |fh|
+    File.open(Rails.root + 'db' + 'migrate' + filename, 'wb') { |fh|
       fh.puts "class FullTextSearch#{now.to_i} < ActiveRecord::Migration"
       fh.puts "  def self.up"
-      Dir[File.join(RAILS_ROOT, 'app', 'models', '*.rb')].each do |f|
+      Dir[Rails.root + 'app' + 'models' + '*.rb'].each do |f|
         klass = File.basename(f, '.rb').pluralize.classify.constantize
         if klass.respond_to?(:full_text_indexes)
           (klass.full_text_indexes || []).each do |fti|
@@ -31,7 +31,7 @@ namespace :texticle do
 
   desc "Create full text indexes"
   task :create_indexes => ['texticle:destroy_indexes'] do
-    Dir[File.join(RAILS_ROOT, 'app', 'models', '*.rb')].each do |f|
+    Dir[Rails.root + 'app' + 'models' + '*.rb'].each do |f|
       klass = File.basename(f, '.rb').pluralize.classify.constantize
       if klass.respond_to?(:full_text_indexes)
         (klass.full_text_indexes || []).each do |fti|
@@ -47,7 +47,7 @@ namespace :texticle do
 
   desc "Destroy full text indexes"
   task :destroy_indexes => [:environment] do
-    Dir[File.join(RAILS_ROOT, 'app', 'models', '*.rb')].each do |f|
+    Dir[Rails.root + 'app' + 'models' + '*.rb'].each do |f|
       klass = File.basename(f, '.rb').pluralize.classify.constantize
       if klass.respond_to?(:full_text_indexes)
         (klass.full_text_indexes || []).each do |fti|
