@@ -6,7 +6,7 @@ namespace :texticle do
   task :migration => :environment do
     now = Time.now.utc
     filename = "#{now.strftime('%Y%m%d%H%M%S')}_full_text_search_#{now.to_i}.rb"
-    File.open(Rails.root + 'db' + 'migrate' + filename, 'wb') { |fh|
+    File.open(Rails.root + 'db' + 'migrate' + filename, 'wb') do |fh|
       up_sql_statements = []
       dn_sql_statements = []
 
@@ -31,7 +31,7 @@ namespace :texticle do
       insert_sql_statements_into_migration_file(dn_sql_statements, fh)
       fh.puts "  end"
       fh.puts "end"
-    }
+    end
   end
 
   desc "Create full text indexes"
