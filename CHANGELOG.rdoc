@@ -1,3 +1,16 @@
+=== 1.0.4 / 2010-08-19
+
+* 2 major enhancements
+
+  * use Rails.root instead of RAILS_ROOT
+  * refactored tasks to ease maintainance and patchability
+
+* 3 minor enhancements
+
+  * fix timestamp for migrationfile
+  * fixed deprecation warning for rails3 (dropping rails2-support)
+  * prevented warning about defined constant
+
 === 1.0.3 / 2010-07-07
 
 * 1 major enhancement
