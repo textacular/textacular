@@ -59,22 +59,29 @@ module Texticle
   def index name = nil, dictionary = 'english', &block
     search_name = ['search', name].compact.join('_')
 
-    class_eval do
-      scope search_name.to_sym, lambda { |term|
-        # Let's extract the individual terms to allow for quoted and wildcard terms.
-        term = term.scan(/"([^"]+)"|(\S+)/).flatten.compact.map do |lex|
-          lex =~ /(.+)\*\s*$/ ? "'#{$1}':*" : "'#{lex}'"
-        end.join(' & ')
+    scope_lamba = lambda { |term|
+      # Let's extract the individual terms to allow for quoted and wildcard terms.
+      term = term.scan(/"([^"]+)"|(\S+)/).flatten.compact.map do |lex|
+        lex =~ /(.+)\*\s*$/ ? "'#{$1}':*" : "'#{lex}'"
+      end.join(' & ')
 
-        {
-          :select => "#{table_name}.*, ts_rank_cd((#{full_text_indexes.first.to_s}),
-            to_tsquery(#{connection.quote(term)})) as rank",
-          :conditions =>
-            ["#{full_text_indexes.first.to_s} @@ to_tsquery(?)", term],
-          :order => 'rank DESC'
-        }
+      {
+        :select => "#{table_name}.*, ts_rank_cd((#{full_text_indexes.first.to_s}),
+          to_tsquery(#{connection.quote(term)})) as rank",
+        :conditions =>
+          ["#{full_text_indexes.first.to_s} @@ to_tsquery(?)", term],
+        :order => 'rank DESC'
       }
+    }
+
+    class_eval do
+      if self.respond_to? :scope
+        scope search_name.to_sym, scope_lamba
+      elsif self.respond_to? :named_scope
+        named_scope search_name.to_sym, scope_lamba
+      end
     end
+
     index_name = [table_name, name, 'fts_idx'].compact.join('_')
     (self.full_text_indexes ||= []) <<
       FullTextIndex.new(index_name, dictionary, self, &block)
