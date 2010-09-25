@@ -76,7 +76,7 @@ module Texticle
     
     # tsearch, i.e. trigram search
     trigram_scope_lambda = lambda { |term|
-      term = "'#{term}'"
+      term = "'#{term.gsub("'", "''")}'"
 
       similarities = full_text_indexes.first.index_columns.values.flatten.inject([]) do |array, index|
         array << "similarity(#{index}, #{term})"
