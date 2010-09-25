@@ -54,6 +54,29 @@ Alternatively, you can create a migration that will build your indexes:
 
   $ rake texticle:migration
 
+== BETA: FUZZY SEARCH
+
+We're adding support for Postgres' optional trigram matching module, which allows for fuzzier text searches.
+
+Since it's an optional module, first step is to install it into the current database:
+	
+	$ rake texticle:install_trigram
+
+If you installed Postgres with its optional 'contrib' modules, you should be safe.
+
+Declare your indexes as you normally would:
+
+	class Book < ActiveRecord::Base
+		index { title }
+	end
+	
+Finally, say hello to #tsearch:
+
+	Book.create :title => "_why's Poignant Guide to Ruby"
+	Book.tsearch "_whys Poignnt Gd t Rb" # => [#<Book title: "_why's Poignant Guide to Ruby">]
+	
+Trigram searching is still in beta, so expect the API to change and/or improve.
+
 == REQUIREMENTS:
 
 * Texticle may be used outside rails, but works best with rails.
