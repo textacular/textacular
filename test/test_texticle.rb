@@ -10,11 +10,13 @@ class TestTexticle < TexticleTestCase
       end
     end
     assert_equal 1, x.full_text_indexes.length
-    assert_equal 1, x.named_scopes.length
+    # One named_scope for search, another for trigram search
+    assert_equal 2, x.named_scopes.length
 
     x.full_text_indexes.first.create
     assert_match "#{x.table_name}_fts_idx", x.executed.first
     assert_equal :search, x.named_scopes.first.first
+    assert_equal :tsearch, x.named_scopes[1].first
   end
 
   def test_named_index
@@ -26,11 +28,12 @@ class TestTexticle < TexticleTestCase
       end
     end
     assert_equal 1, x.full_text_indexes.length
-    assert_equal 1, x.named_scopes.length
+    assert_equal 2, x.named_scopes.length
 
     x.full_text_indexes.first.create
     assert_match "#{x.table_name}_awesome_fts_idx", x.executed.first
     assert_equal :search_awesome, x.named_scopes.first.first
+    assert_equal :tsearch_awesome, x.named_scopes[1].first
   end
 
   def test_named_scope_select

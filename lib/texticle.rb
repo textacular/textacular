@@ -73,12 +73,33 @@ module Texticle
         :order => 'rank DESC'
       }
     }
+    
+    # tsearch, i.e. trigram search
+    trigram_scope_lambda = lambda { |term|
+      term = "'#{term}'"
+
+      similarities = full_text_indexes.first.index_columns.values.flatten.inject([]) do |array, index|
+        array << "similarity(#{index}, #{term})"
+      end.join(" + ")
+      
+      conditions = full_text_indexes.first.index_columns.values.flatten.inject([]) do |array, index|
+        array << "(#{index} % #{term})"
+      end.join(" OR ")
+      
+      {
+        :select => "#{table_name}.*, #{similarities} as rank",
+        :conditions => conditions,
+        :order => 'rank DESC'
+      }
+    }
 
     class_eval do
       if self.respond_to? :scope
         scope search_name.to_sym, scope_lamba
+        scope ('t' + search_name).to_sym, trigram_scope_lambda
       elsif self.respond_to? :named_scope
         named_scope search_name.to_sym, scope_lamba
+        named_scope ('t' + search_name).to_sym, trigram_scope_lambda
       end
     end
 
