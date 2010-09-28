@@ -97,7 +97,7 @@ module Texticle
       # Trying to avoid the deprecation warning when using :named_scope
       # that Rails 3 emits. Can't use #respond_to?(:scope) since scope
       # is a protected method in Rails 2, and thus still returns true.
-      if defined? self.scope
+      if self.respond_to?(:scope) and not protected_methods.include?('scope')
         scope search_name.to_sym, scope_lamba
         scope ('t' + search_name).to_sym, trigram_scope_lambda
       elsif self.respond_to? :named_scope
