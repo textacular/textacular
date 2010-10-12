@@ -73,4 +73,33 @@ class TestTexticle < TexticleTestCase
     ns = x.named_scopes.first[1].call('foo bar*')
     assert_match(/'foo' & 'bar:*'/, ns[:select])
   end
+  
+  def test_dictionary_in_select
+    x = fake_model
+    x.class_eval do
+      extend Texticle
+      index('awesome', 'spanish') do
+        name
+      end
+    end
+
+    ns = x.named_scopes.first[1].call('foo')
+    assert_match(/to_tsvector\('spanish'/, ns[:select])
+    assert_match(/to_tsquery\('spanish'/, ns[:select])
+  end
+
+  def test_dictionary_in_conditions
+    x = fake_model
+    x.class_eval do
+      extend Texticle
+      index('awesome', 'spanish') do
+        name
+      end
+    end
+
+    ns = x.named_scopes.first[1].call('foo')
+    assert_match(/to_tsvector\('spanish'/, ns[:conditions].first)
+    assert_equal 'spanish', ns[:conditions][1]
+  end
+
 end

@@ -67,9 +67,9 @@ module Texticle
 
       {
         :select => "#{table_name}.*, ts_rank_cd((#{full_text_indexes.first.to_s}),
-          to_tsquery(#{connection.quote(term)})) as rank",
+          to_tsquery(#{connection.quote(dictionary)}, #{connection.quote(term)})) as rank",
         :conditions =>
-          ["#{full_text_indexes.first.to_s} @@ to_tsquery(?)", term],
+          ["#{full_text_indexes.first.to_s} @@ to_tsquery(?,?)", dictionary, term],
         :order => 'rank DESC'
       }
     }
