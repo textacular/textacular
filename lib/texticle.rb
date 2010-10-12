@@ -99,10 +99,10 @@ module Texticle
       # is a protected method in Rails 2, and thus still returns true.
       if self.respond_to?(:scope) and not protected_methods.include?('scope')
         scope search_name.to_sym, scope_lamba
-        scope ('t' + search_name).to_sym, trigram_scope_lambda
+        scope(('t' + search_name).to_sym, trigram_scope_lambda)
       elsif self.respond_to? :named_scope
         named_scope search_name.to_sym, scope_lamba
-        named_scope ('t' + search_name).to_sym, trigram_scope_lambda
+        named_scope(('t' + search_name).to_sym, trigram_scope_lambda)
       end
     end
 
