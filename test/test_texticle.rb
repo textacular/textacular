@@ -102,4 +102,33 @@ class TestTexticle < TexticleTestCase
     assert_equal 'spanish', ns[:conditions][1]
   end
 
+  def test_multiple_named_indices
+    x = fake_model
+    x.class_eval do
+      extend Texticle
+      index('uno') do
+        greco
+      end
+      index('due') do
+        guapo
+      end
+    end
+
+    assert_equal :search_uno,  x.named_scopes[0].first
+    assert_match(/greco/,      x.named_scopes[0][1].call("foo")[:select].first)
+    assert_match(/greco/,      x.named_scopes[0][1].call("foo")[:conditions].first)
+
+    assert_equal :tsearch_uno, x.named_scopes[1].first
+    assert_match(/greco/,      x.named_scopes[1][1].call("foo")[:select].first)
+    assert_match(/greco/,      x.named_scopes[1][1].call("foo")[:conditions].first)
+
+    assert_equal :search_due,  x.named_scopes[2].first
+    assert_match(/guapo/,      x.named_scopes[2][1].call("foo")[:select].first)
+    assert_match(/guapo/,      x.named_scopes[2][1].call("foo")[:conditions].first)
+
+    assert_equal :tsearch_due, x.named_scopes[3].first
+    assert_match(/guapo/,      x.named_scopes[3][1].call("foo")[:select].first)
+    assert_match(/guapo/,      x.named_scopes[3][1].call("foo")[:conditions].first)
+  end
+
 end
