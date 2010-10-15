@@ -1,3 +1,9 @@
+=== HEAD (unreleased)
+
+* 1 minor bugfix
+
+  * Multiple named indices are now supported.
+
 === 1.0.4 / 2010-08-19
 
 * 2 major enhancements
