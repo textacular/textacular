@@ -3,6 +3,8 @@
 require 'rubygems'
 require 'hoe'
 
+Hoe.plugin :gemspec
+
 Hoe.spec 'texticle' do
   developer('Aaron Patterson', 'aaronp@rubyforge.org')
   self.readme_file   = 'README.rdoc'
