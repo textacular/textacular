@@ -6,7 +6,6 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aaron Patterson"]
-  s.cert_chain = ["/home/miked/.gem/gem-public_cert.pem"]
   s.date = %q{2010-10-15}
   s.description = %q{Texticle exposes full text search capabilities from PostgreSQL, and allows
 you to declare full text indexes.  Texticle will extend ActiveRecord with
