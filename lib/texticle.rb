@@ -58,6 +58,10 @@ module Texticle
   # Create an index with +name+ using +dictionary+
   def index name = nil, dictionary = 'english', &block
     search_name = ['search', name].compact.join('_')
+    index_name  = [table_name, name, 'fts_idx'].compact.join('_')
+    this_index  = FullTextIndex.new(index_name, dictionary, self, &block)
+
+    (self.full_text_indexes ||= []) << this_index
 
     scope_lamba = lambda { |term|
       # Let's extract the individual terms to allow for quoted and wildcard terms.
@@ -66,23 +70,23 @@ module Texticle
       end.join(' & ')
 
       {
-        :select => "#{table_name}.*, ts_rank_cd((#{full_text_indexes.first.to_s}),
+        :select => "#{table_name}.*, ts_rank_cd((#{this_index.to_s}),
           to_tsquery(#{connection.quote(dictionary)}, #{connection.quote(term)})) as rank",
         :conditions =>
-          ["#{full_text_indexes.first.to_s} @@ to_tsquery(?,?)", dictionary, term],
+          ["#{this_index.to_s} @@ to_tsquery(?,?)", dictionary, term],
         :order => 'rank DESC'
       }
     }
     
     # tsearch, i.e. trigram search
     trigram_scope_lambda = lambda { |term|
-      term = "'#{term.gsub("'", "''")}'"
+      term = "'#{term.gsub("'", "''")}'" # " because emacs ruby-mode is totally confused by this line
 
-      similarities = full_text_indexes.first.index_columns.values.flatten.inject([]) do |array, index|
+      similarities = this_index.index_columns.values.flatten.inject([]) do |array, index|
         array << "similarity(#{index}, #{term})"
       end.join(" + ")
       
-      conditions = full_text_indexes.first.index_columns.values.flatten.inject([]) do |array, index|
+      conditions = this_index.index_columns.values.flatten.inject([]) do |array, index|
         array << "(#{index} % #{term})"
       end.join(" OR ")
       
@@ -105,9 +109,5 @@ module Texticle
         named_scope(('t' + search_name).to_sym, trigram_scope_lambda)
       end
     end
-
-    index_name = [table_name, name, 'fts_idx'].compact.join('_')
-    (self.full_text_indexes ||= []) <<
-      FullTextIndex.new(index_name, dictionary, self, &block)
   end
 end
