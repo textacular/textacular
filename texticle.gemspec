@@ -18,7 +18,6 @@ named_scope methods making searching easy and fun!}
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{texticle}
   s.rubygems_version = %q{1.3.7}
-  s.signing_key = %q{/home/miked/.gem/gem-private_key.pem}
   s.summary = %q{Texticle exposes full text search capabilities from PostgreSQL, and allows you to declare full text indexes}
   s.test_files = ["test/test_full_text_index.rb", "test/test_texticle.rb"]
 
