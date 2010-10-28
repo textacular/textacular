@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+
+	<style type="text/css" media="screen">
+	*{
+		padding: 0;
+		margin: 0;
+		font-family: helvetica, arial;
+	}
+
+	body{
+		min-width: 970px;
+	}
+
+	a{
+		color: #FF00CB;
+		text-decoration: none;
+		font-weight: bold;
+	}
+
+	a:hover{
+		text-decoration: underline;
+	}
+
+	a:visited{
+		font-weight: normal;
+	}
+
+	div{
+		padding: 20px 40px 20px 40px;
+	}
+
+	div.gist{
+		padding: 0;
+	}
+
+	#headline{
+		padding: 0;
+		font-size: 200px;
+		margin: 20px 0 0 20px;
+		font-weight: bold;
+	}
+
+	h1{
+		font-weight: bold;
+		color: #027dff;
+		margin-bottom: 5px;
+	}
+
+	h2{
+		margin-bottom: 5px;
+	}
+
+	.subsection{
+		padding: 20px 40px 0px 40px;
+	}
+
+	.top_stripe{
+		margin-top: 20px;
+		padding: 0;
+		width: 100%;
+		height: 7px;
+		background: url(top_border.png) repeat-x;
+	}
+
+	.bottom_stripe{
+		padding: 0;
+		width: 100%;
+		height: 7px;
+		background: url(bottom_border.png) repeat-x;
+		margin-bottom: 20px;
+	}
+
+	#setup{
+		background: #111;
+		color: white;
+	}
+
+	#setup div{
+		padding-bottom: 0;
+	}
+
+	#setup .comment{
+		opacity: 0.77;
+	}
+
+	#fork_me{
+		padding: 0;
+		height: 149px;
+		width: 149px;
+		position: absolute;
+		top: 0;
+		right: 0;
+		background: url(forkme.png);
+	}
+
+	.comment{
+		opacity: 0.33;
+		font-style: italic;
+		padding-right: 5px; /* For odd font-cutting-off bug */
+	}
+
+	ul{
+		list-style-type: none;
+	}
+
+	#footnotes{
+		text-align: center;
+		font-size: 15px;
+		color: #aaa;
+	}
+
+	sup a{
+		text-decoration: none;
+		color: white;
+	}
+
+	sup a:visited{
+		color: white;
+	}
+
+	sup a:active{
+		color: white;
+	}
+
+	p{
+		margin-bottom: 10px;
+	}
+
+	code{
+		font-family: monospace;
+		background: #eee;
+	}
+
+	#setup code{
+		background: none;
+	}
+
+	.quote{
+		font-style: italic;
+		color: #333;
+	}
+
+	.signature{
+		text-align: right;
+	}
+	
+	h3{
+		font-style: italic;
+	}
+	</style>
+	<title>⚲Texticle: full text search gem for Postgres</title>
+</head>
+<body>
+	<div id='headline'>⚲Texticle</div>
+	<a href='http://github.com/tenderlove/texticle'>
+		<div id='fork_me'></div>
+	</a>
+	<div>
+		<h1>Text Search on Postgres</h1>
+		<span class='comment'>reduce your text search dependencies</span>
+		<div>
+			<p class="quote">&#8220;Heroku’s <a href="http://docs.heroku.com/full-text-search">documentation</a> lists two ways to get full text indexing working with your Heroku application. They talk about using Ferret and Solr for full text indexes. The Ferret option looks OK, but it requires you to rebuild your indexes every time you push. Solr would work, but it requires an EC2 instance or some third party server. Since my budget is precisely $0, using Solr is out of the picture.</p>
+
+			<p class="quote">But there is a third option. A very secret option. A devious but fun option. You see, <a href="http://docs.heroku.com/database">Heroku runs PostgreSQL</a> for each rails application database. They’re running a version new enough (Version 8.3) to have full text index support built in. If we’re willing to throw out database agnosticism, we can take advantage of the database’s indexing capability. [...]&#8221; <a href="#footnote_1"><sup>1</sup></a></p>
+		</div>
+		<h1>The Pros and Cons</h1>
+		<span class='comment'>make sure texticle is right for you</span>
+		<div>
+			<ul style='list-style-type: circle;'>
+				<h3>Pros</h3>
+				<li>works with Postgres out of the box</li>
+				<li>only adds a gem dependency to your code</li>
+				<li>works on Heroku</li>
+				<br>
+				<h3>Cons</h3>
+				<li><i><u>only</u></i> works with Postgres</li>
+				<li>likely less performant than you'd like for large datasets</li>
+			</ul>
+		</div>
+	</div>
+
+
+	<div class='top_stripe'></div>
+	<div id='setup'>
+		<h1>Getting Up and Running</h1>
+		<span class='comment'>add text search to your models in 5 minutes flat</span>
+		<div>
+			<ul>
+				<li>★ gem install <b>texticle</b></li>
+			</ul>
+		</div>
+		<div>
+			<h3>For <u>Rails 3</u> Apps</h3>
+			<div>
+				<ul>
+					<li><span class='comment'>Inside your Gemfile</span></li>
+					<li>gem <b>'texticle'</b></li>
+				</ul>
+				<br>
+				<ul>
+					<li><span class='comment'>To verify, from a terminal</span></li>
+					<li>bundle install</li>
+					<li>bundle | grep texticle <span class='comment'> # => Using texticle (…)</span></li>
+				</ul>
+			</div>
+		</div>
+		<div>
+			<h3>For <u>Rails 2</u> Apps</h3>
+			<div style='padding-bottom: 40px;'>
+				<ul>
+					<li><span class='comment'>Inside config/environment.rb</span></li>
+					<li>config.gem <b>'texticle'</b></li>
+				</ul>
+				<br>
+				<ul>
+					<li><span class='comment'>Inside your Rakefile</span></li>
+					<li>require <b>'rubygems'</b></li>
+					<li>require <b>'texticle/tasks'</b></li>
+				</ul>
+			</div>
+		</div>
+		<h2>
+			Search Your Models
+		</h2><span class='comment'>forget about LIKE %</span>
+		<div>
+			<ul>
+				<li><pre><span style='color: chartreuse'>class</span> <b>Product</b> < <b>ActiveRecord</b>::<b>Base</b></pre></li>
+				<li><pre>    <span style='color: yellow'>index</span> do</pre></li>
+				<li><pre>        <span style='color: skyblue'>name</span></pre></li>
+				<li><pre>        <span style='color: skyblue'>description</span></pre></li>
+				<li><pre>    <span style='color: yellow'>end</span></pre></li>
+				<li><pre><span style='color: chartreuse'>end</span></pre></li>
+			</ul>
+		</div>
+		<div>
+			<ul>
+				<li>Product.create :name => 'Messenger Bag', :description => 'A bag for messengers.'</li>
+				<li>Product.search 'messenger' <span class='comment'># => [ #&lt;Product id: 1, name: "Messenger Bag" ...&gt; ]</span></li>
+			</ul>
+		</div>
+	</div>
+	<div class='bottom_stripe'></div>
+
+
+	<div>
+		<h1>Tips and Tricks</h1>
+		<span class='comment'>get the most out of texticle</span>
+		<h2 class='subsection'>Systemwide Search</h2>
+		<div>
+			<p>If you have several models you want to search through in one go, one approach is to use a separate search model. First populate a database view with the models you want to search through:</p>
+			<script src="http://gist.github.com/651521.js?file=create_searches.rb"></script>
+			<p>Now we can write our Search model:</p>
+			<script src="http://gist.github.com/651479.js?file=search.rb"></script>
+			<p>Running <code>Search.new('awesome')</code> will return all authors <b>AND</b> books that have 'awesome' in their name or title.</p>
+		</div>
+		<!-- >
+		<h2 class='subsection'>Searching Relations</h2>
+		<div>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</div>
+		-->
+		<h1>Fuzzy Search <sup>beta</sup></h1>
+		<span class='comment'>stop worrying about typos</span>
+		<div>
+			<p>Fuzzier searches can be obtained by using Postgres' optional trigram matching module. Since it’s an optional module, the first step is to install it into the current database:</p>
+			<p><code>$ rake texticle:install_trigram</code></p>
+			<p>If you installed Postgres with its optional ‘contrib’ modules<a href="#footnote_2"><sup>2</sup></a>, you should be safe.</p>
+			<p>Declare your indexes as you normally would:</p>
+			<p><code>class Book < ActiveRecord::Base; index { title } end</code></p>
+			<p>Finally, say hello to <code>#tsearch</code>:</p>
+			<p>
+				<code>irb > Book.create :title => "_why's Poignant Guide to Ruby"</code>
+				<br />
+				<code>irb > Book.tsearch "_whys Poignnt Gd t Rb" # => [ #&lt;Book title: "_why's Poignant Guide to Ruby"&gt; ]</code>
+			</p>
+			<p>Trigram searching is still in beta, so expect the API to change and/or improve.</p>
+		</div>
+		<h1>
+			Credits
+		</h1><span class='comment'>this gem brought to you by the following committers</span>
+		<div>
+			<ul>
+				<li><a href="http://github.com/tenderlove">Aaron Patterson</a></li>
+				<li><a href="http://github.com/adamsanderson"> Adam Sanderson</a></li>
+				<li><a href="http://github.com/christos">Christos Zisopoulos</a></li>
+				<li><a href="http://github.com/kronn">Matthias Viehweger</a></li>
+				<li><a href="http://github.com/flavorjones">Mike Dalessio</a></li>
+				<li><a href="http://github.com/alphabetum">William Melody</a></li>
+				<li><a href="http://github.com/ecin">ecin</a></li>
+			</ul>
+		</div>
+		<div id='footnotes'>
+			<p><a name="footnote_1"><sup>1</sup></a>Excerpt from Aaron Patterson's article on <a href="http://tenderlovemaking.com/2009/10/17/full-text-search-on-heroku/">Full Text Search on Heroku</a>.</p>
+			<p><a name="footnote_2"><sup>2</sup></a>As of Postgres 9.0, <a href="http://github.com/mxcl/homebrew">homebrew</a> includes the 'contrib' modules. Sadly, they're still missing from <a href="http://www.heroku.com">Heroku</a>.</p>
+		</div>
+	</div>
+</body>
+</html>
