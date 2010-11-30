@@ -1,8 +1,9 @@
 # -*- encoding: utf-8 -*-
+require 'lib/texticle/version'
 
 Gem::Specification.new do |s|
   s.name = %q{texticle}
-  s.version = "1.0.4.20101015113653"
+  s.version = Texticle::VERSION
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aaron Patterson"]

@@ -1,3 +1,4 @@
+require 'texticle/version'
 require 'texticle/full_text_index'
 require 'texticle/railtie' if defined?(Rails) and Rails::VERSION::MAJOR > 2
 
@@ -48,9 +49,6 @@ require 'texticle/railtie' if defined?(Rails) and Rails::VERSION::MAJOR > 2
 #     end
 #   end
 module Texticle
-  # The version of Texticle you are using.
-  VERSION = '1.0.4' unless defined?(Texticle::VERSION)
-
   # A list of full text indexes
   attr_accessor :full_text_indexes
 
@@ -77,7 +75,7 @@ module Texticle
         :order => 'rank DESC'
       }
     }
-    
+
     # tsearch, i.e. trigram search
     trigram_scope_lambda = lambda { |term|
       term = "'#{term.gsub("'", "''")}'" # " because emacs ruby-mode is totally confused by this line
@@ -85,11 +83,11 @@ module Texticle
       similarities = this_index.index_columns.values.flatten.inject([]) do |array, index|
         array << "similarity(#{index}, #{term})"
       end.join(" + ")
-      
+
       conditions = this_index.index_columns.values.flatten.inject([]) do |array, index|
         array << "(#{index} % #{term})"
       end.join(" OR ")
-      
+
       {
         :select => "#{table_name}.*, #{similarities} as rank",
         :conditions => conditions,
