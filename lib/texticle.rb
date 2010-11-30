@@ -1,3 +1,4 @@
+require 'texticle/full_text_index'
 require 'texticle/railtie' if defined?(Rails) and Rails::VERSION::MAJOR > 2
 
 ####
@@ -47,8 +48,8 @@ require 'texticle/railtie' if defined?(Rails) and Rails::VERSION::MAJOR > 2
 #     end
 #   end
 module Texticle
-  autoload :VERSION,       'texticle/version'
-  autoload :FullTextIndex, 'texticle/full_text_index'
+  # The version of Texticle you are using.
+  VERSION = '1.0.4'
 
   # A list of full text indexes
   attr_accessor :full_text_indexes
