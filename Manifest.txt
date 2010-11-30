@@ -4,7 +4,6 @@ Manifest.txt
 README.rdoc
 Rakefile
 lib/texticle.rb
-lib/texticle/version.rb
 lib/texticle/full_text_index.rb
 lib/texticle/railtie.rb
 lib/texticle/tasks.rb
