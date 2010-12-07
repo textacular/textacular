@@ -1,4 +1,4 @@
-require 'helper'
+require File.expand_path(File.dirname(__FILE__) + '/helper')
 
 class TestTexticle < TexticleTestCase
   def test_index_method
@@ -60,7 +60,11 @@ class TestTexticle < TexticleTestCase
     ns = x.named_scopes.first[1].call('foo bar "foo bar"')
     assert_match(/'foo' & 'bar' & 'foo bar'/, ns[:select])
   end
-  
+ 
+  def text_queries_with_single_quote
+
+  end
+
   def test_wildcard_queries
     x = fake_model
     x.class_eval do
