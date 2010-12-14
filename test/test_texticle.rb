@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/helper')
+require 'helper'
 
 class TestTexticle < TexticleTestCase
   def test_index_method
