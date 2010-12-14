@@ -58,13 +58,9 @@ class TestTexticle < TexticleTestCase
     end
     
     ns = x.named_scopes.first[1].call('foo bar "foo bar"')
-    assert_match(/'foo' & 'bar' & 'foo bar'/, ns[:select])
+    assert_match(/foo & bar & foo\\ bar/, ns[:select])
   end
  
-  def text_queries_with_single_quote
-
-  end
-
   def test_wildcard_queries
     x = fake_model
     x.class_eval do
@@ -75,7 +71,7 @@ class TestTexticle < TexticleTestCase
     end
     
     ns = x.named_scopes.first[1].call('foo bar*')
-    assert_match(/'foo' & 'bar:*'/, ns[:select])
+    assert_match(/foo & bar:*/, ns[:select])
   end
   
   def test_dictionary_in_select
@@ -118,6 +114,8 @@ class TestTexticle < TexticleTestCase
       end
     end
 
+    # TODO: replace the call to #first,
+    # as strings don't have such a method in Ruby 1.9.2
     assert_equal :search_uno,  x.named_scopes[0].first
     assert_match(/greco/,      x.named_scopes[0][1].call("foo")[:select].first)
     assert_match(/greco/,      x.named_scopes[0][1].call("foo")[:conditions].first)
