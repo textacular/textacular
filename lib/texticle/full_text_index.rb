@@ -1,6 +1,8 @@
 module Texticle
   class FullTextIndex # :nodoc:
     attr_accessor :index_columns
+		cattr_accessor :rails_models_path
+		@@rails_models_path =  File.join(Rails.root,"app","models")
 
     def initialize name, dictionary, model_class, &block
       @name           = name
@@ -12,7 +14,11 @@ module Texticle
     end
 
     def self.find_constant_of(filename)
-      File.basename(filename, '.rb').pluralize.classify.constantize
+      file_dir_name = File.dirname(filename)
+      base_name = File.basename(filename, '.rb')
+      rel_path = file_dir_name.gsub(@@rails_models_path,"")
+      class_name = [rel_path,base_name].join('/').pluralize.classify
+      class_name.constantize
     end
 
     def create

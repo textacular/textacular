@@ -10,7 +10,7 @@ namespace :texticle do
       up_sql_statements = []
       dn_sql_statements = []
 
-      Dir[Rails.root + 'app' + 'models' + '*.rb'].each do |f|
+      Dir[Rails.root + 'app' + 'models' + '**/*.rb'].each do |f|
         klass = Texticle::FullTextIndex.find_constant_of(f)
         if klass.respond_to?(:full_text_indexes)
           (klass.full_text_indexes || []).each do |fti|
@@ -36,7 +36,7 @@ namespace :texticle do
 
   desc "Create full text indexes"
   task :create_indexes => ['texticle:destroy_indexes'] do
-    Dir[Rails.root + 'app' + 'models' + '*.rb'].each do |f|
+    Dir[Rails.root + 'app' + 'models' + '**/*.rb'].each do |f|
       klass = Texticle::FullTextIndex.find_constant_of(f)
       if klass.respond_to?(:full_text_indexes)
         (klass.full_text_indexes || []).each do |fti|
@@ -52,7 +52,7 @@ namespace :texticle do
 
   desc "Destroy full text indexes"
   task :destroy_indexes => [:environment] do
-    Dir[Rails.root + 'app' + 'models' + '*.rb'].each do |f|
+    Dir[Rails.root + 'app' + 'models' + '**/*.rb'].each do |f|
       klass = Texticle::FullTextIndex.find_constant_of(f)
       if klass.respond_to?(:full_text_indexes)
         (klass.full_text_indexes || []).each do |fti|
