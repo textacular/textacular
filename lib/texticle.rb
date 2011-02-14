@@ -84,11 +84,11 @@ module Texticle
       term = "'#{term.gsub("'", "''")}'" # " because emacs ruby-mode is totally confused by this line
 
       similarities = this_index.index_columns.values.flatten.inject([]) do |array, index|
-        array << "similarity(#{index}, #{term})"
+        array << "similarity(#{quoted_table_name}.#{index}, #{term})"
       end.join(" + ")
 
       conditions = this_index.index_columns.values.flatten.inject([]) do |array, index|
-        array << "(#{index} % #{term})"
+        array << "(#{quoted_table_name}.#{index} % #{term})"
       end.join(" OR ")
 
       {
