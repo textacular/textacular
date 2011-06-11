@@ -14,13 +14,13 @@ module Texticle
     lambda do |query|
       query = connection.quote(query)
       language = connection.quote('english')
-      text_columns = columns.select {|column| column.type == :string }.map(&:name)
+      string_columns = columns.select {|column| column.type == :string }.map {|column| connection.quote_column_name(column.name) }
 
-      similarities = text_columns.inject([]) do |array, column|
+      similarities = string_columns.inject([]) do |array, column|
         array << "ts_rank(to_tsvector(#{quoted_table_name}.#{column}), to_tsquery(#{query}))"
       end.join(" + ")
 
-      conditions = text_columns.inject([]) do |array, column|
+      conditions = string_columns.inject([]) do |array, column|
         array << "to_tsvector(#{language}, #{column}) @@ to_tsquery(#{query})"
       end.join(" OR ")
 
