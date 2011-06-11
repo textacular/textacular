@@ -2,31 +2,31 @@ require 'active_record'
 
 module Texticle
 
-  def self.extended(klass)
-    klass.instance_eval do
-      scope :search, __search__
+  def search(query = {})
+    language = connection.quote('english')
+
+    unless query.is_a?(Hash)
+      query = columns.select {|column| column.type == :string }.map(&:name).inject({}) do |terms, column|
+        terms.merge column => query.to_s
+      end
     end
-  end
 
-  private
+    similarities = query.inject([]) do |sql, pair|
+      column, text = pair
+      column = connection.quote_column_name(column)
+      text = connection.quote(text)
+      sql << "ts_rank(to_tsvector(#{quoted_table_name}.#{column}), to_tsquery(#{text}))"
+    end.join(" + ")
 
-  def __search__
-    lambda do |query|
-      query = connection.quote(query)
-      language = connection.quote('english')
-      string_columns = columns.select {|column| column.type == :string }.map {|column| connection.quote_column_name(column.name) }
+    conditions = query.inject([]) do |sql, pair|
+      column, text = pair
+      column = connection.quote_column_name(column)
+      text = connection.quote(text)
+      sql << "to_tsvector(#{language}, #{column}) @@ to_tsquery(#{text})"
+    end.join(" OR ")
 
-      similarities = string_columns.inject([]) do |array, column|
-        array << "ts_rank(to_tsvector(#{quoted_table_name}.#{column}), to_tsquery(#{query}))"
-      end.join(" + ")
-
-      conditions = string_columns.inject([]) do |array, column|
-        array << "to_tsvector(#{language}, #{column}) @@ to_tsquery(#{query})"
-      end.join(" OR ")
-
-      select("#{quoted_table_name}.*, #{similarities} as rank").
-        where(conditions).order('rank DESC')
-    end
+    select("#{quoted_table_name}.*, #{similarities} as rank").
+      where(conditions).order('rank DESC')
   end
 
 end
