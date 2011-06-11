@@ -12,10 +12,13 @@ class TexticleTest < Test::Unit::TestCase
       Game.extend(Texticle)
     end
 
+    teardown do
+      Game.delete_all
+    end
+
     should "define a #search method" do
       assert Game.methods.include?(:search)
     end
-
   end
 
 end
