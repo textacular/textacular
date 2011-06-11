@@ -11,22 +11,18 @@ module Texticle
       end
     end
 
-    similarities = query.inject([]) do |sql, pair|
-      column, text = pair
-      column = connection.quote_column_name(column)
-      text = connection.quote(text)
-      sql << "ts_rank(to_tsvector(#{quoted_table_name}.#{column}), to_tsquery(#{text}))"
-    end.join(" + ")
+    similarities = []
+    conditions = []
 
-    conditions = query.inject([]) do |sql, pair|
-      column, text = pair
+    query.each do |column, search_term|
       column = connection.quote_column_name(column)
-      text = connection.quote(text)
-      sql << "to_tsvector(#{language}, #{column}) @@ to_tsquery(#{text})"
-    end.join(" OR ")
+      search_term = connection.quote(search_term)
+      similarities << "ts_rank(to_tsvector(#{quoted_table_name}.#{column}), to_tsquery(#{search_term}))"
+      conditions << "to_tsvector(#{language}, #{column}) @@ to_tsquery(#{search_term})"
+    end
 
-    select("#{quoted_table_name}.*, #{similarities} as rank").
-      where(conditions).order('rank DESC')
+    select("#{quoted_table_name}.*, #{similarities.join(" + ")} as rank").
+      where(conditions.join(" OR ")).order('rank DESC')
   end
 
 end
