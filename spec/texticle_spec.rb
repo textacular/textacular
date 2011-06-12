@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'spec_helper'
 
 class Game < ActiveRecord::Base
@@ -21,7 +22,7 @@ class TexticleTest < Test::Unit::TestCase
       @megam = Game.create :system => nil,       :title => "Mega Man"
       @sfnes = Game.create :system => "SNES",    :title => "Street Fighter 2"
       @sfgen = Game.create :system => "Genesis", :title => "Street Fighter 2"
-      @rnger = Game.create :system => "Saturn",  :title => "Burning Rangers"
+      @takun = Game.create :system => "Saturn",  :title => "Magical Tarurūto-kun"
     end
 
     teardown do
@@ -41,13 +42,17 @@ class TexticleTest < Test::Unit::TestCase
         assert_equal 2,      Game.search("NES").count
       end
 
-      should "not fail if the query contains an apostrophe" do
+      should "work if the query contains an apostrophe" do
         assert_equal @dkong, Game.search("Diddy's").first
         assert_equal 1,      Game.search("Diddy's").count
       end
 
-      should "not fail if the query contains whitespace" do
+      should "work if the query contains whitespace" do
         assert_equal @megam, Game.search("Mega Man").first
+      end
+
+      should "work if the query contains an accent" do
+        assert_equal @takun, Game.search("Tarurūto-kun").first
       end
 
       should "search across records with NULL values" do
@@ -83,7 +88,7 @@ class TexticleTest < Test::Unit::TestCase
     context "(metaprogrammed methods)" do
       should "define dynamic methods for each :string column" do
         assert_equal @mario, Game.search_by_title("Mario").first
-        assert_equal @rnger, Game.search_by_system("Saturn").first
+        assert_equal @takun, Game.search_by_system("Saturn").first
       end
 
       should "patch work with #respond_to?" do
