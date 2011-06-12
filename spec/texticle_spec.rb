@@ -3,6 +3,10 @@ require 'spec_helper'
 class Game < ActiveRecord::Base
   # string :system
   # string :title
+
+  def to_s
+    "#{system}: #{title}"
+  end
 end
 
 class TexticleTest < Test::Unit::TestCase
@@ -13,7 +17,10 @@ class TexticleTest < Test::Unit::TestCase
       @zelda = Game.create :system => "NES",     :title => "Legend of Zelda"
       @mario = Game.create :system => "NES",     :title => "Super Mario Bros."
       @sonic = Game.create :system => "Genesis", :title => "Sonic the Hedgehog"
-      @fight = Game.create :system => "SNES",    :title => "Fighter's History"
+      @dkong = Game.create :system => "SNES",    :title => "Diddy's Kong Quest"
+      @megam = Game.create :system => nil,       :title => "Mega Man"
+      @sfnes = Game.create :system => "SNES",    :title => "Street Fighter 2"
+      @sfgen = Game.create :system => "Genesis", :title => "Street Fighter 2"
     end
 
     teardown do
@@ -34,8 +41,16 @@ class TexticleTest < Test::Unit::TestCase
       end
 
       should "not fail if the query contains an apostrophe" do
-        assert_equal @fight, Game.search("Fighter's").first
-        assert_equal 1,      Game.search("Fighter's").count
+        assert_equal @dkong, Game.search("Diddy's").first
+        assert_equal 1,      Game.search("Diddy's").count
+      end
+
+      should "not fail if the query contains whitespace" do
+        assert_equal @megam, Game.search("Mega Man").first
+      end
+
+      should "search across records with NULL values" do
+        assert_equal @megam, Game.search("Mega").first
       end
     end
 
@@ -43,11 +58,20 @@ class TexticleTest < Test::Unit::TestCase
       should "search across the given columns" do
         assert Game.search(:title => "NES").empty?
         assert Game.search(:system => "Mario").empty?
+        puts Game.search(:system => "NES", :title => "Sonic").to_a
+        assert Game.search(:system => "NES", :title => "Sonic").empty?
 
         assert_equal @mario, Game.search(:title => "Mario").first
         assert_equal 1,      Game.search(:title => "Mario").count
 
         assert_equal 2,      Game.search(:system => "NES").count
+
+        assert_equal @zelda, Game.search(:system => "NES", :title => "Zelda").first
+        assert_equal @megam, Game.search(:title => "Mega").first
+      end
+
+      should "scope consecutively" do
+        assert_equal @sfgen, Game.search(:system => "Genesis").search(:title => "Street Fighter").first
       end
     end
   end
