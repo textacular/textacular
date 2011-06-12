@@ -19,7 +19,7 @@ module Texticle
 
     query.each do |column, search_term|
       column = connection.quote_column_name(column)
-      search_term = connection.quote Helper.normalize(search_term)
+      search_term = connection.quote normalize(search_term)
       similarities << "ts_rank(to_tsvector(#{quoted_table_name}.#{column}), to_tsquery(#{search_term}))"
       conditions << "to_tsvector(#{language}, #{column}) @@ to_tsquery(#{search_term})"
     end
@@ -41,16 +41,8 @@ module Texticle
 
   private
 
-  module Helper
-
-    class << self
-
-      def normalize(query)
-        query.to_s.gsub(' ', '\\\\ ')
-      end
-
-    end
-
+  def normalize(query)
+    query.to_s.gsub(' ', '\\\\ ')
   end
 
 end
