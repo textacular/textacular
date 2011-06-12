@@ -31,6 +31,14 @@ module Texticle
       order("#{rank} DESC")
   end
 
+  def self.extended(klass)
+    klass.columns.select {|column| column.type == :string }.map(&:name).each do |column|
+      define_method "search_by_#{column}" do |query|
+        search(column => query)
+      end
+    end
+  end
+
   private
 
   module Helper

@@ -21,6 +21,7 @@ class TexticleTest < Test::Unit::TestCase
       @megam = Game.create :system => nil,       :title => "Mega Man"
       @sfnes = Game.create :system => "SNES",    :title => "Street Fighter 2"
       @sfgen = Game.create :system => "Genesis", :title => "Street Fighter 2"
+      @rnger = Game.create :system => "Saturn",  :title => "Burning Rangers"
     end
 
     teardown do
@@ -31,7 +32,7 @@ class TexticleTest < Test::Unit::TestCase
       assert Game.respond_to?(:search)
     end
 
-    context "when searching with a string argument" do
+    context "(String argument)" do
       should "search across all :string columns if no indexes have been specified" do
         assert_equal @mario, Game.search("Mario").first
         assert_equal 1,      Game.search("Mario").count
@@ -58,7 +59,7 @@ class TexticleTest < Test::Unit::TestCase
       end
     end
 
-    context "when searching with a hash argument" do
+    context "(Hash argument)" do
       should "search across the given columns" do
         assert Game.search(:title => "NES").empty?
         assert Game.search(:system => "Mario").empty?
@@ -76,6 +77,18 @@ class TexticleTest < Test::Unit::TestCase
 
       should "scope consecutively" do
         assert_equal @sfgen, Game.search(:system => "Genesis").search(:title => "Street Fighter").first
+      end
+    end
+
+    context "(metaprogrammed methods)" do
+      should "define dynamic methods for each :string column" do
+        assert_equal @mario, Game.search_by_title("Mario").first
+        assert_equal @rnger, Game.search_by_system("Saturn").first
+      end
+
+      should "patch work with #respond_to?" do
+        assert Game.respond_to?(:search_by_system)
+        assert Game.respond_to?(:search_by_title)
       end
     end
   end
