@@ -52,6 +52,10 @@ class TexticleTest < Test::Unit::TestCase
       should "search across records with NULL values" do
         assert_equal @megam, Game.search("Mega").first
       end
+
+      should "scope consecutively" do
+        assert_equal @sfgen, Game.search("Genesis").search("Street Fighter").first
+      end
     end
 
     context "when searching with a hash argument" do
