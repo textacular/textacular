@@ -97,6 +97,10 @@ class TexticleTest < Test::Unit::TestCase
         assert_equal @mario, Game.search_by_title_and_title("Mario", "Mario").first
       end
 
+      should "scope consecutively" do
+        assert_equal @sfgen, Game.search_by_system("Genesis").search_by_title("Street Fighter").first
+      end
+
       should "not generate methods for non-:string columns" do
         assert_raise(NoMethodError) { Game.search_by_id }
       end
