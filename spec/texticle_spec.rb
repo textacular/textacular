@@ -33,7 +33,7 @@ class TexticleTest < Test::Unit::TestCase
       assert Game.respond_to?(:search)
     end
 
-    context "(String argument)" do
+    context "when searching with a String argument" do
       should "search across all :string columns if no indexes have been specified" do
         assert_equal @mario, Game.search("Mario").first
         assert_equal 1,      Game.search("Mario").count
@@ -64,7 +64,7 @@ class TexticleTest < Test::Unit::TestCase
       end
     end
 
-    context "(Hash argument)" do
+    context "when searching with a Hash argument" do
       should "search across the given columns" do
         assert Game.search(:title => "NES").empty?
         assert Game.search(:system => "Mario").empty?
@@ -85,15 +85,29 @@ class TexticleTest < Test::Unit::TestCase
       end
     end
 
-    context "(metaprogrammed methods)" do
-      should "define dynamic methods for each :string column" do
+    context "when using dynamic search methods" do
+      should "generate methods for each :string column" do
         assert_equal @mario, Game.search_by_title("Mario").first
         assert_equal @takun, Game.search_by_system("Saturn").first
       end
 
-      should "patch work with #respond_to?" do
+      should "generate methods for any combination of :string columns" do
+        assert_equal @mario, Game.search_by_title_and_system("Mario", "NES").first
+        assert_equal @sonic, Game.search_by_system_and_title("Genesis", "Sonic").first
+        assert_equal @mario, Game.search_by_title_and_title("Mario", "Mario").first
+      end
+
+      should "not generate methods for non-:string columns" do
+        assert_raise(NoMethodError) { Game.search_by_id }
+      end
+
+      should "work with #respond_to?" do
         assert Game.respond_to?(:search_by_system)
         assert Game.respond_to?(:search_by_title)
+        assert Game.respond_to?(:search_by_system_and_title)
+        assert Game.respond_to?(:search_by_title_and_title_and_title)
+
+        assert !Game.respond_to?(:search_by_id)
       end
     end
   end
