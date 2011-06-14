@@ -1,12 +1,11 @@
 = texticle
 
-* http://texticle.rubyforge.org/
+* http://tenderlove.github.com/texticle
 
 == DESCRIPTION:
 
-Texticle exposes full text search capabilities from PostgreSQL, and allows
-you to declare full text indexes.  Texticle will extend ActiveRecord with
-named_scope methods making searching easy and fun!
+Texticle exposes full text search capabilities from PostgreSQL,
+extending ActiveRecord with scopes making search easy and fun!
 
 == FEATURES/PROBLEMS:
 
@@ -18,78 +17,29 @@ named_scope methods making searching easy and fun!
 
 In the project's Gemfile add
 
-    gem 'texticle', '1.0.4'
-
-=== Rails 2 Configuration
-
-In environment.rb:
-
-  config.gem 'texticle'
-
-In your Rakefile:
-
-  require 'rubygems'
-  require 'texticle/tasks'
+    gem 'texticle', '~> 2.0rc1'
 
 === Usage
 
-Declare your index in your model:
+Your models now have access to the search method:
 
-  class Product < ActiveRecord::Base
-    index do
-      name
-      description
-    end
-  end
-
-Use the search method
-
-  Product.search('hello world')
-
-Full text searches can be sped up by creating indexes. To create them, run:
-
-  $ rake texticle:create_indexes
-
-Alternatively, you can create a migration that will build your indexes:
-
-  $ rake texticle:migration
-
-== BETA: FUZZY SEARCH
-
-We're adding support for Postgres' optional trigram matching module, which allows for fuzzier text searches.
-
-Since it's an optional module, first step is to install it into the current database:
-	
-	$ rake texticle:install_trigram
-
-If you installed Postgres with its optional 'contrib' modules, you should be safe.
-
-Declare your indexes as you normally would:
-
-	class Book < ActiveRecord::Base
-		index { title }
-	end
-	
-Finally, say hello to #tsearch:
-
-	Book.create :title => "_why's Poignant Guide to Ruby"
-	Book.tsearch "_whys Poignnt Gd t Rb" # => [#<Book title: "_why's Poignant Guide to Ruby">]
-	
-Trigram searching is still in beta, so expect the API to change and/or improve.
+  Game.search('Sonic') # will search through the model's :string columns
+  Game.search(:title => 'Mario')
+  Game.search_by_title('Street Fighter').search_by_system('PS3')
 
 == REQUIREMENTS:
 
-* Texticle may be used outside rails, but works best with rails.
+* ActiveRecord
 
 == INSTALL:
 
-* sudo gem install texticle
+* gem install texticle
 
 == LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2009 Aaron Patterson
+Copyright (c) 2011 Aaron Patterson
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
