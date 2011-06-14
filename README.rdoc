@@ -19,7 +19,7 @@ extending ActiveRecord with scopes making search easy and fun!
 
 In the project's Gemfile add
 
-    gem 'texticle', '~> 2.0rc1', :require => 'texticle/rails'
+    gem 'texticle', '~> 2.0.pre', :require => 'texticle/rails'
 
 * ActiveRecord outside of Rails 3
 
@@ -40,7 +40,7 @@ Your models now have access to the search method:
 
 == INSTALL:
 
-* gem install texticle
+* gem install texticle --pre
 
 == LICENSE:
 
