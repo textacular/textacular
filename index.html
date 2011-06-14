@@ -173,10 +173,12 @@
 				<li>works with Postgres out of the box</li>
 				<li>only adds a gem dependency to your code</li>
 				<li>works on Heroku</li>
+        <li><b>simple</b></li>
 				<br>
 				<h3>Cons</h3>
 				<li><i><u>only</u></i> works with Postgres</li>
 				<li>likely less performant than you'd like for large datasets</li>
+        <li>less configurable than <a href="http://github.com/Casecommons/pg_search">pg_search</a></li>
 			</ul>
 		</div>
 	</div>
@@ -188,7 +190,7 @@
 		<span class='comment'>add text search to your models in 5 minutes flat</span>
 		<div>
 			<ul>
-				<li>★ gem install <b>texticle</b></li>
+				<li>★ gem install <b>texticle</b> --pre</li>
 			</ul>
 		</div>
 		<div>
@@ -196,7 +198,7 @@
 			<div>
 				<ul>
 					<li><span class='comment'>Inside your Gemfile</span></li>
-					<li>gem <b>'texticle'</b></li>
+          <li>gem <b>'texticle'</b>, "2.0.pre", :require => 'texticle/rails'</li>
 				</ul>
 				<br>
 				<ul>
@@ -205,19 +207,13 @@
 					<li>bundle | grep texticle <span class='comment'> # => Using texticle (…)</span></li>
 				</ul>
 			</div>
-		</div>
-		<div>
-			<h3>For <u>Rails 2</u> Apps</h3>
+      <br>
+			<h3>Outside of a Rails app</h3>
 			<div style='padding-bottom: 40px;'>
 				<ul>
-					<li><span class='comment'>Inside config/environment.rb</span></li>
-					<li>config.gem <b>'texticle'</b></li>
-				</ul>
-				<br>
-				<ul>
-					<li><span class='comment'>Inside your Rakefile</span></li>
-					<li>require <b>'rubygems'</b></li>
-					<li>require <b>'texticle/tasks'</b></li>
+          <li>require <b>'activerecord'</b></li>
+					<li>require <b>'texticle'</b></li>
+          <li>ActiveRecord::Base.extend(Texticle)</li>
 				</ul>
 			</div>
 		</div>
@@ -226,18 +222,19 @@
 		</h2><span class='comment'>forget about LIKE %</span>
 		<div>
 			<ul>
-				<li><pre><span style='color: chartreuse'>class</span> <b>Product</b> < <b>ActiveRecord</b>::<b>Base</b></pre></li>
-				<li><pre>    <span style='color: yellow'>index</span> do</pre></li>
-				<li><pre>        <span style='color: skyblue'>name</span></pre></li>
-				<li><pre>        <span style='color: skyblue'>description</span></pre></li>
-				<li><pre>    <span style='color: yellow'>end</span></pre></li>
-				<li><pre><span style='color: chartreuse'>end</span></pre></li>
-			</ul>
-		</div>
-		<div>
-			<ul>
-				<li>Product.create :name => 'Messenger Bag', :description => 'A bag for messengers.'</li>
-				<li>Product.search 'messenger' <span class='comment'># => [ #&lt;Product id: 1, name: "Messenger Bag" ...&gt; ]</span></li>
+				<li>Game.create :title => 'Street Fighter 4', :system => 'PS3'</li>
+        <br>
+        <li><span class='comment'>Search across all :string fields</span></li>
+				<li>Game.search 'street' <span class='comment'># => [ #&lt;Game id: 1, title: "Street Fighter 4" ...&gt; ]</span></li>
+        <br>
+        <li><span class='comment'>Can also use a hash to specify a field</span></li>
+        <li>Game.search(:system => "PS3")</li>
+        <br>
+        <li><span class='comment'>... or a dynamic search method.</span></li>
+        <li>Game.search_by_title("fighter")</li>
+        <br>
+        <li><span class='comment'>Can even chain searches!</span></li>
+        <li>Game.search(:title => "fighter").search(:system => "PS3")</li>
 			</ul>
 		</div>
 	</div>
@@ -261,22 +258,6 @@
 		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 		</div>
 		-->
-		<h1>Fuzzy Search <sup>beta</sup></h1>
-		<span class='comment'>stop worrying about typos</span>
-		<div>
-			<p>Fuzzier searches can be obtained by using Postgres' optional trigram matching module. Since it’s an optional module, the first step is to install it into the current database:</p>
-			<p><code>$ rake texticle:install_trigram</code></p>
-			<p>If you installed Postgres with its optional ‘contrib’ modules<a href="#footnote_2"><sup>2</sup></a>, you should be safe.</p>
-			<p>Declare your indexes as you normally would:</p>
-			<p><code>class Book < ActiveRecord::Base; index { title } end</code></p>
-			<p>Finally, say hello to <code>#tsearch</code>:</p>
-			<p>
-				<code>irb > Book.create :title => "_why's Poignant Guide to Ruby"</code>
-				<br />
-				<code>irb > Book.tsearch "_whys Poignnt Gd t Rb" # => [ #&lt;Book title: "_why's Poignant Guide to Ruby"&gt; ]</code>
-			</p>
-			<p>Trigram searching is still in beta, so expect the API to change and/or improve.</p>
-		</div>
 		<h1>
 			Credits
 		</h1><span class='comment'>this gem brought to you by the following committers</span>
