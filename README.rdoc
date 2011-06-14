@@ -13,11 +13,18 @@ extending ActiveRecord with scopes making search easy and fun!
 
 == SYNOPSIS:
 
-=== Rails 3 Configuration
+=== Configuration
+
+* Rails 3
 
 In the project's Gemfile add
 
-    gem 'texticle', '~> 2.0rc1'
+    gem 'texticle', '~> 2.0rc1', :require => 'texticle/rails'
+
+* ActiveRecord outside of Rails 3
+
+    require 'texticle'
+    ActiveRecord::Base.extend(Texticle)
 
 === Usage
 
