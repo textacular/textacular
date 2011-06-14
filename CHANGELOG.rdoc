@@ -1,3 +1,21 @@
+=== 2.0rc1
+
+* Complete refactoring of Texticle
+
+  * For users:
+
+    * Texticle should only be used for its simplicity; if you need to deeply configure your text search, please give `gem install pg_search` a try.
+    * #search method is now included in all ActiveRecord models by default, and searches across a model's :string columns.
+    * #search_by_<column> dynamic methods are now available.
+    * #search can now be chained; Game.search_by_title("Street Fighter").search_by_system("PS3") works.
+    * #search now accepts a hash to specify columns to be searched, e.g. Game.search(:name => "Mario")
+    * No more access to #rank values for results (though they're still ordered by rank).
+    * No way to give different weights to different columns in this release.
+
+  * For devs:
+
+    * We now have actual tests to run against; this will make accepting pull requests much more enjoyable.
+
 === HEAD (unreleased)
 
 * 1 minor bugfix
