@@ -5,7 +5,7 @@ require 'pg'
 require 'active_record'
 require 'benchmark'
 
-require './spec/spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/spec/spec_helper')
 
 namespace :db do
   desc 'Run migrations for test database'
