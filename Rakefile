@@ -1,15 +1,20 @@
-# -*- ruby -*-
-
 require 'rubygems'
-require 'hoe'
 
-Hoe.plugin :gemspec
+require 'rake'
+require 'pg'
+require 'active_record'
+require 'benchmark'
 
-Hoe.spec 'texticle' do
-  developer('Aaron Patterson', 'aaronp@rubyforge.org')
-  self.readme_file   = 'README.rdoc'
-  self.history_file  = 'CHANGELOG.rdoc'
-  self.extra_rdoc_files  = FileList['*.rdoc']
+require './spec/spec_helper'
+
+namespace :db do
+  desc 'Run migrations for test database'
+  task :migrate do
+    ActiveRecord::Migration.instance_eval do
+      create_table :games do |table|
+        table.string :system
+        table.string :title
+      end
+    end
+  end
 end
-
-# vim: syntax=Ruby

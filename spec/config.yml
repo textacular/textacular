@@ -1,0 +1,4 @@
+database: texticle
+username: ncrespo
+pool: 5
+timeout: 5000
