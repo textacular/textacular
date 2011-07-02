@@ -113,6 +113,10 @@ class TexticleTest < Test::Unit::TestCase
 
         assert !Game.respond_to?(:search_by_id)
       end
+
+      should "allow for 2 arguments to #respond_to?" do
+        assert Game.respond_to?(:normalize, true)
+      end
     end
   end
 
