@@ -2,7 +2,7 @@ require 'active_record'
 
 module Texticle
 
-  def search(query = {})
+  def search(query = "")
     language = connection.quote('english')
 
     exclusive = true
