@@ -1,3 +1,13 @@
+== 2.0.pre3
+
+* 1 new feature
+
+  * #select calls now limit the columns that are searched
+
+* 1 bugfix
+
+  * #search calls without an argument assume an empty string as a search term (it errored out previously)
+
 == 2.0.pre2
 
 * 1 bugfix
