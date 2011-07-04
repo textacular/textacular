@@ -6,11 +6,10 @@ module Texticle
     language = connection.quote('english')
 
     exclusive = true
-    string_columns = columns.select {|column| column.type == :string }.map(&:name)
 
     unless query.is_a?(Hash)
       exclusive = false
-      query = string_columns.inject({}) do |terms, column|
+      query = searchable_columns.inject({}) do |terms, column|
         terms.merge column => query.to_s
       end
     end
@@ -56,6 +55,10 @@ module Texticle
 
   def normalize(query)
     query
+  end
+
+  def searchable_columns
+    columns.select {|column| column.type == :string }.map(&:name)
   end
 
   module Helper

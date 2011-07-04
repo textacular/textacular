@@ -15,11 +15,17 @@ namespace :db do
         table.string :system
         table.string :title
       end
-   end
+      create_table :web_comics do |table|
+        table.string :name
+        table.string :author
+      end
+    end
   end
+  desc 'Drop tables from test database'
   task :drop do
     ActiveRecord::Migration.instance_eval do
       drop_table :games
+      drop_table :web_comics
     end
   end
 end
