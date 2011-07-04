@@ -48,7 +48,7 @@ module Texticle
   end
 
   def respond_to?(method, include_private = false)
-    Helper.dynamic_search_method?(method, self.columns) ? true : super
+    self == ActiveRecord::Base || !Helper.dynamic_search_method?(method, self.columns) ? super : true
   end
 
   private

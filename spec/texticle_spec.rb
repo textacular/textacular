@@ -12,6 +12,18 @@ end
 
 class TexticleTest < Test::Unit::TestCase
 
+  context "after extending ActiveRecord::Base" do
+    setup do
+      ActiveRecord::Base.extend(Texticle)
+    end
+
+    should "not break #respond_to?" do
+      assert_nothing_raised do
+        ActiveRecord::Base.respond_to? :abstract_class?
+      end
+    end
+  end
+
   context "after extending an ActiveRecord::Base subclass" do
     setup do
       Game.extend(Texticle)
