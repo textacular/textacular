@@ -15,6 +15,11 @@ namespace :db do
         table.string :system
         table.string :title
       end
+   end
+  end
+  task :drop do
+    ActiveRecord::Migration.instance_eval do
+      drop_table :games
     end
   end
 end
