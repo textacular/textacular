@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
     ActiveRecord with scopes making search easy and fun!}
   s.email = ["ecin@copypastel.com"]
   s.extra_rdoc_files = ["Manifest.txt", "CHANGELOG.rdoc", "README.rdoc"]
-  s.files = ["CHANGELOG.rdoc", "Manifest.txt", "README.rdoc", "Rakefile", "lib/texticle.rb", "lib/texticle/railtie.rb", "spec/spec_helper.rb", "spec/texticle_spec.rb", "spec/config.yml"]
+  s.files = ["CHANGELOG.rdoc", "Manifest.txt", "README.rdoc", "Rakefile", "lib/texticle.rb", "lib/texticle/rails.rb", "spec/spec_helper.rb", "spec/texticle_spec.rb", "spec/config.yml"]
   s.homepage = %q{http://tenderlove.github.com/texticle}
   s.rdoc_options = ["--main", "README.rdoc"]
   s.require_paths = ["lib"]
