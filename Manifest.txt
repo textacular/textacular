@@ -4,10 +4,9 @@ Manifest.txt
 README.rdoc
 Rakefile
 lib/texticle.rb
-lib/texticle/full_text_index.rb
-lib/texticle/railtie.rb
-lib/texticle/tasks.rb
-rails/init.rb
-test/helper.rb
-test/test_full_text_index.rb
-test/test_texticle.rb
+lib/texticle/rails.rb
+lib/texticle/searchable.rb
+spec/config.yml
+spec/spec_helper.rb
+spec/texticle_spec.rb
+spec/texticle/searchable_spec.rb

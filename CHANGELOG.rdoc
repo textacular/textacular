@@ -1,3 +1,23 @@
+== 2.0.pre4
+
+* 1 new feature
+
+  * Searchable is now available to specify which columns you want searched:
+
+      require 'texticle/searchable'
+      class Game
+        include Searchable(:title)
+      end
+
+    This also allows Texticle use in Rails without having #search available to all models:
+
+      gem 'texticle', '~> 2.0.pre4', :require => 'texticle/searchable'
+
+* 1 bugfix
+
+  * ActiveRecord::Base.extend(Texticle) doesn't break #method_missing and #respond_to? anymore
+
+
 == 2.0.pre3
 
 * 1 new feature

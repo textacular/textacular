@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{texticle}
-  s.version = "2.0.pre3"
+  s.version = "2.0.pre4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ecin", "Aaron Patterson"]
@@ -11,7 +11,8 @@ Gem::Specification.new do |s|
     ActiveRecord with scopes making search easy and fun!}
   s.email = ["ecin@copypastel.com"]
   s.extra_rdoc_files = ["Manifest.txt", "CHANGELOG.rdoc", "README.rdoc"]
-  s.files = ["CHANGELOG.rdoc", "Manifest.txt", "README.rdoc", "Rakefile", "lib/texticle.rb", "lib/texticle/rails.rb", "spec/spec_helper.rb", "spec/texticle_spec.rb", "spec/config.yml"]
+  s.files = ["CHANGELOG.rdoc", "Manifest.txt", "README.rdoc", "Rakefile", "lib/texticle.rb", "lib/texticle/searchable.rb",
+    "lib/texticle/rails.rb", "spec/spec_helper.rb", "spec/texticle_spec.rb", "spec/texticle/searchable_spec.rb", "spec/config.yml"]
   s.homepage = %q{http://tenderlove.github.com/texticle}
   s.rdoc_options = ["--main", "README.rdoc"]
   s.require_paths = ["lib"]

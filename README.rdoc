@@ -1,5 +1,7 @@
 = texticle
 
+Further documentation available at:
+
 * http://tenderlove.github.com/texticle
 
 == DESCRIPTION:
@@ -33,6 +35,7 @@ Your models now have access to the search method:
   Game.search('Sonic') # will search through the model's :string columns
   Game.search(:title => 'Mario')
   Game.search_by_title('Street Fighter').search_by_system('PS3')
+  Game.search_by_title_and_system('Final Fantasy', 'PS2')
 
 == REQUIREMENTS:
 
