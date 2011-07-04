@@ -35,70 +35,64 @@ class TexticleTest < Test::Unit::TestCase
 
     context "when searching with a String argument" do
       should "search across all :string columns if no indexes have been specified" do
-        assert_equal @mario, Game.search("Mario").first
-        assert_equal 1,      Game.search("Mario").count
-
-        assert (Game.search("NES") && [@mario, @zelda]) == [@mario, @zelda]
-        assert_equal 2,      Game.search("NES").count
+        assert_equal [@mario], Game.search("Mario")
+        assert_equal Set.new([@mario, @zelda]), Game.search("NES").to_set
       end
 
       should "work if the query contains an apostrophe" do
-        assert_equal @dkong, Game.search("Diddy's").first
-        assert_equal 1,      Game.search("Diddy's").count
+        assert_equal [@dkong], Game.search("Diddy's")
       end
 
       should "work if the query contains whitespace" do
-        assert_equal @megam, Game.search("Mega Man").first
+        assert_equal [@megam], Game.search("Mega Man")
       end
 
       should "work if the query contains an accent" do
-        assert_equal @takun, Game.search("Tarurūto-kun").first
+        assert_equal [@takun], Game.search("Tarurūto-kun")
       end
 
       should "search across records with NULL values" do
-        assert_equal @megam, Game.search("Mega").first
+        assert_equal [@megam], Game.search("Mega")
       end
 
       should "scope consecutively" do
-        assert_equal @sfgen, Game.search("Genesis").search("Street Fighter").first
+        assert_equal [@sfgen], Game.search("Genesis").search("Street Fighter")
       end
     end
 
     context "when searching with a Hash argument" do
       should "search across the given columns" do
-        assert Game.search(:title => "NES").empty?
-        assert Game.search(:system => "Mario").empty?
-        puts Game.search(:system => "NES", :title => "Sonic").to_a
-        assert Game.search(:system => "NES", :title => "Sonic").empty?
+        assert_empty Game.search(:title => "NES")
+        assert_empty Game.search(:system => "Mario")
+        assert_empty Game.search(:system => "NES", :title => "Sonic")
 
-        assert_equal @mario, Game.search(:title => "Mario").first
-        assert_equal 1,      Game.search(:title => "Mario").count
+        assert_equal [@mario], Game.search(:title => "Mario")
 
-        assert_equal 2,      Game.search(:system => "NES").count
+        assert_equal 2, Game.search(:system => "NES").count
 
-        assert_equal @zelda, Game.search(:system => "NES", :title => "Zelda").first
-        assert_equal @megam, Game.search(:title => "Mega").first
+        assert_equal [@zelda], Game.search(:system => "NES", :title => "Zelda")
+        assert_equal [@megam], Game.search(:title => "Mega")
       end
 
       should "scope consecutively" do
-        assert_equal @sfgen, Game.search(:system => "Genesis").search(:title => "Street Fighter").first
+        assert_equal [@sfgen], Game.search(:system => "Genesis").search(:title => "Street Fighter")
       end
     end
 
     context "when using dynamic search methods" do
       should "generate methods for each :string column" do
-        assert_equal @mario, Game.search_by_title("Mario").first
-        assert_equal @takun, Game.search_by_system("Saturn").first
+        assert_equal [@mario], Game.search_by_title("Mario")
+        assert_equal [@takun], Game.search_by_system("Saturn")
       end
 
       should "generate methods for any combination of :string columns" do
-        assert_equal @mario, Game.search_by_title_and_system("Mario", "NES").first
-        assert_equal @sonic, Game.search_by_system_and_title("Genesis", "Sonic").first
-        assert_equal @mario, Game.search_by_title_and_title("Mario", "Mario").first
+        assert_equal [@mario], Game.search_by_title_and_system("Mario", "NES")
+        assert_equal [@sonic], Game.search_by_system_and_title("Genesis", "Sonic")
+        assert_equal [@mario], Game.search_by_title_and_title("Mario", "Mario")
       end
 
       should "scope consecutively" do
-        assert_equal @sfgen, Game.search_by_system("Genesis").search_by_title("Street Fighter").first
+        assert_equal [@sfgen], Game.search_by_system("Genesis").search_by_title("Street Fighter")
       end
 
       should "not generate methods for non-:string columns" do
