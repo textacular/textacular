@@ -1,4 +1,5 @@
 require 'active_record'
+require 'texticle/railtie' if defined?(Rails)
 
 module Texticle
 
