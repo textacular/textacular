@@ -6,16 +6,22 @@ module Texticle
     language = connection.quote('english')
 
     exclusive = true
+    string_columns = columns.select {|column| column.type == :string }.map(&:name)
 
     unless query.is_a?(Hash)
       exclusive = false
-      query = columns.select {|column| column.type == :string }.map(&:name).inject({}) do |terms, column|
+      query = string_columns.inject({}) do |terms, column|
         terms.merge column => query.to_s
       end
     end
 
     similarities = []
     conditions = []
+
+    select_values = scoped.select_values.map(&:to_s) & string_columns
+    query.select! do |column, search_term|
+      select_values.include? column
+    end unless select_values.empty?
 
     query.each do |column, search_term|
       column = connection.quote_column_name(column)
@@ -26,7 +32,7 @@ module Texticle
 
     rank = connection.quote_column_name('rank' + rand.to_s)
 
-    select("#{quoted_table_name}.*, #{similarities.join(" + ")} AS #{rank}").
+    select("#{quoted_table_name + '.*,' if select_values.empty?} #{similarities.join(" + ")} AS #{rank}").
       where(conditions.join(exclusive ? " AND " : " OR ")).
       order("#{rank} DESC")
   end
