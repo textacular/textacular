@@ -32,6 +32,7 @@ module Texticle
   end
 
   def method_missing(method, *search_terms)
+    return super if self == ActiveRecord::Base
     if Helper.dynamic_search_method?(method, self.columns)
       columns = Helper.dynamic_search_columns(method)
       metaclass = class << self; self; end
@@ -48,7 +49,8 @@ module Texticle
   end
 
   def respond_to?(method, include_private = false)
-    self == ActiveRecord::Base || !Helper.dynamic_search_method?(method, self.columns) ? super : true
+    return super if self == ActiveRecord::Base
+    Helper.dynamic_search_method?(method, self.columns) ? true : super
   end
 
   private

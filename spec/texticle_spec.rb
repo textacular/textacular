@@ -22,6 +22,14 @@ class TexticleTest < Test::Unit::TestCase
         ActiveRecord::Base.respond_to? :abstract_class?
       end
     end
+
+    should "not break #method_missing" do
+      begin
+        ActiveRecord::Base.random
+      rescue NoMethodError => error
+        assert_match error.message, /undefined method `random'/
+      end
+    end
   end
 
   context "after extending an ActiveRecord::Base subclass" do
