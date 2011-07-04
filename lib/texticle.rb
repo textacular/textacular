@@ -18,11 +18,6 @@ module Texticle
     similarities = []
     conditions = []
 
-    select_values = scoped.select_values.map(&:to_s) & string_columns
-    query.select! do |column, search_term|
-      select_values.include? column
-    end unless select_values.empty?
-
     query.each do |column, search_term|
       column = connection.quote_column_name(column)
       search_term = connection.quote normalize(Helper.normalize(search_term))
@@ -32,7 +27,7 @@ module Texticle
 
     rank = connection.quote_column_name('rank' + rand.to_s)
 
-    select("#{quoted_table_name + '.*,' if select_values.empty?} #{similarities.join(" + ")} AS #{rank}").
+    select("#{quoted_table_name + '.*,' if scoped.select_values.empty?} #{similarities.join(" + ")} AS #{rank}").
       where(conditions.join(exclusive ? " AND " : " OR ")).
       order("#{rank} DESC")
   end

@@ -120,11 +120,6 @@ class TexticleTest < Test::Unit::TestCase
     end
 
     context "when searching after selecting columns to return" do
-      should "limit the search to the selected columns" do
-        assert_empty Game.select(:system).search("Mario")
-        assert_equal @mario.title, Game.select(:title).search("Mario").first.title
-      end
-
       should "not fetch extra columns" do
         assert_raise(ActiveModel::MissingAttributeError) do
           Game.select(:title).search("Mario").first.system
