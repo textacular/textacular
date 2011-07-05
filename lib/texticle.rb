@@ -70,7 +70,7 @@ module Texticle
       end
 
       def dynamic_search_columns(method)
-        if match = method.to_s.match(/search_by_(?<columns>[_a-zA-Z]\w*)/)
+        if match = method.to_s.match(/^search_by_(?<columns>[_a-zA-Z]\w*)$/)
           match[:columns].split('_and_')
         else
           []
