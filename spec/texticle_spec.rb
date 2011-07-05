@@ -111,6 +111,10 @@ class TexticleTest < Test::Unit::TestCase
         assert_equal [@mario], Game.search_by_title_and_title("Mario", "Mario")
       end
 
+      should "generate methods for inclusive searches" do
+        assert_equal Set.new([@megam, @takun]), Game.search_by_system_or_title("Saturn", "Mega Man").to_set
+      end
+
       should "scope consecutively" do
         assert_equal [@sfgen], Game.search_by_system("Genesis").search_by_title("Street Fighter")
       end

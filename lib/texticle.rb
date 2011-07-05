@@ -2,10 +2,8 @@ require 'active_record'
 
 module Texticle
 
-  def search(query = "")
+  def search(query = "", exclusive = true)
     language = connection.quote('english')
-
-    exclusive = true
 
     unless query.is_a?(Hash)
       exclusive = false
@@ -34,15 +32,16 @@ module Texticle
   def method_missing(method, *search_terms)
     return super if self == ActiveRecord::Base
     if Helper.dynamic_search_method?(method, self.columns)
-      columns = Helper.dynamic_search_columns(method)
+      exclusive = Helper.exclusive_dynamic_search_method?(method, self.columns)
+      columns = exclusive ? Helper.exclusive_dynamic_search_columns(method) : Helper.inclusive_dynamic_search_columns(method)
       metaclass = class << self; self; end
       metaclass.__send__(:define_method, method) do |*args|
         query = columns.inject({}) do |query, column|
           query.merge column => args.shift
         end
-        search(query)
+        search(query, exclusive)
       end
-      __send__(method, *search_terms)
+      __send__(method, *search_terms, exclusive)
     else
       super
     end
@@ -69,7 +68,7 @@ module Texticle
         query.to_s.gsub(' ', '\\\\ ')
       end
 
-      def dynamic_search_columns(method)
+      def exclusive_dynamic_search_columns(method)
         if match = method.to_s.match(/^search_by_(?<columns>[_a-zA-Z]\w*)$/)
           match[:columns].split('_and_')
         else
@@ -77,14 +76,37 @@ module Texticle
         end
       end
 
-      def dynamic_search_method?(method, class_columns)
+      def inclusive_dynamic_search_columns(method)
+        if match = method.to_s.match(/^search_by_(?<columns>[_a-zA-Z]\w*)$/)
+          match[:columns].split('_or_')
+        else
+          []
+        end
+      end
+
+      def exclusive_dynamic_search_method?(method, class_columns)
         string_columns = class_columns.select {|column| column.type == :string }.map(&:name)
-        columns = dynamic_search_columns(method)
+        columns = exclusive_dynamic_search_columns(method)
         unless columns.empty?
           columns.all? {|column| string_columns.include?(column) }
         else
           false
         end
+      end
+
+      def inclusive_dynamic_search_method?(method, class_columns)
+        string_columns = class_columns.select {|column| column.type == :string }.map(&:name)
+        columns = inclusive_dynamic_search_columns(method)
+        unless columns.empty?
+          columns.all? {|column| string_columns.include?(column) }
+        else
+          false
+        end
+      end
+
+      def dynamic_search_method?(method, class_columns)
+        exclusive_dynamic_search_method?(method, class_columns) or
+          inclusive_dynamic_search_method?(method, class_columns)
       end
     end
   end
