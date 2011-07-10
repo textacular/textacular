@@ -127,9 +127,11 @@ class TexticleTest < Test::Unit::TestCase
         assert Game.respond_to?(:search_by_system)
         assert Game.respond_to?(:search_by_title)
         assert Game.respond_to?(:search_by_system_and_title)
+        assert Game.respond_to?(:search_by_system_or_title)
         assert Game.respond_to?(:search_by_title_and_title_and_title)
 
         assert !Game.respond_to?(:search_by_id)
+        assert !Game.respond_to?(:search_by_title_and_title_or_title)
       end
 
       should "allow for 2 arguments to #respond_to?" do
