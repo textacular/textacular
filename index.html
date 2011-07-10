@@ -190,7 +190,7 @@
 		<span class='comment'>add text search to your models in 5 minutes flat</span>
 		<div>
 			<ul>
-				<li>★ gem install <b>texticle</b> --pre</li>
+				<li>★ gem install <b>texticle</b>
 			</ul>
 		</div>
 		<div>
@@ -198,7 +198,7 @@
 			<div>
 				<ul>
 					<li><span class='comment'>Inside your Gemfile</span></li>
-          <li>gem <b>'texticle'</b>, "2.0.pre", :require => 'texticle/rails'</li>
+          <li>gem <b>'texticle'</b>, "2.0", :require => 'texticle/rails'</li>
 				</ul>
 				<br>
 				<ul>
@@ -252,6 +252,17 @@
 			<script src="http://gist.github.com/651479.js?file=search.rb"></script>
 			<p>Running <code>Search.new('awesome')</code> will return all authors <b>AND</b> books that have 'awesome' in their name or title.</p>
 		</div>
+    <h2 class="subsection">Limit Searched Columns with Searchable</h2>
+    <div>
+      <p>If you don't wish to search across all your text columns, you an include Searchable with a list of columns to whitelist in searches:</p>
+      <script src="https://gist.github.com/1074349.js?file=searchable_example.rb"></script>
+      <p>As you can see, _why can't be found.</p>
+    </div>
+    <h2 class="subsection">Scope Searches</h2>
+    <div>
+      <p>It's also possible to limit which columns are searched through judicious use of scopes:</p>
+      <script src="https://gist.github.com/1074354.js?file=search_scope.rb"></script>
+    </div>
 		<!-- >
 		<h2 class='subsection'>Searching Relations</h2>
 		<div>
