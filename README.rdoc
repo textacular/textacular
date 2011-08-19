@@ -41,6 +41,7 @@ Your models now have access to the search method:
 == REQUIREMENTS:
 
 * ActiveRecord
+* Ruby 1.9.2
 
 == INSTALL:
 
