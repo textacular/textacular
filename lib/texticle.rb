@@ -19,7 +19,7 @@ module Texticle
       column = connection.quote_column_name(column)
       search_term = connection.quote normalize(Helper.normalize(search_term))
       similarities << "ts_rank(to_tsvector(#{quoted_table_name}.#{column}), to_tsquery(#{search_term}))"
-      conditions << "to_tsvector(#{language}, #{column}) @@ to_tsquery(#{search_term})"
+      conditions << "to_tsvector(#{language}, #{column}) @@ to_tsquery(#{language}, #{search_term})"
     end
 
     rank = connection.quote_column_name('rank' + rand.to_s)
