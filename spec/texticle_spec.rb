@@ -148,4 +148,25 @@ class TexticleTest < Test::Unit::TestCase
     end
   end
 
+  context "when setting a custom search language" do
+    setup do
+      def Game.searchable_language
+        'spanish'
+      end
+      Game.create :system => "PS3", :title => "Harry Potter & the Deathly Hallows"
+    end
+
+    teardown do
+      def Game.searchable_language
+        'english'
+      end
+      Game.delete_all
+    end
+
+    should "still find results" do
+      assert_not_empty Game.search_by_title("harry")
+      p
+    end
+  end
+
 end

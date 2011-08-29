@@ -3,7 +3,7 @@ require 'active_record'
 module Texticle
 
   def search(query = "", exclusive = true)
-    language = connection.quote('english')
+    language = connection.quote(searchable_language)
 
     unless query.is_a?(Hash)
       exclusive = false
@@ -18,7 +18,7 @@ module Texticle
     query.each do |column, search_term|
       column = connection.quote_column_name(column)
       search_term = connection.quote normalize(Helper.normalize(search_term))
-      similarities << "ts_rank(to_tsvector(#{quoted_table_name}.#{column}), to_tsquery(#{search_term}))"
+      similarities << "ts_rank(to_tsvector(#{language}, #{quoted_table_name}.#{column}), to_tsquery(#{language}, #{search_term}))"
       conditions << "to_tsvector(#{language}, #{column}) @@ to_tsquery(#{language}, #{search_term})"
     end
 
@@ -60,6 +60,10 @@ module Texticle
 
   def searchable_columns
     columns.select {|column| column.type == :string }.map(&:name)
+  end
+
+  def searchable_language
+    'english'
   end
 
   module Helper
