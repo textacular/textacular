@@ -36,7 +36,9 @@ class TexticleTest < Test::Unit::TestCase
     end
 
     should "work even if the table does not exist" do
-      NotThere.respond_to? :system
+      assert_nothing_raised do
+        NotThere.respond_to? :system
+      end
     end
 
   end
