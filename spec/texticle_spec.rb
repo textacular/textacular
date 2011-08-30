@@ -10,6 +10,10 @@ class Game < ActiveRecord::Base
   end
 end
 
+class NotThere < ActiveRecord::Base
+
+end
+
 class TexticleTest < Test::Unit::TestCase
 
   context "after extending ActiveRecord::Base" do
@@ -30,6 +34,11 @@ class TexticleTest < Test::Unit::TestCase
         assert_match error.message, /undefined method `random'/
       end
     end
+
+    should "work even if the table does not exist" do
+      NotThere.respond_to? :system
+    end
+
   end
 
   context "after extending an ActiveRecord::Base subclass" do

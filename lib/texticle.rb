@@ -48,7 +48,7 @@ module Texticle
   end
 
   def respond_to?(method, include_private = false)
-    return super if self == ActiveRecord::Base
+    return super if self == ActiveRecord::Base || !self.table_exists?
     Helper.dynamic_search_method?(method, self.columns) ? true : super
   end
 
