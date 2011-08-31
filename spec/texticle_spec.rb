@@ -27,6 +27,13 @@ class TexticleTest < Test::Unit::TestCase
       end
     end
 
+    should "not break #respond_to? for table-less classes" do
+      assert !NotThere.table_exists?
+      assert_nothing_raised do
+        NotThere.respond_to? :system
+      end
+    end
+
     should "not break #method_missing" do
       begin
         ActiveRecord::Base.random
@@ -34,13 +41,6 @@ class TexticleTest < Test::Unit::TestCase
         assert_match error.message, /undefined method `random'/
       end
     end
-
-    should "work even if the table does not exist" do
-      assert_nothing_raised do
-        NotThere.respond_to? :system
-      end
-    end
-
   end
 
   context "after extending an ActiveRecord::Base subclass" do
