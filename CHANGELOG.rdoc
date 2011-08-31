@@ -1,3 +1,22 @@
+== 2.0.2
+
+* 1 bugfix
+
+  * Our #respond_to? overwritten method was causing failures when a model didn't have
+    a table (e.g. if migrations hadn't been run yet). Not the case anymore.
+
+== 2.0.1
+
+* 1 new feature
+
+  * Can now define #searchable_language to specify the language used for the query. This changes
+    what's considered a stop word on Postgres' side. 'english' is the default language.
+
+* 1 bugfix
+
+  * We were only specifying a language in to_tsvector() and not in to_tsquery(), which could
+    cause queries to fail if the default database language wasn't set to 'english'.
+
 == 2.0.pre4
 
 * 1 new feature
