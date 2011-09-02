@@ -176,7 +176,6 @@ class TexticleTest < Test::Unit::TestCase
 
     should "still find results" do
       assert_not_empty Game.search_by_title("harry")
-      p
     end
   end
 

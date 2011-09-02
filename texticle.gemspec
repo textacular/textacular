@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ecin", "Aaron Patterson"]
-  s.date = %q{2011-07-10}
+  s.date = %q{2011-08-30}
   s.description = %q{Texticle exposes full text search capabilities from PostgreSQL, extending
     ActiveRecord with scopes making search easy and fun!}
   s.email = ["ecin@copypastel.com"]
