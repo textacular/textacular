@@ -117,6 +117,10 @@ class TexticleTest < Test::Unit::TestCase
       should "scope consecutively" do
         assert_equal [@sfgen], Game.search(:system => "Genesis").search(:title => "Street Fighter")
       end
+
+      should "cast non-:string columns as text" do
+        assert_equal [@mario], Game.search(:id => @mario.id)
+      end
     end
 
     context "when using dynamic search methods" do
