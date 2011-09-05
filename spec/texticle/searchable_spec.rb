@@ -22,7 +22,7 @@ class SearchableTest < Test::Unit::TestCase
 
     context "with no paramters" do
       setup do
-        WebComic.extend(Searchable)
+        WebComic.extend Searchable
       end
 
       should "search across all columns" do
@@ -33,18 +33,27 @@ class SearchableTest < Test::Unit::TestCase
 
     context "with one column as parameter" do
       setup do
-        WebComic.extend(Searchable(:name))
+        WebComic.extend Searchable(:name)
       end
 
       should "only search across the given column" do
         assert_equal [@penny], WebComic.search("Penny")
         assert_empty WebComic.search("Tycho")
       end
+
+      should "define :searchable_columns as private" do
+        assert_raise(NoMethodError) { WebComic.searchable_columns }
+        begin
+          WebComic.searchable_columns
+        rescue NoMethodError => error
+          assert_match error.message, /private method/
+        end
+      end
     end
 
     context "with two columns as parameters" do
       setup do
-        WebComic.extend(Searchable(:name, :author))
+        WebComic.extend Searchable(:name, :author)
       end
 
       should "only search across the given column" do
