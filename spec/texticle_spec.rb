@@ -10,9 +10,7 @@ class Game < ActiveRecord::Base
   end
 end
 
-class NotThere < ActiveRecord::Base
-
-end
+class NotThere < ActiveRecord::Base; end
 
 class TexticleTest < Test::Unit::TestCase
 
@@ -35,8 +33,19 @@ class TexticleTest < Test::Unit::TestCase
     end
 
     should "not break #method_missing" do
+      assert_raise(NoMethodError) { ActiveRecord::Base.random }
       begin
         ActiveRecord::Base.random
+      rescue NoMethodError => error
+        assert_match error.message, /undefined method `random'/
+      end
+    end
+
+    should "not break #method_missing for table-less classes" do
+      assert !NotThere.table_exists?
+      assert_raise(NoMethodError) { NotThere.random }
+      begin
+        NotThere.random
       rescue NoMethodError => error
         assert_match error.message, /undefined method `random'/
       end

@@ -45,6 +45,8 @@ module Texticle
     else
       super
     end
+  rescue ActiveRecord::StatementInvalid
+    super
   end
 
   def respond_to?(method, include_private = false)
