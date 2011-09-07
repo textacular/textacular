@@ -14,10 +14,12 @@ namespace :db do
       create_table :games do |table|
         table.string :system
         table.string :title
+        table.text :description
       end
       create_table :web_comics do |table|
         table.string :name
         table.string :author
+        table.text :review
       end
     end
   end

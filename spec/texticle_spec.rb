@@ -4,9 +4,10 @@ require 'spec_helper'
 class Game < ActiveRecord::Base
   # string :system
   # string :title
+  # text :description
 
   def to_s
-    "#{system}: #{title}"
+    "#{system}: #{title} (#{description})"
   end
 end
 
@@ -55,14 +56,14 @@ class TexticleTest < Test::Unit::TestCase
   context "after extending an ActiveRecord::Base subclass" do
     setup do
       Game.extend(Texticle)
-      @zelda = Game.create :system => "NES",     :title => "Legend of Zelda"
-      @mario = Game.create :system => "NES",     :title => "Super Mario Bros."
-      @sonic = Game.create :system => "Genesis", :title => "Sonic the Hedgehog"
-      @dkong = Game.create :system => "SNES",    :title => "Diddy's Kong Quest"
-      @megam = Game.create :system => nil,       :title => "Mega Man"
-      @sfnes = Game.create :system => "SNES",    :title => "Street Fighter 2"
-      @sfgen = Game.create :system => "Genesis", :title => "Street Fighter 2"
-      @takun = Game.create :system => "Saturn",  :title => "Magical Tarurūto-kun"
+      @zelda = Game.create :system => "NES",     :title => "Legend of Zelda",    :description => "A Link to the Past."
+      @mario = Game.create :system => "NES",     :title => "Super Mario Bros.",  :description => "The original platformer."
+      @sonic = Game.create :system => "Genesis", :title => "Sonic the Hedgehog", :description => "Spiky."
+      @dkong = Game.create :system => "SNES",    :title => "Diddy's Kong Quest", :description => "Donkey Kong Country 2"
+      @megam = Game.create :system => nil,       :title => "Mega Man",           :description => "Beware Dr. Brain"
+      @sfnes = Game.create :system => "SNES",    :title => "Street Fighter 2",   :description => "Yoga Flame!"
+      @sfgen = Game.create :system => "Genesis", :title => "Street Fighter 2",   :description => "Yoga Flame!"
+      @takun = Game.create :system => "Saturn",  :title => "Magical Tarurūto-kun", :description => "カッコイイ！"
     end
 
     teardown do
@@ -129,10 +130,15 @@ class TexticleTest < Test::Unit::TestCase
         assert_equal [@takun], Game.search_by_system("Saturn")
       end
 
-      should "generate methods for any combination of :string columns" do
+      should "generate methods for each :text column" do
+        assert_equal [@mario], Game.search_by_description("platform")
+      end
+
+      should "generate methods for any combination of :string and :text columns" do
         assert_equal [@mario], Game.search_by_title_and_system("Mario", "NES")
         assert_equal [@sonic], Game.search_by_system_and_title("Genesis", "Sonic")
         assert_equal [@mario], Game.search_by_title_and_title("Mario", "Mario")
+        assert_equal [@megam], Game.search_by_title_and_description("Man", "Brain")
       end
 
       should "generate methods for inclusive searches" do
@@ -143,7 +149,7 @@ class TexticleTest < Test::Unit::TestCase
         assert_equal [@sfgen], Game.search_by_system("Genesis").search_by_title("Street Fighter")
       end
 
-      should "not generate methods for non-:string columns" do
+      should "not generate methods for non-:string, non-:text columns" do
         assert_raise(NoMethodError) { Game.search_by_id }
       end
 
