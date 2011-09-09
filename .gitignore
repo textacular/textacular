@@ -4,3 +4,4 @@ tags
 pkg
 *~
 *.rbc
+Gemfile.lock
