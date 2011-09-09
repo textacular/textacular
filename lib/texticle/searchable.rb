@@ -5,11 +5,11 @@ def Searchable(*searchable_columns)
 
     include Texticle
 
-    private
-
     define_method(:searchable_columns) do
       searchable_columns.map(&:to_s)
     end
+
+    private :searchable_columns
   end
 end
 
