@@ -5,7 +5,15 @@ require 'pg'
 require 'active_record'
 require 'benchmark'
 
-require File.expand_path(File.dirname(__FILE__) + '/spec/spec_helper')
+$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/spec')
+require 'spec_helper'
+
+task :default => :test
+
+task :test do
+  require 'texticle_spec'
+  require 'texticle/searchable_spec'
+end
 
 namespace :db do
   desc 'Run migrations for test database'
