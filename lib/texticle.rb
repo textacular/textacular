@@ -93,7 +93,7 @@ module Texticle
       end
 
       def exclusive_dynamic_search_method?(method, class_columns)
-        string_columns = class_columns.select {|column| column.type == :string }.map(&:name)
+        string_columns = class_columns.map(&:name)
         columns = exclusive_dynamic_search_columns(method)
         unless columns.empty?
           columns.all? {|column| string_columns.include?(column) }
@@ -103,7 +103,7 @@ module Texticle
       end
 
       def inclusive_dynamic_search_method?(method, class_columns)
-        string_columns = class_columns.select {|column| column.type == :string }.map(&:name)
+        string_columns = class_columns.map(&:name)
         columns = inclusive_dynamic_search_columns(method)
         unless columns.empty?
           columns.all? {|column| string_columns.include?(column) }

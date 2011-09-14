@@ -143,8 +143,8 @@ class TexticleTest < Test::Unit::TestCase
         assert_equal [@sfgen], Game.search_by_system("Genesis").search_by_title("Street Fighter")
       end
 
-      should "not generate methods for non-:string columns" do
-        assert_raise(NoMethodError) { Game.search_by_id }
+      should "generate methods for non-:string columns" do
+        assert_equal [@mario], Game.search_by_id(@mario.id)
       end
 
       should "work with #respond_to?" do
@@ -153,8 +153,8 @@ class TexticleTest < Test::Unit::TestCase
         assert Game.respond_to?(:search_by_system_and_title)
         assert Game.respond_to?(:search_by_system_or_title)
         assert Game.respond_to?(:search_by_title_and_title_and_title)
+        assert Game.respond_to?(:search_by_id)
 
-        assert !Game.respond_to?(:search_by_id)
         assert !Game.respond_to?(:search_by_title_and_title_or_title)
       end
 
