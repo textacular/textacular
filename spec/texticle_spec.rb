@@ -30,7 +30,6 @@ end
 class NotThere < ActiveRecord::Base; end
 
 class TexticleTest < Test::Unit::TestCase
-
   context "after extending ActiveRecord::Base" do
     setup do
       ActiveRecord::Base.extend(Texticle)
@@ -65,6 +64,38 @@ class TexticleTest < Test::Unit::TestCase
         NotThere.random
       rescue NoMethodError => error
         assert_match error.message, /undefined method `random'/
+      end
+    end
+
+    context "when finding models based on searching a related model" do
+      setup do
+        @qc = WebComic.create :name => "Questionable Content", :author => "Jeph Jaques"
+        @jw = WebComic.create :name => "Johnny Wander", :author => "Ananth & Yuko"
+        @pa = WebComic.create :name => "Penny Arcade", :author => "Tycho & Gabe"
+
+        @gabe = @pa.characters.create :name => 'Gabe', :description => 'the simple one'
+        @tycho = @pa.characters.create :name => 'Tycho', :description => 'the wordy one'
+        @div = @pa.characters.create :name => 'Div', :description => 'a crude divx player with anger management issues'
+
+        @martin = @qc.characters.create :name => 'Martin', :description => 'the insecure protagonist'
+        @faye = @qc.characters.create :name => 'Faye', :description => 'a sarcastic barrista with anger management issues'
+        @pintsize = @qc.characters.create :name => 'Pintsize', :description => 'a crude AnthroPC'
+
+        @ananth = @jw.characters.create :name => 'Ananth', :description => 'Stubble! What is under that hat?!?'
+        @yuko = @jw.characters.create :name => 'Yuko', :description => 'So... small. Carl Sagan haircut.'
+        @john = @jw.characters.create :name => 'John', :description => 'Tall. Anger issues?'
+        @cricket = @jw.characters.create :name => 'Cricket', :description => 'Chirrup!'
+      end
+
+      teardown do
+        WebComic.delete_all
+        Character.delete_all
+      end
+
+      should "look in the related model with nested searching syntax" do
+        assert_equal [@jw], WebComic.joins(:characters).search(:characters => {:description => 'tall'})
+        assert_equal [@pa, @jw, @qc].sort, WebComic.joins(:characters).search(:characters => {:description => 'anger'}).sort
+        assert_equal [@pa, @qc].sort, WebComic.joins(:characters).search(:characters => {:description => 'crude'}).sort
       end
     end
   end
@@ -149,40 +180,6 @@ class TexticleTest < Test::Unit::TestCase
       should "cast non-:string columns as text" do
         assert_equal [@mario], Game.search(:id => @mario.id)
       end
-
-      context "when finding models based on searching a related model" do
-        setup do
-          @qc = WebComic.create :name => "Questionable Content", :author => "Jeph Jaques"
-          @jw = WebComic.create :name => "Johnny Wander", :author => "Ananth & Yuko"
-          @pa = WebComic.create :name => "Penny Arcade", :author => "Tycho & Gabe"
-
-          @gabe = @pa.characters.create :name => 'Gabe', :description => 'the simple one'
-          @tycho = @pa.characters.create :name => 'Tycho', :description => 'the wordy one'
-          @div = @pa.characters.create :name => 'Div', :description => 'a crude divx player with anger management issues'
-
-          @martin = @qc.characters.create :name => 'Martin', :description => 'the insecure protagonist'
-          @faye = @qc.characters.create :name => 'Faye', :description => 'a sarcastic barrista with anger management issues'
-          @pintsize = @qc.characters.create :name => 'Pintsize', :description => 'a crude AnthroPC'
-
-          @ananth = @jw.characters.create :name => 'Ananth', :description => 'Stubble! What is under that hat?!?'
-          @yuko = @jw.characters.create :name => 'Yuko', :description => 'So... small. Carl Sagan haircut.'
-          @john = @jw.characters.create :name => 'John', :description => 'Tall. Anger issues?'
-          @cricket = @jw.characters.create :name => 'Cricket', :description => 'Chirrup!'
-
-          Character.extend Texticle
-        end
-
-        teardown do
-          WebComic.delete_all
-          Character.delete_all
-        end
-
-        should "look in the related model with nested searching syntax" do
-          assert_equal [@jw], WebComic.joins(:characters).search(:characters => {:description => 'tall'})
-          assert_equal [@pa, @jw, @qc].sort, WebComic.joins(:characters).search(:characters => {:description => 'anger'}).sort
-          assert_equal [@pa, @qc].sort, WebComic.joins(:characters).search(:characters => {:description => 'crude'}).sort
-        end
-      end
     end
 
     context "when using dynamic search methods" do
@@ -258,5 +255,4 @@ class TexticleTest < Test::Unit::TestCase
       assert_not_empty Game.search_by_title("harry")
     end
   end
-
 end
