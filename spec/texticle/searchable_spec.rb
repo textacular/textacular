@@ -21,7 +21,7 @@ class SearchableTest < Test::Unit::TestCase
 
   context "when extending an ActiveRecord::Base subclass" do
     setup do
-      @qcont = WebComic.create :name => "Questionable Content", :author => "Jeff Jaques"
+      @qcont = WebComic.create :name => "Questionable Content", :author => "Jeph Jaques"
       @jhony = WebComic.create :name => "Johnny Wander", :author => "Ananth & Yuko"
       @ddeeg = WebComic.create :name => "Dominic Deegan", :author => "Mookie"
       @penny = WebComic.create :name => "Penny Arcade", :author => "Tycho & Gabe"
@@ -76,7 +76,7 @@ class SearchableTest < Test::Unit::TestCase
 
   context "when finding models based on searching a related model" do
     setup do
-      @qc = WebComic.create :name => "Questionable Content", :author => "Jeff Jaques"
+      @qc = WebComic.create :name => "Questionable Content", :author => "Jeph Jaques"
       @jw = WebComic.create :name => "Johnny Wander", :author => "Ananth & Yuko"
       @pa = WebComic.create :name => "Penny Arcade", :author => "Tycho & Gabe"
 
@@ -107,5 +107,4 @@ class SearchableTest < Test::Unit::TestCase
       assert_equal [@pa, @qc].sort, WebComic.joins(:characters).search(:characters => {:description => 'crude'}).sort
     end
   end
-
 end
