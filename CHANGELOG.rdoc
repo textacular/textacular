@@ -25,7 +25,7 @@
 
       require 'texticle/searchable'
       class Game
-        include Searchable(:title)
+        extend Searchable(:title)
       end
 
     This also allows Texticle use in Rails without having #search available to all models:
