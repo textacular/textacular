@@ -156,6 +156,7 @@ class TexticleTest < Test::Unit::TestCase
         assert Game.respond_to?(:search_by_id)
 
         assert !Game.respond_to?(:search_by_title_and_title_or_title)
+        debugger
       end
 
       should "allow for 2 arguments to #respond_to?" do
