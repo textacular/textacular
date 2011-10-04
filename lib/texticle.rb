@@ -29,6 +29,10 @@ module Texticle
       order("#{rank} DESC")
   end
 
+  def indexable_columns
+    []
+  end
+
   def method_missing(method, *search_terms)
     return super if self == ActiveRecord::Base
     if Helper.dynamic_search_method?(method, self.columns)

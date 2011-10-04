@@ -49,6 +49,11 @@ class SearchableTest < Test::Unit::TestCase
           assert_match error.message, /private method/
         end
       end
+
+      should "define #indexable_columns which returns a write-proof Enumerable" do
+        assert_equal(Enumerator, WebComic.indexable_columns.class)
+        assert_raise(NoMethodError) { WebComic.indexable_columns[0] = 'foo' }
+      end
     end
 
     context "with two columns as parameters" do

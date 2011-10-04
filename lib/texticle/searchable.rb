@@ -10,6 +10,10 @@ def Searchable(*searchable_columns)
     end
 
     private :searchable_columns
+
+    def indexable_columns
+      searchable_columns.to_enum
+    end
   end
 end
 
