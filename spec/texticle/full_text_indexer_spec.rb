@@ -1,4 +1,7 @@
 require 'spec_helper'
+require 'fileutils'
+
+require 'texticle/searchable'
 
 class WebComic < ActiveRecord::Base
   # string :name
@@ -17,21 +20,17 @@ class FullTextIndexerTest < Test::Unit::TestCase
   end
 
   context "when we've listed fields specific fields in a Searchable call" do
-    setup do
+    should "generate the right sql" do
       WebComic.extend Searchable(:name)
       @file_name = File.join('.', 'fake_migration.rb')
-    end
 
-    teardown do
-      FileUtils.rm(@file_name)
-    end
-
-    should "generate the right sql" do
       expected_sql = <<-MIGRATION
 lsfjfslkjef
 MIGRATION
 
       assert_equal(expected_sql, File.read(@file_name))
+
+      FileUtils.rm(@file_name)
     end
   end
 end
