@@ -30,7 +30,7 @@ module Texticle
   end
 
   def indexable_columns
-    []
+    [].to_enum
   end
 
   def method_missing(method, *search_terms)
