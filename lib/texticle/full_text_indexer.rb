@@ -2,6 +2,10 @@ class Texticle::FullTextIndexer
   def self.generate_migration(file_name = nil)
   end
 
+  def self.default_file_name(now = Time.now.utc)
+    File.join(Rails.root, 'db', 'migrate',"#{now.strftime('%Y%m%d%H%M%S')}_full_text_search_#{now.to_i}.rb")
+  end
+
   def old_rake_task_stuff
     now = Time.now.utc
     filename = "#{now.strftime('%Y%m%d%H%M%S')}_full_text_search_#{now.to_i}.rb"

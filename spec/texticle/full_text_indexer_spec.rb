@@ -8,6 +8,13 @@ class WebComic < ActiveRecord::Base
   # string :author
 end
 
+module Rails
+  # Stub this out, sort of.
+  def self.root
+    File.join("/", "foo", "bar", "baz")
+  end
+end
+
 class FullTextIndexerTest < Test::Unit::TestCase
   context ".default_file_name" do
     should "generate a file name for a time passed in" do
