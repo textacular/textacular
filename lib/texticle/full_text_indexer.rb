@@ -1,5 +1,8 @@
 class Texticle::FullTextIndexer
-  def self.generate_migration(file_name = nil)
+  def self.generate_migration(file_name = default_file_name)
+    File.open(file_name, 'wb') do |f|
+      f.puts 'yeah'
+    end
   end
 
   def self.default_file_name(now = Time.now.utc)

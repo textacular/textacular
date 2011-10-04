@@ -27,10 +27,16 @@ class FullTextIndexerTest < Test::Unit::TestCase
   end
 
   context "when we've listed one specific field in a Searchable call" do
-    should "generate the right sql" do
+    setup do
       WebComic.extend Searchable(:name)
       @file_name = File.join('.', 'fake_migration.rb')
+    end
 
+    teardown do
+      FileUtils.rm(@file_name)
+    end
+
+    should "generate the right sql" do
       expected_sql = <<-MIGRATION
 class FakeMigration < ActiveRecord::Migration
   def self.up
@@ -53,16 +59,20 @@ MIGRATION
       Texticle::FullTextIndexer.generate_migration(@file_name)
 
       assert_equal(expected_sql, File.read(@file_name))
-
-      FileUtils.rm(@file_name)
     end
   end
 
   context "when we've listed two specific fields in a Searchable call" do
-    should "generate the right sql" do
+    setup do
       WebComic.extend Searchable(:name, :author)
       @file_name = File.join('.', 'fake_migration.rb')
+    end
 
+    teardown do
+      FileUtils.rm(@file_name)
+    end
+
+    should "generate the right sql" do
       expected_sql = <<-MIGRATION
 class FakeMigration < ActiveRecord::Migration
   def self.up
@@ -90,8 +100,6 @@ MIGRATION
       Texticle::FullTextIndexer.generate_migration(@file_name)
 
       assert_equal(expected_sql, File.read(@file_name))
-
-      FileUtils.rm(@file_name)
     end
   end
 end
