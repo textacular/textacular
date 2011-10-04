@@ -23,10 +23,9 @@ class FullTextIndexerTest < Test::Unit::TestCase
     should "generate the right sql" do
       WebComic.extend Searchable(:name)
       @file_name = File.join('.', 'fake_migration.rb')
-      now = Time.now.utc
 
       expected_sql = <<-MIGRATION
-class FullTextSearch#{now.to_i} < ActiveRecord::Migration
+class FakeMigration < ActiveRecord::Migration
   def self.up
     execute(<<-SQL.strip)
       DROP index IF EXISTS web_comics_name_fts_idx;
@@ -44,7 +43,7 @@ class FullTextSearch#{now.to_i} < ActiveRecord::Migration
 end
 MIGRATION
 
-      Texticle::FullTextIndexer.generate_migration(now)
+      Texticle::FullTextIndexer.generate_migration(@file_name)
 
       assert_equal(expected_sql, File.read(@file_name))
 
@@ -56,10 +55,9 @@ MIGRATION
     should "generate the right sql" do
       WebComic.extend Searchable(:name, :author)
       @file_name = File.join('.', 'fake_migration.rb')
-      now = Time.now.utc
 
       expected_sql = <<-MIGRATION
-class FullTextSearch#{now.to_i} < ActiveRecord::Migration
+class FakeMigration < ActiveRecord::Migration
   def self.up
     execute(<<-SQL.strip)
       DROP index IF EXISTS web_comics_name_fts_idx;
@@ -82,7 +80,7 @@ class FullTextSearch#{now.to_i} < ActiveRecord::Migration
 end
 MIGRATION
 
-      Texticle::FullTextIndexer.generate_migration(now)
+      Texticle::FullTextIndexer.generate_migration(@file_name)
 
       assert_equal(expected_sql, File.read(@file_name))
 

@@ -1,5 +1,5 @@
 class Texticle::FullTextIndexer
-  def self.generate_migration(now = Time.now.utc)
+  def self.generate_migration(file_name = nil)
   end
 
   def old_rake_task_stuff
