@@ -122,5 +122,6 @@ module Texticle
       end
     end
   end
-
 end
+
+require 'texticle/full_text_indexer'
