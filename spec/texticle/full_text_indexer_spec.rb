@@ -19,14 +19,70 @@ class FullTextIndexerTest < Test::Unit::TestCase
     end
   end
 
-  context "when we've listed fields specific fields in a Searchable call" do
+  context "when we've listed one specific field in a Searchable call" do
     should "generate the right sql" do
       WebComic.extend Searchable(:name)
       @file_name = File.join('.', 'fake_migration.rb')
+      now = Time.now.utc
 
       expected_sql = <<-MIGRATION
-lsfjfslkjef
+class FullTextSearch#{now.to_i} < ActiveRecord::Migration
+  def self.up
+    execute(<<-SQL.strip)
+      DROP index IF EXISTS web_comics_name_fts_idx;
+      CREATE index web_comics_name_fts_idx
+        ON web_comics
+        USING gin((to_tsvector("english", "webcomics"."name"::text)));
+    SQL
+  end
+
+  def self.down
+    execute(<<-SQL.strip)
+      DROP index IF EXISTS web_comics_name_fts_idx;
+    SQL
+  end
+end
 MIGRATION
+
+      Texticle::FullTextIndexer.generate_migration(now)
+
+      assert_equal(expected_sql, File.read(@file_name))
+
+      FileUtils.rm(@file_name)
+    end
+  end
+
+  context "when we've listed two specific fields in a Searchable call" do
+    should "generate the right sql" do
+      WebComic.extend Searchable(:name, :author)
+      @file_name = File.join('.', 'fake_migration.rb')
+      now = Time.now.utc
+
+      expected_sql = <<-MIGRATION
+class FullTextSearch#{now.to_i} < ActiveRecord::Migration
+  def self.up
+    execute(<<-SQL.strip)
+      DROP index IF EXISTS web_comics_name_fts_idx;
+      CREATE index web_comics_name_fts_idx
+        ON web_comics
+        USING gin(to_tsvector("english", "webcomics"."name"::text));
+      DROP index IF EXISTS web_comics_author_fts_idx;
+      CREATE index web_comics_author_fts_idx
+        ON web_comics
+        USING gin(to_tsvector("english", "webcomics"."author"::text));
+    SQL
+  end
+
+  def self.down
+    execute(<<-SQL.strip)
+      DROP index IF EXISTS web_comics_name_fts_idx;
+      DROP index IF EXISTS web_comics_author_fts_idx;
+    SQL
+  end
+end
+MIGRATION
+
+      Texticle::FullTextIndexer.generate_migration(now)
 
       assert_equal(expected_sql, File.read(@file_name))
 

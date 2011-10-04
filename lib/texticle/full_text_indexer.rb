@@ -1,5 +1,8 @@
 class Texticle::FullTextIndexer
   def self.generate_migration(now = Time.now.utc)
+  end
+
+  def old_rake_task_stuff
     now = Time.now.utc
     filename = "#{now.strftime('%Y%m%d%H%M%S')}_full_text_search_#{now.to_i}.rb"
 
