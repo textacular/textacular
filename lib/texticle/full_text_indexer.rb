@@ -76,7 +76,9 @@ SQL
 
   def for_each_indexable_model(&block)
     ObjectSpace.each_object do |obj|
-      block.call(obj) if obj.respond_to?(:indexable_columns)
+      if obj.respond_to?(:indexable_columns) && !obj.is_a?(ActiveRecord::Relation)
+        block.call(obj)
+      end
     end
   end
 
