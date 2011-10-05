@@ -66,17 +66,18 @@ class FullTextIndexerTest < Test::Unit::TestCase
       WebComic.extend Searchable(:name)
       @indexer = Texticle::FullTextIndexer.new
       @output = StringIO.new
+      @indexer.instance_variable_set(:@output_stream, @output)
     end
 
     should "generate the right sql" do
       expected_sql = <<-MIGRATION
-class FakeMigration < ActiveRecord::Migration
+class FullTextSearch < ActiveRecord::Migration
   def self.up
     execute(<<-SQL.strip)
       DROP index IF EXISTS web_comics_name_fts_idx;
       CREATE index web_comics_name_fts_idx
         ON web_comics
-        USING gin((to_tsvector("english", "webcomics"."name"::text)));
+        USING gin(to_tsvector("english", "web_comics"."name"::text));
     SQL
   end
 
@@ -99,21 +100,22 @@ MIGRATION
       WebComic.extend Searchable(:name, :author)
       @indexer = Texticle::FullTextIndexer.new
       @output = StringIO.new
+      @indexer.instance_variable_set(:@output_stream, @output)
     end
 
     should "generate the right sql" do
       expected_sql = <<-MIGRATION
-class FakeMigration < ActiveRecord::Migration
+class FullTextSearch < ActiveRecord::Migration
   def self.up
     execute(<<-SQL.strip)
       DROP index IF EXISTS web_comics_name_fts_idx;
       CREATE index web_comics_name_fts_idx
         ON web_comics
-        USING gin(to_tsvector("english", "webcomics"."name"::text));
+        USING gin(to_tsvector("english", "web_comics"."name"::text));
       DROP index IF EXISTS web_comics_author_fts_idx;
       CREATE index web_comics_author_fts_idx
         ON web_comics
-        USING gin(to_tsvector("english", "webcomics"."author"::text));
+        USING gin(to_tsvector("english", "web_comics"."author"::text));
     SQL
   end
 

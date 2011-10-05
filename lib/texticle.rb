@@ -1,6 +1,9 @@
 require 'active_record'
 
 module Texticle
+  def self.searchable_language
+    'english'
+  end
 
   def search(query = "", exclusive = true)
     language = connection.quote(searchable_language)
@@ -27,10 +30,6 @@ module Texticle
     select("#{quoted_table_name + '.*,' if scoped.select_values.empty?} #{similarities.join(" + ")} AS #{rank}").
       where(conditions.join(exclusive ? " AND " : " OR ")).
       order("#{rank} DESC")
-  end
-
-  def indexable_columns
-    [].to_enum
   end
 
   def method_missing(method, *search_terms)
@@ -71,7 +70,7 @@ module Texticle
   end
 
   def searchable_language
-    'english'
+    Texticle.searchable_language
   end
 
   module Helper
