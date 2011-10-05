@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'fileutils'
-require 'ostruct'
 
 require 'texticle/searchable'
 
@@ -10,14 +9,20 @@ class WebComic < ActiveRecord::Base
 end
 
 class FullTextIndexerTest < Test::Unit::TestCase
-  context ".output_stream" do
+  context ".stream_output" do
     context "when Rails is not defined" do
       setup do
         @indexer = Texticle::FullTextIndexer.new
       end
 
       should "point to stdout" do
-        assert_equal(@indexer.output_stream, $STDOUT)
+        @output_stream = nil
+
+        @indexer.stream_output do |io|
+          @output_stream = io
+        end
+
+        assert_equal(@output_stream, $stdout)
       end
     end
 
@@ -26,23 +31,32 @@ class FullTextIndexerTest < Test::Unit::TestCase
         module ::Rails
           # Stub this out, sort of.
           def self.root
-            File.join("/", "foo", "bar", "baz")
+            File.join('.', 'fake_rails')
           end
         end
 
-        @now = OpenStruct.new(:now => Time.now)
+        FileUtils.mkdir_p(File.join('.', 'fake_rails', 'db', 'migrate'))
+
+        @now = Time.now
 
         @indexer = Texticle::FullTextIndexer.new
       end
 
       teardown do
         Object.send(:remove_const, :Rails)
+        FileUtils.rm_rf(File.join('.', 'fake_rails'))
       end
 
       should "point to a properly named migration file" do
-        expected_file_name = "/foo/bar/baz/db/migrate/#{@now.now.strftime('%Y%m%d%H%M%S')}_full_text_search.rb"
+        expected_file_name = "./fake_rails/db/migrate/#{@now.strftime('%Y%m%d%H%M%S')}_full_text_search.rb"
 
-        assert_equal(expected_file_name, @indexer.output_stream(@now))
+        @output_stream = nil
+
+        @indexer.stream_output(@now) do |io|
+          @output_stream = io
+        end
+
+        assert_equal(expected_file_name, @output_stream.path)
       end
     end
   end

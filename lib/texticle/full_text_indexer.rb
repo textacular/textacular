@@ -5,9 +5,23 @@ class Texticle::FullTextIndexer
     end
   end
 
-  def self.default_file_name(now = Time.now.utc)
-    File.join(Rails.root, 'db', 'migrate',"#{now.strftime('%Y%m%d%H%M%S')}_full_text_search_#{now.to_i}.rb")
+  def stream_output(now = Time.now.utc, &block)
+    if !@output_stream && Object.const_defined?(:Rails)
+      File.open(migration_file_name(now), 'w', &block)
+    else
+      @output_stream ||= $stdout
+
+      yield @output_stream
+    end
   end
+
+  private
+
+  def migration_file_name(now = Time.now.utc)
+    File.join(Rails.root, 'db', 'migrate',"#{now.strftime('%Y%m%d%H%M%S')}_full_text_search.rb")
+  end
+
+  # old bullshit that will be deleted:
 
   def old_rake_task_stuff
     now = Time.now.utc
