@@ -20,7 +20,7 @@ MIGRATION
   end
 
   def stream_output(now = Time.now.utc, &block)
-    if !@output_stream && Object.const_defined?(:Rails)
+    if !@output_stream && defined?(Rails)
       File.open(migration_file_name(now), 'w', &block)
     else
       @output_stream ||= $stdout
