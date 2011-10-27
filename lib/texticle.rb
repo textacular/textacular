@@ -2,6 +2,10 @@ require 'active_record'
 
 module Texticle
   def search(query = "", exclusive = true)
+    advanced_search(query, exclusive, false)
+  end
+
+  def advanced_search(query = "", exclusive = true, advanced = true)
     @similarities = []
     @conditions = []
 
@@ -12,7 +16,7 @@ module Texticle
       end
     end
 
-    parse_query_hash(query)
+    parse_query_hash(query, advanced)
 
     rank = connection.quote_column_name('rank' + rand.to_s)
 
@@ -50,18 +54,23 @@ module Texticle
 
   private
 
-  def parse_query_hash(query, table_name = quoted_table_name)
+  def parse_query_hash(query, advanced, table_name = quoted_table_name)
     language = connection.quote(searchable_language)
     table_name = connection.quote_table_name(table_name)
 
     query.each do |column_or_table, search_term|
       if search_term.is_a?(Hash)
-        parse_query_hash(search_term, column_or_table)
+        parse_query_hash(search_term, advanced, column_or_table)
       else
         column = connection.quote_column_name(column_or_table)
         search_term = connection.quote normalize(Helper.normalize(search_term))
-        @similarities << "ts_rank(to_tsvector(#{language}, #{table_name}.#{column}::text), to_tsquery(#{language}, #{search_term}::text))"
-        @conditions << "to_tsvector(#{language}, #{table_name}.#{column}::text) @@ to_tsquery(#{language}, #{search_term}::text)"
+        if advanced
+          @similarities << "ts_rank(to_tsvector(#{language}, #{table_name}.#{column}::text), to_tsquery(#{language}, #{search_term}::text))"
+          @conditions   << "to_tsvector(#{language}, #{table_name}.#{column}::text) @@ to_tsquery(#{language}, #{search_term}::text)"
+        else
+          @similarities << "ts_rank(to_tsvector(#{language}, #{table_name}.#{column}::text), plainto_tsquery(#{language}, #{search_term}::text))"
+          @conditions   << "to_tsvector(#{language}, #{table_name}.#{column}::text) @@ plainto_tsquery(#{language}, #{search_term}::text)"
+        end
       end
     end
   end
