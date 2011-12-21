@@ -38,6 +38,19 @@ Your models now have access to the search method:
   Game.search_by_title_and_system('Final Fantasy', 'PS2')
   Game.search_by_title_or_system('Final Fantasy, 'PS3')
 
+=== Creating Indexes for Super Speed
+You can have postgresql use an index for the full-text search.  To declare a full-text index, in a 
+migration add code like the following:
+
+  execute "
+      create index on email_logs using gin(to_tsvector('english', subject));
+      create index on email_logs using gin(to_tsvector('english', email_address));"
+
+In the above example, the table email_logs has two text columns that we search against, subject and email_address.  
+You will need to add an index for every text/string column in your table, or else postgresql will revert to a 
+full table scan instead of using the indexes.
+
+
 == REQUIREMENTS:
 
 * ActiveRecord
