@@ -52,7 +52,8 @@ module Texticle
   def respond_to?(method, include_private = false)
     return super if self == ActiveRecord::Base
     Helper.dynamic_search_method?(method, self.columns) or super
-  rescue ActiveRecord::StatementInvalid
+  rescue StandardError=>err
+    logger.info("Texticle::respond_to? error:#{err.class.name}: #{err.message}")
     super
   end
 
