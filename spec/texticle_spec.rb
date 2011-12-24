@@ -69,6 +69,17 @@ class TexticleTest < Test::Unit::TestCase
     teardown do
       Game.delete_all
     end
+    
+    should "not break respond_to? when connection is unavailable" do
+      class GameFail < Game
+      end
+
+      GameFail.establish_connection({:adapter => :postgresql, :database =>'unavailable', :username=>'bad', :pool=>5, :timeout=>5000}) rescue nil
+      assert_nothing_raised do
+        GameFail.respond_to?(:search)
+      end
+      
+    end
 
     should "define a #search method" do
       assert Game.respond_to?(:search)
