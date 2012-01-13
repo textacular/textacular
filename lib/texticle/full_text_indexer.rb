@@ -73,23 +73,6 @@ SQL
     "#{model.table_name}_#{column}_fts_idx"
   end
 
-  #def for_each_indexable_model(&block)
-  #  ObjectSpace.each_object(Class) do |obj|
-  #    begin
-  #      puts obj.name if obj.name == 'Note'
-  #      if obj < ActiveRecord::Base
-  #        puts "Check #{obj.name} .."
-  #        if obj.respond_to?(:indexable_columns)
-  #          puts " ===> found a class: #{obj.name}"
-  #          block.call(obj)
-  #        end
-  #      end
-  #    rescue
-  #      # ignore errors
-  #    end
-  #  end
-  #end
-
   def dictionary
     Texticle.searchable_language
   end
