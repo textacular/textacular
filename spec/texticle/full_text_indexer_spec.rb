@@ -89,7 +89,7 @@ class FullTextSearch < ActiveRecord::Migration
 end
 MIGRATION
 
-      @indexer.generate_migration
+      @indexer.generate_migration('WebComic')
 
       assert_equal(expected_sql, @output.string)
     end
@@ -128,7 +128,7 @@ class FullTextSearch < ActiveRecord::Migration
 end
 MIGRATION
 
-      @indexer.generate_migration
+      @indexer.generate_migration('WebComic')
 
       assert_equal(expected_sql, @output.string)
     end
