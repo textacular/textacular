@@ -6,7 +6,7 @@ namespace :texticle do
   task :install_trigram => [:environment] do
     share_dir = `pg_config --sharedir`.chomp
 
-    raise RuntimeError, "Cannot find Postgres's shared directory." unless $?.exitstatus.zero?
+    raise RuntimeError, "Cannot find Postgres's shared directory." unless $?.success?
 
     trigram = "#{share_dir}/contrib/pg_trgm.sql"
 
