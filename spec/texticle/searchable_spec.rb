@@ -1,16 +1,11 @@
 require 'spec_helper'
+require 'fixtures/webcomic'
 require 'texticle/searchable'
 
-class WebComic < ActiveRecord::Base
-  # string :name
-  # string :author
-end
-
 class SearchableTest < Test::Unit::TestCase
-
   context "when extending an ActiveRecord::Base subclass" do
     setup do
-      @qcont = WebComic.create :name => "Questionable Content", :author => "Jeff Jaques"
+      @qcont = WebComic.create :name => "Questionable Content", :author => "Jeph Jaques"
       @jhony = WebComic.create :name => "Johnny Wander", :author => "Ananth & Yuko"
       @ddeeg = WebComic.create :name => "Dominic Deegan", :author => "Mookie"
       @penny = WebComic.create :name => "Penny Arcade", :author => "Tycho & Gabe"
@@ -18,9 +13,10 @@ class SearchableTest < Test::Unit::TestCase
 
     teardown do
       WebComic.delete_all
+      #Object.send(:remove_const, :WebComic) if defined?(WebComic)
     end
 
-    context "with no paramters" do
+    context "with no parameters" do
       setup do
         WebComic.extend Searchable
       end
@@ -62,5 +58,4 @@ class SearchableTest < Test::Unit::TestCase
       end
     end
   end
-
 end

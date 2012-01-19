@@ -41,6 +41,12 @@ namespace :db do
         table.string :name
         table.string :author
         table.text :review
+        table.integer :id
+      end
+      create_table :characters do |table|
+        table.string :name
+        table.string :description
+        table.integer :web_comic_id
       end
     end
   end
@@ -50,6 +56,7 @@ namespace :db do
     ActiveRecord::Migration.instance_eval do
       drop_table :games
       drop_table :web_comics
+      drop_table :characters
     end
   end
 end

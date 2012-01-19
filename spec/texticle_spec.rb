@@ -1,24 +1,14 @@
 # coding: utf-8
 require 'spec_helper'
-
-class Game < ActiveRecord::Base
-  # string :system
-  # string :title
-  # text :description
-
-  def to_s
-    "#{system}: #{title} (#{description})"
-  end
-end
-
-class NotThere < ActiveRecord::Base; end
+require 'fixtures/webcomic'
+require 'fixtures/character'
+require 'fixtures/game'
 
 class TexticleTest < Test::Unit::TestCase
-
   context "after extending ActiveRecord::Base" do
-    setup do
-      ActiveRecord::Base.extend(Texticle)
-    end
+    # before(:all)
+    ActiveRecord::Base.extend(Texticle)
+    class NotThere < ActiveRecord::Base; end
 
     should "not break #respond_to?" do
       assert_nothing_raised do
@@ -51,11 +41,45 @@ class TexticleTest < Test::Unit::TestCase
         assert_match error.message, /undefined method `random'/
       end
     end
+
+    context "when finding models based on searching a related model" do
+      setup do
+        @qc = WebComic.create :name => "Questionable Content", :author => "Jeph Jaques"
+        @jw = WebComic.create :name => "Johnny Wander", :author => "Ananth & Yuko"
+        @pa = WebComic.create :name => "Penny Arcade", :author => "Tycho & Gabe"
+
+        @gabe = @pa.characters.create :name => 'Gabe', :description => 'the simple one'
+        @tycho = @pa.characters.create :name => 'Tycho', :description => 'the wordy one'
+        @div = @pa.characters.create :name => 'Div', :description => 'a crude divx player with anger management issues'
+
+        @martin = @qc.characters.create :name => 'Martin', :description => 'the insecure protagonist'
+        @faye = @qc.characters.create :name => 'Faye', :description => 'a sarcastic barrista with anger management issues'
+        @pintsize = @qc.characters.create :name => 'Pintsize', :description => 'a crude AnthroPC'
+
+        @ananth = @jw.characters.create :name => 'Ananth', :description => 'Stubble! What is under that hat?!?'
+        @yuko = @jw.characters.create :name => 'Yuko', :description => 'So... small. Carl Sagan haircut.'
+        @john = @jw.characters.create :name => 'John', :description => 'Tall. Anger issues?'
+        @cricket = @jw.characters.create :name => 'Cricket', :description => 'Chirrup!'
+      end
+
+      teardown do
+        WebComic.delete_all
+        Character.delete_all
+      end
+
+      should "look in the related model with nested searching syntax" do
+        assert_equal [@jw], WebComic.joins(:characters).search(:characters => {:description => 'tall'})
+        assert_equal [@pa, @jw, @qc].sort, WebComic.joins(:characters).search(:characters => {:description => 'anger'}).sort
+        assert_equal [@pa, @qc].sort, WebComic.joins(:characters).search(:characters => {:description => 'crude'}).sort
+      end
+    end
   end
 
   context "after extending an ActiveRecord::Base subclass" do
+    # before(:all)
+    class ::GameFail < Game; end
+
     setup do
-      Game.extend(Texticle)
       @zelda = Game.create :system => "NES",     :title => "Legend of Zelda",    :description => "A Link to the Past."
       @mario = Game.create :system => "NES",     :title => "Super Mario Bros.",  :description => "The original platformer."
       @sonic = Game.create :system => "Genesis", :title => "Sonic the Hedgehog", :description => "Spiky."
@@ -69,16 +93,14 @@ class TexticleTest < Test::Unit::TestCase
     teardown do
       Game.delete_all
     end
-    
-    should "not break respond_to? when connection is unavailable" do
-      class GameFail < Game
-      end
 
+    should "not break respond_to? when connection is unavailable" do
       GameFail.establish_connection({:adapter => :postgresql, :database =>'unavailable', :username=>'bad', :pool=>5, :timeout=>5000}) rescue nil
+
       assert_nothing_raised do
         GameFail.respond_to?(:search)
       end
-      
+
     end
 
     should "define a #search method" do
@@ -190,17 +212,15 @@ class TexticleTest < Test::Unit::TestCase
   end
 
   context "when setting a custom search language" do
+    def Game.searchable_language
+      'spanish'
+    end
+
     setup do
-      def Game.searchable_language
-        'spanish'
-      end
       Game.create :system => "PS3", :title => "Harry Potter & the Deathly Hallows"
     end
 
     teardown do
-      def Game.searchable_language
-        'english'
-      end
       Game.delete_all
     end
 
@@ -208,5 +228,4 @@ class TexticleTest < Test::Unit::TestCase
       assert_not_empty Game.search_by_title("harry")
     end
   end
-
 end
