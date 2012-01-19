@@ -1,35 +1,14 @@
 # coding: utf-8
 require 'spec_helper'
+require 'fixtures/webcomic'
+require 'fixtures/character'
+require 'fixtures/game'
 
 class TexticleTest < Test::Unit::TestCase
   context "after extending ActiveRecord::Base" do
-    setup do
-      class ::WebComic < ActiveRecord::Base
-        # string :name
-        # string :author
-        # integer :id
-
-        has_many :characters
-      end
-
-      class ::Character < ActiveRecord::Base
-        # string :name
-        # string :description
-        # integer :web_comic_id
-
-        belongs_to :web_comic
-      end
-
-      class ::NotThere < ActiveRecord::Base; end
-
-      ActiveRecord::Base.extend(Texticle)
-    end
-
-    teardown do
-      Object.send(:remove_const, :WebComic) if defined?(WebComic)
-      Object.send(:remove_const, :Character) if defined?(Character)
-      Object.send(:remove_const, :NotThere) if defined?(NotThere)
-    end
+    # before(:all)
+    ActiveRecord::Base.extend(Texticle)
+    class NotThere < ActiveRecord::Base; end
 
     should "not break #respond_to?" do
       assert_nothing_raised do
@@ -97,16 +76,10 @@ class TexticleTest < Test::Unit::TestCase
   end
 
   context "after extending an ActiveRecord::Base subclass" do
+    # before(:all)
+    class ::GameFail < Game; end
+
     setup do
-      class ::Game < ActiveRecord::Base
-        # string :system
-        # string :title
-        # text :description
-      end
-
-      class ::GameFail < Game; end
-
-      Game.extend(Texticle)
       @zelda = Game.create :system => "NES",     :title => "Legend of Zelda",    :description => "A Link to the Past."
       @mario = Game.create :system => "NES",     :title => "Super Mario Bros.",  :description => "The original platformer."
       @sonic = Game.create :system => "Genesis", :title => "Sonic the Hedgehog", :description => "Spiky."
@@ -119,13 +92,11 @@ class TexticleTest < Test::Unit::TestCase
 
     teardown do
       Game.delete_all
-
-      Object.send(:remove_const, :Game) if defined?(Game)
-      Object.send(:remove_const, :GameFail) if defined?(GameFail)
     end
 
     should "not break respond_to? when connection is unavailable" do
       GameFail.establish_connection({:adapter => :postgresql, :database =>'unavailable', :username=>'bad', :pool=>5, :timeout=>5000}) rescue nil
+
       assert_nothing_raised do
         GameFail.respond_to?(:search)
       end
@@ -241,24 +212,16 @@ class TexticleTest < Test::Unit::TestCase
   end
 
   context "when setting a custom search language" do
+    def Game.searchable_language
+      'spanish'
+    end
+
     setup do
-      class ::Game < ActiveRecord::Base
-        # string :system
-        # string :title
-        # text :description
-      end
-
-      def Game.searchable_language
-        'spanish'
-      end
-
       Game.create :system => "PS3", :title => "Harry Potter & the Deathly Hallows"
     end
 
     teardown do
       Game.delete_all
-
-      Object.send(:remove_const, :Game) if defined?(Game)
     end
 
     should "still find results" do
