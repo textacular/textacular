@@ -2,6 +2,12 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+        <script src="githubPinboard.js"></script>
+        <script>
+          window.onload = function() {
+		GithubPinboard("tenderlove", "texticle");
+          }
+        </script>
 	<style type="text/css" media="screen">
 	*{
 		padding: 0;
@@ -105,10 +111,21 @@
 		list-style-type: none;
 	}
 
+	#githubPinboard{
+		display: block;
+		clear: both;
+	}
+
+
+	.githubpinboard-circle{
+		margin-top: -10px;
+	}
+
 	#footnotes{
 		text-align: center;
 		font-size: 15px;
 		color: #aaa;
+		clear: both;
 	}
 
 	sup a{
@@ -272,18 +289,8 @@
 		<h1>
 			Credits
 		</h1><span class='comment'>this gem brought to you by the following committers</span>
-		<div>
-			<ul>
-				<li><a href="http://github.com/tenderlove">Aaron Patterson</a></li>
-				<li><a href="http://github.com/adamsanderson"> Adam Sanderson</a></li>
-				<li><a href="http://github.com/christos">Christos Zisopoulos</a></li>
-				<li><a href="http://github.com/kronn">Matthias Viehweger</a></li>
-				<li><a href="http://github.com/flavorjones">Mike Dalessio</a></li>
-				<li><a href="http://github.com/alphabetum">William Melody</a></li>
-				<li><a href="http://github.com/ecin">ecin</a></li>
-			</ul>
-		</div>
-		<div id='footnotes'>
+		<div id='githubPinboard'></div>
+	        <div id='footnotes'>
 			<p><a name="footnote_1"><sup>1</sup></a>Excerpt from Aaron Patterson's article on <a href="http://tenderlovemaking.com/2009/10/17/full-text-search-on-heroku/">Full Text Search on Heroku</a>.</p>
 			<p><a name="footnote_2"><sup>2</sup></a>As of Postgres 9.0, <a href="http://github.com/mxcl/homebrew">homebrew</a> includes the 'contrib' modules. Sadly, they're still missing from <a href="http://www.heroku.com">Heroku</a>.</p>
 		</div>
