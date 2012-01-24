@@ -11,7 +11,7 @@ var GithubPinboard = function(user, repo, containerId) {
   
   var head = document.getElementsByTagName("head")[0];                                               
   head.appendChild(script);
-  head.insertBefore(stylesheet, head.firstChild);                                                                      
+  head.insertBefore(stylesheet, head.firstChild);
 } 
 
 GithubPinboard.parse = function(response) {                                                          
@@ -26,7 +26,7 @@ GithubPinboard.parse = function(response) {
   contributors.forEach( function(contributor) {                                                      
     var login = contributor["login"];
     var avatar = contributor["avatar_url"];                                                          
-    var imagemapName = "#githubpinboard-imagemap-" + login;                                          
+    var imagemapName = "githubpinboard-imagemap-" + login;                                          
     
     var imagemap = document.createElement("map");                                                    
     imagemap.setAttribute("name", imagemapName);
@@ -39,7 +39,7 @@ GithubPinboard.parse = function(response) {
     imagemap.appendChild(area);
     
     var img = document.createElement("img");                                                         
-    img.setAttribute("usemap", imagemapName);                                                        
+    img.setAttribute("usemap", "#" + imagemapName);                                                        
     img.setAttribute("class", "githubpinboard-circle");                                              
     img.setAttribute("alt", login);
     img.setAttribute("src", avatar);                                                                 
