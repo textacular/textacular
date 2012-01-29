@@ -37,7 +37,7 @@ class SearchableTest < Test::Unit::TestCase
         assert_empty WebComic.search("Tycho")
       end
 
-      ["hello \\", "tebow!" "", "&", "\\"].each do |search_term|
+      ["hello \\", "tebow!" , "food &"].each do |search_term|
         should "be fine with searching for crazy character #{search_term} with plain search" do
           # Uses plainto_tsquery
           assert_equal [], WebComic.search(search_term)
