@@ -60,45 +60,47 @@ module Texticle
 
     results = []
 
-    query.collect do |column_or_table, search_term|
+    query.each do |column_or_table, search_term|
       if search_term.is_a?(Hash)
         results += parse_query_hash(search_term, column_or_table)
       else
         column = connection.quote_column_name(column_or_table)
         search_term = connection.quote normalize(Helper.normalize(search_term))
 
-        [table_name, column, search_term]
+        results << [table_name, column, search_term]
       end
     end
+
+    results
   end
 
-  def basic_similarities_and_conditoins(parsed_query_hash)
+  def basic_similarities_and_conditions(parsed_query_hash)
     parsed_query_hash.inject([]) do |memo, query_args|
       memo << [basic_similarity_string(*query_args), basic_condition_string(*query_args)]
       memo
     end
   end
 
-  def basic_similarity_string(table_name, column, query)
+  def basic_similarity_string(table_name, column, search_term)
     "ts_rank(to_tsvector(#{quoted_language}, #{table_name}.#{column}::text), plainto_tsquery(#{quoted_language}, #{search_term}::text))"
   end
 
-  def basic_condition_string(table_name, column, query)
+  def basic_condition_string(table_name, column, search_term)
     "to_tsvector(#{quoted_language}, #{table_name}.#{column}::text) @@ plainto_tsquery(#{quoted_language}, #{search_term}::text)"
   end
 
-  def advanced_similarities_and_conditoins(parsed_query_hash)
+  def advanced_similarities_and_conditions(parsed_query_hash)
     parsed_query_hash.inject([]) do |memo, query_args|
       memo << [advanced_similarity_string(*query_args), advanced_condition_string(*query_args)]
       memo
     end
   end
 
-  def advanced_similarity_string(table_name, column, query)
+  def advanced_similarity_string(table_name, column, search_term)
     "ts_rank(to_tsvector(#{quoted_language}, #{table_name}.#{column}::text), to_tsquery(#{quoted_language}, #{search_term}::text))"
   end
 
-  def advanced_condition_string(table_name, column, query)
+  def advanced_condition_string(table_name, column, search_term)
     "to_tsvector(#{quoted_language}, #{table_name}.#{column}::text) @@ to_tsquery(#{quoted_language}, #{search_term}::text)"
   end
 
