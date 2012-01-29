@@ -17,12 +17,7 @@ module Texticle
     end
 
     parse_query_hash(query, advanced)
-
-    rank = connection.quote_column_name('rank' + rand.to_s)
-
-    select("#{quoted_table_name + '.*,' if scoped.select_values.empty?} #{@similarities.join(" + ")} AS #{rank}").
-      where(@conditions.join(exclusive ? " AND " : " OR ")).
-      order("#{rank} DESC")
+    assemble_query(@similarities, @conditions, exclusive)
   end
 
   def method_missing(method, *search_terms)
@@ -73,6 +68,14 @@ module Texticle
         end
       end
     end
+  end
+
+  def assemble_query(similarities, conditions, exclusive)
+    rank = connection.quote_column_name('rank' + rand.to_s)
+
+    select("#{quoted_table_name + '.*,' if scoped.select_values.empty?} #{similarities.join(" + ")} AS #{rank}").
+      where(conditions.join(exclusive ? " AND " : " OR ")).
+      order("#{rank} DESC")
   end
 
   def normalize(query)
