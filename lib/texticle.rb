@@ -92,9 +92,11 @@ module Texticle
   end
 
   def advanced_similarities_and_conditions(parsed_query_hash)
-    parsed_query_hash.inject([]) do |memo, query_args|
-      memo << [advanced_similarity_string(*query_args), advanced_condition_string(*query_args)]
-      memo
+    parsed_query_hash.inject([[], []]) do |(similarities, conditions), query_args|
+      similarities << advanced_similarity_string(*query_args)
+      conditions << advanced_condition_string(*query_args)
+
+      [similarities, conditions]
     end
   end
 
