@@ -39,12 +39,11 @@ namespace :db do
       `createdb texticle`
 
       STDOUT.puts "Writing configuration file..."
-      `cp #{spec_directory}/config.yml.example #{spec_directory}/config.yml`
 
-      config = File.read("#{spec_directory}/config.yml")
+      config_example = File.read("#{spec_directory}/config.yml.example")
 
-      File.open("#{spec_directory}/config.yml", "w") do |writable_config|
-        writable_config << config.sub(/<username>/, `whoami`.chomp)
+      File.open("#{spec_directory}/config.yml", "w") do |config|
+        config << config_example.sub(/<username>/, `whoami`.chomp)
       end
 
       STDOUT.puts "Running migrations..."
