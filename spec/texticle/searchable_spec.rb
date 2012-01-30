@@ -52,7 +52,7 @@ class SearchableTest < Test::Unit::TestCase
       end
 
       should "fuzzy search stuff" do
-        assert_equal [@qcont], WebComic.fuzzy_search('Quest')
+        assert_equal [@qcont], WebComic.fuzzy_search('Questio')
       end
 
       should "define :searchable_columns as private" do
