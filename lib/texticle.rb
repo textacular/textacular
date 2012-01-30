@@ -15,6 +15,13 @@ module Texticle
     assemble_query(similarities, conditions, exclusive)
   end
 
+  def fuzzy_search(query = '', exclusive = true)
+    exclusive, query = munge_exclusive_and_query(exclusive, query)
+    parsed_query_hash = parse_query_hash(query)
+    similarities, conditions = fuzzy_similarities_and_conditions(parsed_query_hash)
+    assemble_query(similarities, conditions, exclusive)
+  end
+
   def method_missing(method, *search_terms)
     return super if self == ActiveRecord::Base
     if Helper.dynamic_search_method?(method, self.columns)
@@ -106,6 +113,23 @@ module Texticle
 
   def advanced_condition_string(table_name, column, search_term)
     "to_tsvector(#{quoted_language}, #{table_name}.#{column}::text) @@ to_tsquery(#{quoted_language}, #{search_term}::text)"
+  end
+
+  def fuzzy_similarities_and_conditions(parsed_query_hash)
+    parsed_query_hash.inject([[], []]) do |(similarities, conditions), query_args|
+      similarities << fuzzy_similarity_string(*query_args)
+      conditions << fuzzy_condition_string(*query_args)
+
+      [similarities, conditions]
+    end
+  end
+
+  def fuzzy_similarity_string(table_name, column, search_term)
+    "similarity(#{table_name}.#{column}, #{search_term})"
+  end
+
+  def fuzzy_condition_string(table_name, column, search_term)
+    "(#{table_name}.#{column} % #{search_term})"
   end
 
   def assemble_query(similarities, conditions, exclusive)
