@@ -20,6 +20,10 @@ module Texticle
       @postgres_version ||= ask_pg_config('version').match(/PostgreSQL ([0-9]+(\.[0-9]+)*)/)[1]
     end
 
+    def postgres_share_dir
+      @share_dir ||= ask_pg_config('sharedir')
+    end
+
     def ask_pg_config(argument)
       result = `pg_config --#{argument}`.chomp
 
@@ -29,8 +33,6 @@ module Texticle
     end
 
     def install_postgres_90_module(module_name)
-      share_dir = ask_pg_config('sharedir')
-
       module_location = "#{share_dir}/contrib/#{module_name}.sql"
 
       unless system("ls #{module_location}")
@@ -43,6 +45,12 @@ module Texticle
     end
 
     def install_postgres_91_module(module_name)
+      module_location = "#{share_dir}/extension/#{module_name}.control"
+
+      unless system("ls #{module_location}")
+        raise RuntimeError, "Cannot find the #{module_name} module. Was it compiled and installed?"
+      end
+
       ActiveRecord::Base.connection.execute("CREATE EXTENSION #{module_name};")
     end
   end
