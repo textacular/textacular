@@ -43,7 +43,7 @@ module Texticle
     end
 
     def install_postgres_91_module(module_name)
-      :no_op
+      ActiveRecord::Base.connection.execute("CREATE EXTENSION #{module_name};")
     end
   end
 end
