@@ -1,9 +1,5 @@
 module Texticle
   class PostgresModuleInstaller
-    def initialize(db_name)
-      @db_name = db_name
-    end
-
     def install_module(module_name)
       major, minor, patch = postgres_version.split('.')
 
@@ -12,6 +8,10 @@ module Texticle
       else
         install_postgres_90_module(module_name)
       end
+    end
+
+    def db_name
+      @db_name ||= ActiveRecord::Base.connection.current_database
     end
 
     private
@@ -37,8 +37,8 @@ module Texticle
         raise RuntimeError, "Cannot find the #{module_name} module. Was it compiled and installed?"
       end
 
-      unless system("psql -d #{@db_name} -f #{module_location}")
-        raise RuntimeError, "`psql -d #{@db_name} -f #{module_location}` cannot complete successfully."
+      unless system("psql -d #{db_name} -f #{module_location}")
+        raise RuntimeError, "`psql -d #{db_name} -f #{module_location}` cannot complete successfully."
       end
     end
 
