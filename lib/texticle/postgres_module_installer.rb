@@ -33,7 +33,7 @@ module Texticle
     end
 
     def install_postgres_90_module(module_name)
-      module_location = "#{share_dir}/contrib/#{module_name}.sql"
+      module_location = "#{postgres_share_dir}/contrib/#{module_name}.sql"
 
       unless system("ls #{module_location}")
         raise RuntimeError, "Cannot find the #{module_name} module. Was it compiled and installed?"
@@ -45,7 +45,7 @@ module Texticle
     end
 
     def install_postgres_91_module(module_name)
-      module_location = "#{share_dir}/extension/#{module_name}.control"
+      module_location = "#{postgres_share_dir}/extension/#{module_name}.control"
 
       unless system("ls #{module_location}")
         raise RuntimeError, "Cannot find the #{module_name} module. Was it compiled and installed?"
