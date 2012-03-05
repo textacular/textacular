@@ -22,8 +22,8 @@ class SearchableTest < Test::Unit::TestCase
       end
 
       should "search across all columns" do
-        assert_equal [@penny], WebComic.search("Penny")
-        assert_equal [@ddeeg], WebComic.search("Dominic")
+        assert_equal [@penny], WebComic.advanced_search("Penny")
+        assert_equal [@ddeeg], WebComic.advanced_search("Dominic")
       end
     end
 
@@ -33,14 +33,14 @@ class SearchableTest < Test::Unit::TestCase
       end
 
       should "only search across the given column" do
-        assert_equal [@penny], WebComic.search("Penny")
-        assert_empty WebComic.search("Tycho")
+        assert_equal [@penny], WebComic.advanced_search("Penny")
+        assert_empty WebComic.advanced_search("Tycho")
       end
 
       ["hello \\", "tebow!" , "food &"].each do |search_term|
         should "be fine with searching for crazy character #{search_term} with plain search" do
           # Uses plainto_tsquery
-          assert_equal [], WebComic.search(search_term)
+          assert_equal [], WebComic.basic_search(search_term)
         end
 
         should "be not fine with searching for crazy character #{search_term} with advanced search" do
@@ -71,8 +71,8 @@ class SearchableTest < Test::Unit::TestCase
       end
 
       should "only search across the given column" do
-        assert_equal [@penny], WebComic.search("Penny")
-        assert_equal [@penny], WebComic.search("Tycho")
+        assert_equal [@penny], WebComic.advanced_search("Penny")
+        assert_equal [@penny], WebComic.advanced_search("Tycho")
       end
     end
   end

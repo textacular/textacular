@@ -37,7 +37,7 @@ module Texticle
         query = columns.inject({}) do |query, column|
           query.merge column => args.shift
         end
-        search(query, exclusive)
+        self.send(Helper.search_type(method), query, exclusive)
       end
       __send__(method, *search_terms, exclusive)
     else
@@ -167,8 +167,16 @@ module Texticle
         query.to_s.gsub(' ', '\\\\ ')
       end
 
+      def method_name_regex
+        /^(?<search_type>((basic|advanced|fuzzy)_)?search)_by_(?<columns>[_a-zA-Z]\w*)$/
+      end
+
+      def search_type(method)
+        method.to_s.match(method_name_regex)[:search_type]
+      end
+
       def exclusive_dynamic_search_columns(method)
-        if match = method.to_s.match(/^search_by_(?<columns>[_a-zA-Z]\w*)$/)
+        if match = method.to_s.match(method_name_regex)
           match[:columns].split('_and_')
         else
           []
@@ -176,7 +184,7 @@ module Texticle
       end
 
       def inclusive_dynamic_search_columns(method)
-        if match = method.to_s.match(/^search_by_(?<columns>[_a-zA-Z]\w*)$/)
+        if match = method.to_s.match(method_name_regex)
           match[:columns].split('_or_')
         else
           []
