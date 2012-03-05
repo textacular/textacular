@@ -2,6 +2,11 @@ require 'active_record'
 
 module Texticle
   def search(query = "", exclusive = true)
+    warn "[DEPRECATION] `search` is deprecated. Please use `advanced_search` instead. At the next major release `search` will become an alias for `basic_search`."
+    advanced_search(query, exclusive)
+  end
+
+  def basic_search(query = "", exclusive = true)
     exclusive, query = munge_exclusive_and_query(exclusive, query)
     parsed_query_hash = parse_query_hash(query)
     similarities, conditions = basic_similarities_and_conditions(parsed_query_hash)
