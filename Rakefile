@@ -12,6 +12,64 @@ task :default do
   Rake::Task["test"].invoke
 end
 
+desc "Fire up an interactive terminal to play with"
+task :console do
+  require 'pry'
+  require File.expand_path(File.dirname(__FILE__) + '/lib/texticle')
+
+  config = YAML.load_file File.expand_path(File.dirname(__FILE__) + '/spec/config.yml')
+  ActiveRecord::Base.establish_connection config.merge(:adapter => :postgresql)
+
+  class Character < ActiveRecord::Base
+    belongs_to :web_comic
+  end
+
+  class WebComic < ActiveRecord::Base
+    has_many :characters
+  end
+
+  class Game < ActiveRecord::Base
+  end
+
+  # add ability to reload console
+  def reload
+    reload_msg = '# Reloading the console...'
+    puts CodeRay.scan(reload_msg, :ruby).term
+    Pry.save_history
+    exec('rake console')
+  end
+
+  # start the console! :-)
+  welcome = <<-EOS
+    Welcome to the Texticle devloper console. You have some classes you can play with:
+
+      class Character < ActiveRecord::Base
+        # string :name
+        # string :description
+        # integer :web_comic_id
+
+        belongs_to :web_comic
+      end
+
+      class WebComic < ActiveRecord::Base
+        # string :name
+        # string :author
+        # integer :id
+
+        has_many :characters
+      end
+
+      class Game < ActiveRecord::Base
+        # string :system
+        # string :title
+        # text :description
+      end
+  EOS
+
+  puts CodeRay.scan(welcome, :ruby).term
+  Pry.start
+end
+
 task :test do
   require 'texticle_spec'
   require 'texticle/searchable_spec'
