@@ -2,7 +2,7 @@ class Texticle::FullTextIndexer
   def generate_migration(model_name)
     stream_output do |io|
       io.puts(<<-MIGRATION)
-class FullTextSearch < ActiveRecord::Migration
+class #{model_name}FullTextSearch < ActiveRecord::Migration
   def self.up
     execute(<<-SQL.strip)
       #{up_migration(model_name)}

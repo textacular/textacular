@@ -1,13 +1,6 @@
 require 'spec_helper'
 require 'fileutils'
 
-require 'texticle/searchable'
-
-class WebComic < ActiveRecord::Base
-  # string :name
-  # string :author
-end
-
 class FullTextIndexerTest < Test::Unit::TestCase
   context ".stream_output" do
     context "when Rails is not defined" do
@@ -71,7 +64,7 @@ class FullTextIndexerTest < Test::Unit::TestCase
 
     should "generate the right sql" do
       expected_sql = <<-MIGRATION
-class FullTextSearch < ActiveRecord::Migration
+class WebComicFullTextSearch < ActiveRecord::Migration
   def self.up
     execute(<<-SQL.strip)
       DROP index IF EXISTS web_comics_name_fts_idx;
@@ -105,7 +98,7 @@ MIGRATION
 
     should "generate the right sql" do
       expected_sql = <<-MIGRATION
-class FullTextSearch < ActiveRecord::Migration
+class WebComicFullTextSearch < ActiveRecord::Migration
   def self.up
     execute(<<-SQL.strip)
       DROP index IF EXISTS web_comics_name_fts_idx;
