@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.version = "2.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["ecin", "Aaron Patterson"]
+  s.authors = ["Ben Hamill", "ecin", "Aaron Patterson"]
   s.date = %q{2011-08-30}
   s.description = %q{Texticle exposes full text search capabilities from PostgreSQL, extending
     ActiveRecord with scopes making search easy and fun!}
@@ -21,26 +21,10 @@ Gem::Specification.new do |s|
   s.summary = %q{Texticle exposes full text search capabilities from PostgreSQL}
   s.test_files = ["spec/spec_helper.rb", "spec/texticle_spec.rb", "spec/config.yml"]
 
-  if s.respond_to? :specification_version then
-    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
-    s.specification_version = 3
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_development_dependency(%q<pg>, ["~> 0.11.0"])
-      s.add_development_dependency(%q<shoulda>, ["~> 2.11.3"])
-      s.add_development_dependency(%q<rake>, ["~> 0.9.0"])
+  s.add_development_dependency(%q<pg>, ["~> 0.11.0"])
+  s.add_development_dependency(%q<shoulda>, ["~> 2.11.3"])
+  s.add_development_dependency(%q<rake>, ["~> 0.9.0"])
 
-      s.add_dependency(%q<activerecord>, ["~> 3.0"])
-    else
-      s.add_dependency(%q<pg>, ["~> 0.12.0"])
-      s.add_dependency(%q<shoulda>, ["~> 2.11.3"])
-      s.add_dependency(%q<rake>, ["~> 0.8.0"])
-      s.add_dependency(%q<activerecord>, ["~> 3.0"])
-    end
-  else
-    s.add_dependency(%q<pg>, ["~> 0.11.0"])
-    s.add_dependency(%q<shoulda>, ["~> 2.11.3"])
-    s.add_dependency(%q<rake>, ["~> 0.8.0"])
-    s.add_dependency(%q<activerecord>, ["~> 3.0"])
-  end
+  s.add_dependency(%q<activerecord>, ["~> 3.0"])
 end
