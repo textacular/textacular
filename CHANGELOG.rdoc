@@ -1,3 +1,22 @@
+== 2.1.0
+
+* 1 DEPRECATION
+
+  * `search` aliases new `advanced_search` method (same functionality as before), but will
+    alias `basic_search` in 3.0! Should print warnings.
+
+* 2 new features
+
+  * Generate full text search indexes from a rake task (sort of like in 1.x). Supply a specific
+    model name.
+  * New search methods: `basic_search`, `advanced_search` and `fuzzy_search`. Basic allows special
+    characters like &, and % in search terms. Fuzzy is based on Postgres's trigram matching extension
+    pg_trgm. Advanced is the same functionality from `search` previously.
+
+* 1 dev improvement
+
+  * Test database configuration not automatically generated from a rake task and ignored by git.
+
 == 2.0.3
 
 * 1 new feature

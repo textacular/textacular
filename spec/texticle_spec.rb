@@ -68,9 +68,9 @@ class TexticleTest < Test::Unit::TestCase
       end
 
       should "look in the related model with nested searching syntax" do
-        assert_equal [@jw], WebComic.joins(:characters).search(:characters => {:description => 'tall'})
-        assert_equal [@pa, @jw, @qc].sort, WebComic.joins(:characters).search(:characters => {:description => 'anger'}).sort
-        assert_equal [@pa, @qc].sort, WebComic.joins(:characters).search(:characters => {:description => 'crude'}).sort
+        assert_equal [@jw], WebComic.joins(:characters).advanced_search(:characters => {:description => 'tall'})
+        assert_equal [@pa, @jw, @qc].sort, WebComic.joins(:characters).advanced_search(:characters => {:description => 'anger'}).sort
+        assert_equal [@pa, @qc].sort, WebComic.joins(:characters).advanced_search(:characters => {:description => 'crude'}).sort
       end
     end
   end
@@ -98,7 +98,7 @@ class TexticleTest < Test::Unit::TestCase
       GameFail.establish_connection({:adapter => :postgresql, :database =>'unavailable', :username=>'bad', :pool=>5, :timeout=>5000}) rescue nil
 
       assert_nothing_raised do
-        GameFail.respond_to?(:search)
+        GameFail.respond_to?(:advanced_search)
       end
 
     end
@@ -109,92 +109,92 @@ class TexticleTest < Test::Unit::TestCase
 
     context "when searching with a String argument" do
       should "search across all :string columns if no indexes have been specified" do
-        assert_equal [@mario], Game.search("Mario")
-        assert_equal Set.new([@mario, @zelda]), Game.search("NES").to_set
+        assert_equal [@mario], Game.advanced_search("Mario")
+        assert_equal Set.new([@mario, @zelda]), Game.advanced_search("NES").to_set
       end
 
       should "work if the query contains an apostrophe" do
-        assert_equal [@dkong], Game.search("Diddy's")
+        assert_equal [@dkong], Game.advanced_search("Diddy's")
       end
 
       should "work if the query contains whitespace" do
-        assert_equal [@megam], Game.search("Mega Man")
+        assert_equal [@megam], Game.advanced_search("Mega Man")
       end
 
       should "work if the query contains an accent" do
-        assert_equal [@takun], Game.search("Tarurūto-kun")
+        assert_equal [@takun], Game.advanced_search("Tarurūto-kun")
       end
 
       should "search across records with NULL values" do
-        assert_equal [@megam], Game.search("Mega")
+        assert_equal [@megam], Game.advanced_search("Mega")
       end
 
       should "scope consecutively" do
-        assert_equal [@sfgen], Game.search("Genesis").search("Street Fighter")
+        assert_equal [@sfgen], Game.advanced_search("Genesis").advanced_search("Street Fighter")
       end
     end
 
     context "when searching with a Hash argument" do
       should "search across the given columns" do
-        assert_empty Game.search(:title => "NES")
-        assert_empty Game.search(:system => "Mario")
-        assert_empty Game.search(:system => "NES", :title => "Sonic")
+        assert_empty Game.advanced_search(:title => "NES")
+        assert_empty Game.advanced_search(:system => "Mario")
+        assert_empty Game.advanced_search(:system => "NES", :title => "Sonic")
 
-        assert_equal [@mario], Game.search(:title => "Mario")
+        assert_equal [@mario], Game.advanced_search(:title => "Mario")
 
-        assert_equal 2, Game.search(:system => "NES").count
+        assert_equal 2, Game.advanced_search(:system => "NES").count
 
-        assert_equal [@zelda], Game.search(:system => "NES", :title => "Zelda")
-        assert_equal [@megam], Game.search(:title => "Mega")
+        assert_equal [@zelda], Game.advanced_search(:system => "NES", :title => "Zelda")
+        assert_equal [@megam], Game.advanced_search(:title => "Mega")
       end
 
       should "scope consecutively" do
-        assert_equal [@sfgen], Game.search(:system => "Genesis").search(:title => "Street Fighter")
+        assert_equal [@sfgen], Game.advanced_search(:system => "Genesis").advanced_search(:title => "Street Fighter")
       end
 
       should "cast non-:string columns as text" do
-        assert_equal [@mario], Game.search(:id => @mario.id)
+        assert_equal [@mario], Game.advanced_search(:id => @mario.id)
       end
     end
 
     context "when using dynamic search methods" do
       should "generate methods for each :string column" do
-        assert_equal [@mario], Game.search_by_title("Mario")
-        assert_equal [@takun], Game.search_by_system("Saturn")
+        assert_equal [@mario], Game.advanced_search_by_title("Mario")
+        assert_equal [@takun], Game.advanced_search_by_system("Saturn")
       end
 
       should "generate methods for each :text column" do
-        assert_equal [@mario], Game.search_by_description("platform")
+        assert_equal [@mario], Game.advanced_search_by_description("platform")
       end
 
       should "generate methods for any combination of :string and :text columns" do
-        assert_equal [@mario], Game.search_by_title_and_system("Mario", "NES")
-        assert_equal [@sonic], Game.search_by_system_and_title("Genesis", "Sonic")
-        assert_equal [@mario], Game.search_by_title_and_title("Mario", "Mario")
-        assert_equal [@megam], Game.search_by_title_and_description("Man", "Brain")
+        assert_equal [@mario], Game.advanced_search_by_title_and_system("Mario", "NES")
+        assert_equal [@sonic], Game.advanced_search_by_system_and_title("Genesis", "Sonic")
+        assert_equal [@mario], Game.advanced_search_by_title_and_title("Mario", "Mario")
+        assert_equal [@megam], Game.advanced_search_by_title_and_description("Man", "Brain")
       end
 
       should "generate methods for inclusive searches" do
-        assert_equal Set.new([@megam, @takun]), Game.search_by_system_or_title("Saturn", "Mega Man").to_set
+        assert_equal Set.new([@megam, @takun]), Game.advanced_search_by_system_or_title("Saturn", "Mega Man").to_set
       end
 
       should "scope consecutively" do
-        assert_equal [@sfgen], Game.search_by_system("Genesis").search_by_title("Street Fighter")
+        assert_equal [@sfgen], Game.advanced_search_by_system("Genesis").advanced_search_by_title("Street Fighter")
       end
 
       should "generate methods for non-:string columns" do
-        assert_equal [@mario], Game.search_by_id(@mario.id)
+        assert_equal [@mario], Game.advanced_search_by_id(@mario.id)
       end
 
       should "work with #respond_to?" do
-        assert Game.respond_to?(:search_by_system)
-        assert Game.respond_to?(:search_by_title)
-        assert Game.respond_to?(:search_by_system_and_title)
-        assert Game.respond_to?(:search_by_system_or_title)
-        assert Game.respond_to?(:search_by_title_and_title_and_title)
-        assert Game.respond_to?(:search_by_id)
+        assert Game.respond_to?(:advanced_search_by_system)
+        assert Game.respond_to?(:advanced_search_by_title)
+        assert Game.respond_to?(:advanced_search_by_system_and_title)
+        assert Game.respond_to?(:advanced_search_by_system_or_title)
+        assert Game.respond_to?(:advanced_search_by_title_and_title_and_title)
+        assert Game.respond_to?(:advanced_search_by_id)
 
-        assert !Game.respond_to?(:search_by_title_and_title_or_title)
+        assert !Game.respond_to?(:advanced_search_by_title_and_title_or_title)
       end
 
       should "allow for 2 arguments to #respond_to?" do
@@ -205,7 +205,7 @@ class TexticleTest < Test::Unit::TestCase
     context "when searching after selecting columns to return" do
       should "not fetch extra columns" do
         assert_raise(ActiveModel::MissingAttributeError) do
-          Game.select(:title).search("Mario").first.system
+          Game.select(:title).advanced_search("Mario").first.system
         end
       end
     end
@@ -225,7 +225,7 @@ class TexticleTest < Test::Unit::TestCase
     end
 
     should "still find results" do
-      assert_not_empty Game.search_by_title("harry")
+      assert_not_empty Game.advanced_search_by_title("harry")
     end
   end
 end

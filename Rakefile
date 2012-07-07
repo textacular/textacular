@@ -1,6 +1,7 @@
 require 'rubygems'
 
 require 'rake'
+require 'yaml'
 require 'pg'
 require 'active_record'
 require 'benchmark'
@@ -15,6 +16,7 @@ end
 task :test do
   require 'texticle_spec'
   require 'texticle/searchable_spec'
+  require 'texticle/full_text_indexer_spec'
 end
 
 namespace :db do
@@ -55,7 +57,9 @@ namespace :db do
 
   desc 'Run migrations for test database'
   task :migrate do
-    require 'spec_helper'
+    config = YAML.load_file File.expand_path(File.dirname(__FILE__) + '/spec/config.yml')
+    ActiveRecord::Base.establish_connection config.merge(:adapter => :postgresql)
+
     ActiveRecord::Migration.instance_eval do
       create_table :games do |table|
         table.string :system
@@ -80,7 +84,9 @@ namespace :db do
 
   desc 'Drop tables from test database'
   task :drop do
-    require 'spec_helper'
+    config = YAML.load_file File.expand_path(File.dirname(__FILE__) + '/spec/config.yml')
+    ActiveRecord::Base.establish_connection config.merge(:adapter => :postgresql)
+
     ActiveRecord::Migration.instance_eval do
       drop_table :games
       drop_table :web_comics
