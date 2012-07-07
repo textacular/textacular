@@ -17,16 +17,21 @@ Gem::Specification.new do |s|
 
   s.files         = [
     'CHANGELOG.rdoc',
+    'Gemfile',
     'Manifest.txt',
     'README.rdoc',
     'Rakefile',
     'lib/texticle.rb',
-    'lib/texticle/searchable.rb',
     'lib/texticle/rails.rb',
+    'lib/texticle/searchable.rb',
+    'lib/texticle/tasks.rb',
+    'spec/config.yml.example',
+    'spec/fixtures/character.rb',
+    'spec/fixtures/game.rb',
+    'spec/fixtures/webcomic.rb',
     'spec/spec_helper.rb',
-    'spec/texticle_spec.rb',
     'spec/texticle/searchable_spec.rb',
-    'spec/config.yml'
+    'spec/texticle_spec.rb'
   ]
   s.executables   = []
   s.test_files    = ['spec/spec_helper.rb', 'spec/texticle_spec.rb', 'spec/config.yml']
