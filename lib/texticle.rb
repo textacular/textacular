@@ -138,4 +138,4 @@ module Texticle
   end
 end
 
-require 'texticle/full_text_indexer'
+require File.expand_path(File.dirname(__FILE__) + '/texticle/full_text_indexer')

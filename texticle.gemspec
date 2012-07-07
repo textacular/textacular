@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
     'lib/texticle.rb',
     'lib/texticle/searchable.rb',
     'lib/texticle/rails.rb',
+    'lib/texticle/full_text_indexer.rb',
     'spec/spec_helper.rb',
     'spec/texticle_spec.rb',
     'spec/texticle/searchable_spec.rb',
