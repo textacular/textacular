@@ -15,7 +15,7 @@
 
 * 2 dev improvements
 
-  * Test databse configuration not automatically generated from a rake task and ignored by git.
+  * Test database configuration not automatically generated from a rake task and ignored by git.
   * New interactive developer console (powered by pry).
 
 == 2.0.3
