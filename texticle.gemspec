@@ -24,7 +24,10 @@ Gem::Specification.new do |s|
     'lib/texticle.rb',
     'lib/texticle/rails.rb',
     'lib/texticle/searchable.rb',
-    'lib/texticle/tasks.rb',
+    'lib/texticle/tasks.rb'
+  ]
+  s.executables   = []
+  s.test_files    = [
     'spec/config.yml.example',
     'spec/fixtures/character.rb',
     'spec/fixtures/game.rb',
@@ -33,8 +36,6 @@ Gem::Specification.new do |s|
     'spec/texticle/searchable_spec.rb',
     'spec/texticle_spec.rb'
   ]
-  s.executables   = []
-  s.test_files    = ['spec/spec_helper.rb', 'spec/texticle_spec.rb', 'spec/config.yml']
   s.require_paths = ['lib']
 
   s.extra_rdoc_files = ['Manifest.txt', 'CHANGELOG.rdoc', 'README.rdoc']
