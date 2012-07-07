@@ -1,6 +1,16 @@
 require 'active_record'
 
 module Texticle
+  VERSION = '2.0.3'
+
+  def self.version
+    VERSION
+  end
+
+  def self.searchable_language
+    'english'
+  end
+
   def search(query = "", exclusive = true)
     warn "[DEPRECATION] `search` is deprecated. Please use `advanced_search` instead. At the next major release `search` will become an alias for `basic_search`."
     advanced_search(query, exclusive)
@@ -158,7 +168,7 @@ module Texticle
   end
 
   def searchable_language
-    'english'
+    Texticle.searchable_language
   end
 
   module Helper
@@ -218,3 +228,5 @@ module Texticle
     end
   end
 end
+
+require File.expand_path(File.dirname(__FILE__) + '/texticle/full_text_indexer')
