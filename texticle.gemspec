@@ -29,21 +29,18 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<pg>, ["~> 0.11.0"])
       s.add_development_dependency(%q<shoulda>, ["~> 2.11.3"])
       s.add_development_dependency(%q<rake>, ["~> 0.9.0"])
-      s.add_development_dependency(%q<ruby-debug19>, ["~> 0.11.6"])
 
       s.add_dependency(%q<activerecord>, ["~> 3.0"])
     else
       s.add_dependency(%q<pg>, ["~> 0.12.0"])
       s.add_dependency(%q<shoulda>, ["~> 2.11.3"])
       s.add_dependency(%q<rake>, ["~> 0.8.0"])
-      s.add_dependency(%q<ruby-debug19>, ["~> 0.11.6"])
       s.add_dependency(%q<activerecord>, ["~> 3.0"])
     end
   else
     s.add_dependency(%q<pg>, ["~> 0.11.0"])
     s.add_dependency(%q<shoulda>, ["~> 2.11.3"])
     s.add_dependency(%q<rake>, ["~> 0.8.0"])
-    s.add_dependency(%q<ruby-debug19>, ["~> 0.11.6"])
     s.add_dependency(%q<activerecord>, ["~> 3.0"])
   end
 end
