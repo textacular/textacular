@@ -1,6 +1,12 @@
 require 'active_record'
 
 module Texticle
+  VERSION = '2.0.3'
+
+  def self.version
+    VERSION
+  end
+
   def search(query = "", exclusive = true)
     @similarities = []
     @conditions = []
