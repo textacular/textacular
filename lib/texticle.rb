@@ -7,6 +7,10 @@ module Texticle
     VERSION
   end
 
+  def self.searchable_language
+    'english'
+  end
+
   def search(query = "", exclusive = true)
     @similarities = []
     @conditions = []
@@ -81,7 +85,7 @@ module Texticle
   end
 
   def searchable_language
-    'english'
+    Texticle.searchable_language
   end
 
   module Helper
@@ -133,3 +137,5 @@ module Texticle
     end
   end
 end
+
+require File.expand_path(File.dirname(__FILE__) + '/texticle/full_text_indexer')

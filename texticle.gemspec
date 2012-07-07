@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
     'README.rdoc',
     'Rakefile',
     'lib/texticle.rb',
+    'lib/texticle/full_text_indexer.rb',
     'lib/texticle/rails.rb',
     'lib/texticle/searchable.rb',
     'lib/texticle/tasks.rb'
