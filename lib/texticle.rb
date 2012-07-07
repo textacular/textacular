@@ -1,12 +1,19 @@
 require 'active_record'
 
 module Texticle
+  VERSION = '2.0.3'
+
+  def self.version
+    VERSION
+  end
+
   def self.searchable_language
     'english'
   end
 
   def search(query = "", exclusive = true)
-    language = connection.quote(searchable_language)
+    @similarities = []
+    @conditions = []
 
     unless query.is_a?(Hash)
       exclusive = false
@@ -15,20 +22,12 @@ module Texticle
       end
     end
 
-    similarities = []
-    conditions = []
-
-    query.each do |column, search_term|
-      column = connection.quote_column_name(column)
-      search_term = connection.quote normalize(Helper.normalize(search_term))
-      similarities << "ts_rank(to_tsvector(#{language}, #{quoted_table_name}.#{column}::text), to_tsquery(#{language}, #{search_term}::text))"
-      conditions << "to_tsvector(#{language}, #{quoted_table_name}.#{column}::text) @@ to_tsquery(#{language}, #{search_term}::text)"
-    end
+    parse_query_hash(query)
 
     rank = connection.quote_column_name('rank' + rand.to_s)
 
-    select("#{quoted_table_name + '.*,' if scoped.select_values.empty?} #{similarities.join(" + ")} AS #{rank}").
-      where(conditions.join(exclusive ? " AND " : " OR ")).
+    select("#{quoted_table_name + '.*,' if scoped.select_values.empty?} #{@similarities.join(" + ")} AS #{rank}").
+      where(@conditions.join(exclusive ? " AND " : " OR ")).
       order("#{rank} DESC")
   end
 
@@ -60,6 +59,22 @@ module Texticle
   end
 
   private
+
+  def parse_query_hash(query, table_name = quoted_table_name)
+    language = connection.quote(searchable_language)
+    table_name = connection.quote_table_name(table_name)
+
+    query.each do |column_or_table, search_term|
+      if search_term.is_a?(Hash)
+        parse_query_hash(search_term, column_or_table)
+      else
+        column = connection.quote_column_name(column_or_table)
+        search_term = connection.quote normalize(Helper.normalize(search_term))
+        @similarities << "ts_rank(to_tsvector(#{language}, #{table_name}.#{column}::text), to_tsquery(#{language}, #{search_term}::text))"
+        @conditions << "to_tsvector(#{language}, #{table_name}.#{column}::text) @@ to_tsquery(#{language}, #{search_term}::text)"
+      end
+    end
+  end
 
   def normalize(query)
     query
