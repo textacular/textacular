@@ -14,9 +14,10 @@
     pg_trgm. Advanced is the same functionality from `search` previously.
   * Rake task that installs pg_trgm now works on Postgres 9.1 and up.
 
-* 1 dev improvement
+* 2 dev improvements
 
   * Test database configuration not automatically generated from a rake task and ignored by git.
+  * New interactive developer console (powered by pry).
 
 == 2.0.3
 
