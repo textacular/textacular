@@ -4,10 +4,6 @@ require 'texticle/searchable'
 class SearchableTest < Test::Unit::TestCase
   context "when extending an ActiveRecord::Base subclass" do
     context "with no parameters" do
-      class WebComicWithSearchable < WebComic
-        extend Searchable
-      end
-
       setup do
         @qcont = WebComicWithSearchable.create :name => "Questionable Content", :author => "Jeph Jaques"
         @jhony = WebComicWithSearchable.create :name => "Johnny Wander", :author => "Ananth & Yuko"
@@ -26,10 +22,6 @@ class SearchableTest < Test::Unit::TestCase
     end
 
     context "with one column as parameter" do
-      class WebComicWithSearchableName < WebComic
-        extend Searchable(:name)
-      end
-
       setup do
         @qcont = WebComicWithSearchableName.create :name => "Questionable Content", :author => "Jeph Jaques"
         @jhony = WebComicWithSearchableName.create :name => "Johnny Wander", :author => "Ananth & Yuko"
@@ -80,10 +72,6 @@ class SearchableTest < Test::Unit::TestCase
     end
 
     context "with two columns as parameters" do
-      class WebComicWithSearchableNameAndAuthor < WebComic
-        extend Searchable(:name, :author)
-      end
-
       setup do
         @qcont = WebComicWithSearchableNameAndAuthor.create :name => "Questionable Content", :author => "Jeph Jaques"
         @jhony = WebComicWithSearchableNameAndAuthor.create :name => "Johnny Wander", :author => "Ananth & Yuko"

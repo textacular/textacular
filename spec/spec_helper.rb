@@ -5,6 +5,8 @@ require 'texticle'
 require 'shoulda'
 require 'pry'
 require 'active_record'
+require 'texticle'
+require 'texticle/searchable'
 
 config = YAML.load_file File.expand_path(File.dirname(__FILE__) + '/config.yml')
 ActiveRecord::Base.establish_connection config.merge(:adapter => :postgresql)
@@ -16,6 +18,19 @@ class WebComic < ActiveRecord::Base
 
   has_many :characters
 end
+
+class WebComicWithSearchable < WebComic
+  extend Searchable
+end
+
+class WebComicWithSearchableName < WebComic
+  extend Searchable(:name)
+end
+
+class WebComicWithSearchableNameAndAuthor < WebComic
+  extend Searchable(:name, :author)
+end
+
 
 class Character < ActiveRecord::Base
   # string :name
