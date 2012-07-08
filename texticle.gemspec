@@ -44,9 +44,11 @@ Gem::Specification.new do |s|
 
 
 
-  s.add_development_dependency('pg', '~> 0.11.0')
-  s.add_development_dependency('shoulda', '~> 2.11.3')
-  s.add_development_dependency('rake', '~> 0.9.0')
+  s.add_development_dependency 'pg', '~> 0.11.0'
+  s.add_development_dependency 'shoulda', '~> 2.11.3'
+  s.add_development_dependency 'rake', '~> 0.9.0'
+  s.add_development_dependency 'pry'
+  s.add_development_dependency 'pry-doc'
 
   s.add_dependency('activerecord', '~> 3.0')
 end

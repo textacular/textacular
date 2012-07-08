@@ -13,9 +13,10 @@
     characters like &, and % in search terms. Fuzzy is based on Postgres's trigram matching extension
     pg_trgm. Advanced is the same functionality from `search` previously.
 
-* 1 dev improvement
+* 2 dev improvements
 
   * Test database configuration not automatically generated from a rake task and ignored by git.
+  * New interactive developer console (powered by pry).
 
 == 2.0.3
 
