@@ -74,7 +74,7 @@ end
 task :test do
   # require 'texticle_spec'
   require 'texticle/searchable_spec'
-  # require 'texticle/full_text_indexer_spec'
+  require 'texticle/full_text_indexer_spec'
 end
 
 namespace :db do
