@@ -76,9 +76,6 @@ class TexticleTest < Test::Unit::TestCase
   end
 
   context "after extending an ActiveRecord::Base subclass" do
-    # before(:all)
-    class ::GameFail < Game; end
-
     setup do
       @zelda = Game.create :system => "NES",     :title => "Legend of Zelda",    :description => "A Link to the Past."
       @mario = Game.create :system => "NES",     :title => "Super Mario Bros.",  :description => "The original platformer."
