@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'fixtures/webcomic'
 require 'texticle/searchable'
 
 class SearchableTest < Test::Unit::TestCase

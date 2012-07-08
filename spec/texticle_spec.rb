@@ -1,8 +1,5 @@
 # coding: utf-8
 require 'spec_helper'
-require 'fixtures/webcomic'
-require 'fixtures/character'
-require 'fixtures/game'
 
 class TexticleTest < Test::Unit::TestCase
   context "after extending ActiveRecord::Base" do
