@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'fileutils'
+require 'texticle/searchable'
 
 class FullTextIndexerTest < Test::Unit::TestCase
   context ".stream_output" do
