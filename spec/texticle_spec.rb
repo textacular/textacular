@@ -3,18 +3,6 @@ require 'spec_helper'
 
 class TexticleTest < Test::Unit::TestCase
   context "after extending ActiveRecord::Base" do
-
-    # set up modules so that Texticle won't be forever mixed into ActiveRecord
-    class ARStandIn < ActiveRecord::Base;
-      self.abstract_class = true
-      extend Texticle
-    end
-    class NotThere < ARStandIn; end
-    class TexticleWebComic < ARStandIn;
-      has_many :characters, :foreign_key => :web_comic_id
-      self.table_name = :web_comics
-    end
-
     should "not break #respond_to?" do
       assert_nothing_raised do
         ARStandIn.respond_to? :abstract_class?
@@ -81,14 +69,6 @@ class TexticleTest < Test::Unit::TestCase
   end
 
   context "after extending an ActiveRecord::Base subclass" do
-    class GameExtendedWithTexticle < Game
-      extend Texticle
-    end
-
-    class GameFailExtendedWithTexticle < GameFail
-      extend Texticle
-    end
-
     setup do
       @zelda = GameExtendedWithTexticle.create :system => "NES",     :title => "Legend of Zelda",    :description => "A Link to the Past."
       @mario = GameExtendedWithTexticle.create :system => "NES",     :title => "Super Mario Bros.",  :description => "The original platformer."
@@ -220,12 +200,6 @@ class TexticleTest < Test::Unit::TestCase
     end
 
     context "when setting a custom search language" do
-      class GameExtendedWithTexticleAndCustomLanguage < GameExtendedWithTexticle
-        def searchable_language
-          'spanish'
-        end
-      end
-
       setup do
         GameExtendedWithTexticleAndCustomLanguage.create :system => "PS3", :title => "Harry Potter & the Deathly Hallows"
       end
