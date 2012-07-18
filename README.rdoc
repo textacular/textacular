@@ -50,6 +50,9 @@ In the above example, the table email_logs has two text columns that we search a
 You will need to add an index for every text/string column you query against, or else Postgresql will revert to a
 full table scan instead of using the indexes.
 
+If you create these indexes, you should also switch to sql for your schema_format in `config/application.rb`:
+
+  config.active_record.schema_format = :sql
 
 == REQUIREMENTS:
 
