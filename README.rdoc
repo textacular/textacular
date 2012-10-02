@@ -38,6 +38,16 @@ Your models now have access to the search method:
   Game.search_by_title_and_system('Final Fantasy', 'PS2')
   Game.search_by_title_or_system('Final Fantasy, 'PS3')
 
+=== Setting Language
+
+To set proper searchig dictionary just override class method on your model:
+
+  def self.searchable_language
+    'russian'
+  end
+
+And all your queries would go right! And don`t forget to change the migration for indexes, like shown below.
+
 === Creating Indexes for Super Speed
 You can have Postgresql use an index for the full-text search.  To declare a full-text index, in a
 migration add code like the following:
