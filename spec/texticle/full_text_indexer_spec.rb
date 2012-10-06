@@ -56,7 +56,6 @@ class FullTextIndexerTest < Test::Unit::TestCase
 
   context "when we've listed one specific field in a Searchable call" do
     setup do
-      WebComic.extend Searchable(:name)
       @indexer = Texticle::FullTextIndexer.new
       @output = StringIO.new
       @indexer.instance_variable_set(:@output_stream, @output)
@@ -64,7 +63,7 @@ class FullTextIndexerTest < Test::Unit::TestCase
 
     should "generate the right sql" do
       expected_sql = <<-MIGRATION
-class WebComicFullTextSearch < ActiveRecord::Migration
+class WebComicWithSearchableNameFullTextSearch < ActiveRecord::Migration
   def self.up
     execute(<<-SQL.strip)
       DROP index IF EXISTS web_comics_name_fts_idx;
@@ -82,7 +81,7 @@ class WebComicFullTextSearch < ActiveRecord::Migration
 end
 MIGRATION
 
-      @indexer.generate_migration('WebComic')
+      @indexer.generate_migration('WebComicWithSearchableName')
 
       assert_equal(expected_sql, @output.string)
     end
@@ -90,7 +89,6 @@ MIGRATION
 
   context "when we've listed two specific fields in a Searchable call" do
     setup do
-      WebComic.extend Searchable(:name, :author)
       @indexer = Texticle::FullTextIndexer.new
       @output = StringIO.new
       @indexer.instance_variable_set(:@output_stream, @output)
@@ -98,7 +96,7 @@ MIGRATION
 
     should "generate the right sql" do
       expected_sql = <<-MIGRATION
-class WebComicFullTextSearch < ActiveRecord::Migration
+class WebComicWithSearchableNameAndAuthorFullTextSearch < ActiveRecord::Migration
   def self.up
     execute(<<-SQL.strip)
       DROP index IF EXISTS web_comics_name_fts_idx;
@@ -121,7 +119,7 @@ class WebComicFullTextSearch < ActiveRecord::Migration
 end
 MIGRATION
 
-      @indexer.generate_migration('WebComic')
+      @indexer.generate_migration('WebComicWithSearchableNameAndAuthor')
 
       assert_equal(expected_sql, @output.string)
     end
