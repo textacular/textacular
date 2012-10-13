@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 
-require File.expand_path('../lib/texticle', __FILE__)
+require File.expand_path('../lib/texticle/version', __FILE__)
 
 Gem::Specification.new do |s|
   s.name    = 'texticle'
-  s.version = Texticle.version
+  s.version = Texticle::VERSION
 
   s.summary     = 'Texticle exposes full text search capabilities from PostgreSQL'
   s.description = 'Texticle exposes full text search capabilities from PostgreSQL, extending

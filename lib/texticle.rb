@@ -1,8 +1,8 @@
 require 'active_record'
 
-module Texticle
-  VERSION = '2.0.3'
+require 'texticle/version'
 
+module Texticle
   def self.version
     VERSION
   end
