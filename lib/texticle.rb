@@ -1,12 +1,8 @@
 require 'active_record'
 
+require 'texticle/version'
+
 module Texticle
-  VERSION = '2.0.3'
-
-  def self.version
-    VERSION
-  end
-
   def self.searchable_language
     'english'
   end
