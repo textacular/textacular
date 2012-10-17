@@ -3,10 +3,6 @@ require 'active_record'
 require 'texticle/version'
 
 module Texticle
-  def self.version
-    VERSION
-  end
-
   def self.searchable_language
     'english'
   end
