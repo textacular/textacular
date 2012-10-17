@@ -38,7 +38,7 @@ Your models now have access to the search method:
   Game.search_by_title_and_system('Final Fantasy', 'PS2')
   Game.search_by_title_or_system('Final Fantasy, 'PS3')
 
-You can use '|' annd '&' for logical conditions.
+You can use '|' and '&' for logical conditions.
 
   Game.search_by_title_or_system('Final Fantasy', 'PS3|Xbox')
 
