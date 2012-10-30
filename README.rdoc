@@ -44,7 +44,7 @@ You can use '|' and '&' for logical conditions.
 
 === Setting Language
 
-To set proper searchig dictionary just override class method on your model:
+To set proper searching dictionary just override class method on your model:
 
   def self.searchable_language
     'russian'
