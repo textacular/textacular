@@ -22,33 +22,51 @@ extending ActiveRecord with scopes making search easy and fun!
 
 In the project's Gemfile add
 
-    gem 'texticle', '~> 2.0', :require => 'texticle/rails'
+    gem 'texticle', '~> 2.0', require: 'texticle/rails'
 
 
 #### ActiveRecord outside of Rails 3
 
 ```ruby
 require 'texticle'
+
 ActiveRecord::Base.extend(Texticle)
 ```
 
 
 ### Usage
 
-Your models now have access to the search method:
+Your models now have access to search methods:
+
+The `#basic_search` method is what you might expect: it looks literally for what
+you send to it, doing nothing fancy with the input:
 
 ```ruby
-Game.search('Sonic') # will search through the model's :string columns
-Game.search(:title => 'Mario')
-Game.search_by_title('Street Fighter').search_by_system('PS3')
-Game.search_by_title_and_system('Final Fantasy', 'PS2')
-Game.search_by_title_or_system('Final Fantasy, 'PS3')
+Game.basic_search('Sonic') # will search through the model's :string columns
+Game.basic_search(title: 'Mario', system: 'Nintendo')
 ```
 
-You can use '|' and '&' for logical conditions.
+The `#advanced_search` method lets you use Postgres's search syntax like '|',
+'&' and '!' ('or', 'and', and 'not') as well as some other craziness. Check [the
+Postgres
+docs](http://www.postgresql.org/docs/9.2/static/datatype-textsearch.html) for more:
 
 ```ruby
-Game.search_by_title_or_system('Final Fantasy', 'PS3|Xbox')
+Game.advanced_search(title: 'Street|Fantasy')
+Game.advanced_search(system: '!PS2')
+```
+
+Finally, the `#fuzzy_search` method lets you use Postgres's trigram search
+funcionality:
+
+```ruby
+Comic.fuzzy_search(title: 'Questio') # matches Questionable Content
+```
+
+Searches are also chainable:
+
+```ruby
+Game.advanced_search().basic_search(system: 'PS2')
 ```
 
 
