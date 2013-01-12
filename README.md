@@ -66,7 +66,7 @@ Comic.fuzzy_search(title: 'Questio') # matches Questionable Content
 Searches are also chainable:
 
 ```ruby
-Game.advanced_search().basic_search(system: 'PS2')
+Game.fuzzy_search(title: 'tree').basic_search(system: 'SNES')
 ```
 
 
