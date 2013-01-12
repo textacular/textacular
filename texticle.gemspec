@@ -25,7 +25,8 @@ Gem::Specification.new do |s|
     'lib/texticle/full_text_indexer.rb',
     'lib/texticle/rails.rb',
     'lib/texticle/searchable.rb',
-    'lib/texticle/tasks.rb'
+    'lib/texticle/tasks.rb',
+    'lib/texticle/postgres_module_installer.rb'
   ]
   s.executables   = []
   s.test_files    = [
