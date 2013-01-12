@@ -16,10 +16,10 @@ Gem::Specification.new do |s|
   s.homepage = 'http://texticle.github.com/texticle'
 
   s.files         = [
-    'CHANGELOG.rdoc',
+    'CHANGELOG.md',
     'Gemfile',
     'Manifest.txt',
-    'README.rdoc',
+    'README.md',
     'Rakefile',
     'lib/texticle.rb',
     'lib/texticle/full_text_indexer.rb',
@@ -40,11 +40,6 @@ Gem::Specification.new do |s|
     'spec/texticle_spec.rb'
   ]
   s.require_paths = ['lib']
-
-  s.extra_rdoc_files = ['Manifest.txt', 'CHANGELOG.rdoc', 'README.rdoc']
-  s.rdoc_options     = ['--main', 'README.rdoc']
-
-
 
   s.add_development_dependency 'pg', '~> 0.11.0'
   s.add_development_dependency 'shoulda', '~> 2.11.3'
