@@ -1,64 +1,79 @@
-= texticle
+# texticle
 
-Further documentation available at:
+Further documentation available at http://texticle.github.com/texticle.
 
-* http://tenderlove.github.com/texticle
 
-== DESCRIPTION:
+## DESCRIPTION:
 
 Texticle exposes full text search capabilities from PostgreSQL,
 extending ActiveRecord with scopes making search easy and fun!
 
-== FEATURES/PROBLEMS:
+
+## FEATURES/PROBLEMS:
 
 * Only works with PostgreSQL
 
-== SYNOPSIS:
 
-=== Quick Start
+## SYNOPSIS:
 
-* Rails 3
+### Quick Start
+
+#### Rails 3
 
 In the project's Gemfile add
 
     gem 'texticle', '~> 2.0', :require => 'texticle/rails'
 
-* ActiveRecord outside of Rails 3
 
-    require 'texticle'
-    ActiveRecord::Base.extend(Texticle)
+#### ActiveRecord outside of Rails 3
 
-=== Usage
+```ruby
+require 'texticle'
+ActiveRecord::Base.extend(Texticle)
+```
+
+
+### Usage
 
 Your models now have access to the search method:
 
-  Game.search('Sonic') # will search through the model's :string columns
-  Game.search(:title => 'Mario')
-  Game.search_by_title('Street Fighter').search_by_system('PS3')
-  Game.search_by_title_and_system('Final Fantasy', 'PS2')
-  Game.search_by_title_or_system('Final Fantasy, 'PS3')
+```ruby
+Game.search('Sonic') # will search through the model's :string columns
+Game.search(:title => 'Mario')
+Game.search_by_title('Street Fighter').search_by_system('PS3')
+Game.search_by_title_and_system('Final Fantasy', 'PS2')
+Game.search_by_title_or_system('Final Fantasy, 'PS3')
+```
 
 You can use '|' and '&' for logical conditions.
 
-  Game.search_by_title_or_system('Final Fantasy', 'PS3|Xbox')
+```ruby
+Game.search_by_title_or_system('Final Fantasy', 'PS3|Xbox')
+```
 
-=== Setting Language
+
+### Setting Language
 
 To set proper searching dictionary just override class method on your model:
 
-  def self.searchable_language
-    'russian'
-  end
+```ruby
+def self.searchable_language
+  'russian'
+end
+```
 
 And all your queries would go right! And don`t forget to change the migration for indexes, like shown below.
 
-=== Creating Indexes for Super Speed
+
+### Creating Indexes for Super Speed
 You can have Postgresql use an index for the full-text search.  To declare a full-text index, in a
 migration add code like the following:
 
-  execute "
-      create index on email_logs using gin(to_tsvector('english', subject));
-      create index on email_logs using gin(to_tsvector('english', email_address));"
+```ruby
+execute "
+    create index on email_logs using gin(to_tsvector('english', subject));
+    create index on email_logs using gin(to_tsvector('english', email_address));"
+```
 
 In the above example, the table email_logs has two text columns that we search against, subject and email_address.
 You will need to add an index for every text/string column you query against, or else Postgresql will revert to a
@@ -66,18 +81,25 @@ full table scan instead of using the indexes.
 
 If you create these indexes, you should also switch to sql for your schema_format in `config/application.rb`:
 
-  config.active_record.schema_format = :sql
+```ruby
+config.active_record.schema_format = :sql
+```
 
-== REQUIREMENTS:
+
+## REQUIREMENTS:
 
 * ActiveRecord
 * Ruby 1.9.2
 
-== INSTALL:
 
-* gem install texticle
+## INSTALL:
 
-== LICENSE:
+```
+$ gem install texticle
+```
+
+
+## LICENSE:
 
 (The MIT License)
 
