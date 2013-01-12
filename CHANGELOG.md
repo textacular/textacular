@@ -1,162 +1,151 @@
-== 2.1.0
+# Change Log
+
+## 2.1.1
+
+* 1 bugfix
+  * Include `lib/texticle/version.rb` in the gemspec so the gem will load. Sorry!
+
+
+## 2.1.0
 
 * 1 DEPRECATION
-
   * `search` aliases new `advanced_search` method (same functionality as before), but will
     alias `basic_search` in 3.0! Should print warnings.
-
 * 3 new features
-
   * Generate full text search indexes from a rake task (sort of like in 1.x). Supply a specific
     model name.
   * New search methods: `basic_search`, `advanced_search` and `fuzzy_search`. Basic allows special
     characters like &, and % in search terms. Fuzzy is based on Postgres's trigram matching extension
     pg_trgm. Advanced is the same functionality from `search` previously.
   * Rake task that installs pg_trgm now works on Postgres 9.1 and up.
-
 * 2 dev improvements
-
   * Test database configuration not automatically generated from a rake task and ignored by git.
   * New interactive developer console (powered by pry).
 
-== 2.0.3
+
+## 2.0.3
 
 * 1 new feature
-
   * Allow searching through relations. Model.join(:relation).search(:relation => {:column => "query"})
     works, and reduces the need for multi-model tables. Huge thanks to Ben Hamill for the pull request.
   * Allow searching through all model columns irrespective of the column's type; we cast all columns to text
     in the search query. Performance may degrade when searching through anything but a string column.
-
 * 2 bugfixes
-
   * Fix exceptions when adding Texticle to a table-less model.
   * Column names in a search query are now scoped to the current table.
-
 * 1 dev improvement
-
   * Running `rake` from the project root will setup the test environment by creating a test database
     and running the necessary migrations. `rake` can also be used to run all the project tests.
 
-== 2.0.2
+
+## 2.0.2
 
 * 1 bugfix
-
   * Our #respond_to? overwritten method was causing failures when a model didn't have
     a table (e.g. if migrations hadn't been run yet). Not the case anymore.
 
-== 2.0.1
+
+## 2.0.1
 
 * 1 new feature
-
   * Can now define #searchable_language to specify the language used for the query. This changes
     what's considered a stop word on Postgres' side. 'english' is the default language.
-
 * 1 bugfix
-
   * We were only specifying a language in to_tsvector() and not in to_tsquery(), which could
     cause queries to fail if the default database language wasn't set to 'english'.
 
-== 2.0.pre4
+
+## 2.0.pre4
 
 * 1 new feature
-
   * Searchable is now available to specify which columns you want searched:
 
+      ```ruby
       require 'texticle/searchable'
       class Game
         extend Searchable(:title)
       end
+      ```
 
-    This also allows Texticle use in Rails without having #search available to all models:
+      This also allows Texticle use in Rails without having #search available to all models:
 
+      ```
       gem 'texticle', '~> 2.0.pre4', :require => 'texticle/searchable'
-
+      ```
 * 1 bugfix
-
   * ActiveRecord::Base.extend(Texticle) doesn't break #method_missing and #respond_to? anymore
 
 
-== 2.0.pre3
+## 2.0.pre3
 
 * 1 new feature
-
   * #select calls now limit the columns that are searched
-
 * 1 bugfix
-
   * #search calls without an argument assume an empty string as a search term (it errored out previously)
 
-== 2.0.pre2
+
+## 2.0.pre2
 
 * 1 bugfix
-
   * #respond_to? wasn't overwritten correctly
 
-=== 2.0.pre
+## 2.0.pre
 
 * Complete refactoring of Texticle
-
   * For users:
-
     * Texticle should only be used for its simplicity; if you need to deeply configure your text search, please give `gem install pg_search` a try.
-    * #search method is now included in all ActiveRecord models by default, and searches across a model's :string columns.
-    * #search_by_<column> dynamic methods are now available.
-    * #search can now be chained; Game.search_by_title("Street Fighter").search_by_system("PS3") works.
-    * #search now accepts a hash to specify columns to be searched, e.g. Game.search(:name => "Mario")
-    * No more access to #rank values for results (though they're still ordered by rank).
+    * `#search` method is now included in all ActiveRecord models by default, and searches across a model's :string columns.
+    * `#search_by_<column>` dynamic methods are now available.
+    * `#search` can now be chained; `Game.search_by_title("Street Fighter").search_by_system("PS3")` works.
+    * `#search` now accepts a hash to specify columns to be searched, e.g. `Game.search(:name => "Mario")`
+    * No more access to `#rank` values for results (though they're still ordered by rank).
     * No way to give different weights to different columns in this release.
-
   * For devs:
-
     * We now have actual tests to run against; this will make accepting pull requests much more enjoyable.
 
-=== HEAD (unreleased)
+
+## HEAD (unreleased)
 
 * 1 minor bugfix
-
   * Multiple named indices are now supported.
 
-=== 1.0.4 / 2010-08-19
+
+## 1.0.4 / 2010-08-19
 
 * 2 major enhancements
-
   * use Rails.root instead of RAILS_ROOT
   * refactored tasks to ease maintainance and patchability
-
 * 3 minor enhancements
-
   * fix timestamp for migrationfile
   * fixed deprecation warning for rails3 (dropping rails2-support)
   * prevented warning about defined constant
 
-=== 1.0.3 / 2010-07-07
+
+## 1.0.3 / 2010-07-07
 
 * 1 major enhancement
-
   * Added Rails 3 support.
-
 * 1 bugfix
-
   * Model names that end in double 's's (like Address) don't choke the rake tasks anymore.
 
-=== 1.0.2 / 2009-10-17
+
+## 1.0.2 / 2009-10-17
 
 * 1 bugfix
-
   * Generated migration now uses UTC time rather than local time.
 
-=== 1.0.1 / 2009-04-14
+
+## 1.0.1 / 2009-04-14
 
 * 1 minor enhancement
-
   * Textical adds a rake task to generate FTS index migrations.  Just run:
 
+      ```
       rake textical:migration
+      ```
 
-=== 1.0.0 / 2009-04-14
+
+## 1.0.0 / 2009-04-14
 
 * 1 major enhancement
-
   * Birthday!
-
