@@ -47,5 +47,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pry'
   s.add_development_dependency 'pry-doc'
 
-  s.add_dependency('activerecord', '~> 3.0')
+  s.add_dependency('activerecord', [">= 3.1", "< 4.1"])
 end
