@@ -18,7 +18,6 @@ Gem::Specification.new do |s|
   s.files         = [
     'CHANGELOG.md',
     'Gemfile',
-    'Manifest.txt',
     'README.md',
     'Rakefile',
     'lib/textacular.rb',
