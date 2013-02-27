@@ -18,14 +18,14 @@ extending ActiveRecord with scopes making search easy and fun!
 
 ### Quick Start
 
-#### Rails 3
+#### Rails 3 (or 4!)
 
 In the project's Gemfile add
 
     gem 'textacular', '~> 2.0', require: 'textacular/rails'
 
 
-#### ActiveRecord outside of Rails 3
+#### ActiveRecord outside of Rails
 
 ```ruby
 require 'textacular'
