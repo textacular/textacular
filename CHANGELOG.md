@@ -1,5 +1,10 @@
 # Change Log
 
+## Unreleased
+
+* 1 new feature
+  * Expand gemspec to allow Rails 4.
+
 ## 2.1.1
 
 * 1 bugfix
