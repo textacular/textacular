@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+* 1 DEPRECATION
+  * The whole gem is being renamed and will no longer be maintained as Texticle.
+    The new name it Textacular.
 * 1 new feature
   * Expand gemspec to allow Rails 4.
 
