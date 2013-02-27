@@ -22,7 +22,7 @@ extending ActiveRecord with scopes making search easy and fun!
 
 In the project's Gemfile add
 
-    gem 'textacular', '~> 2.0', require: 'textacular/rails'
+    gem 'textacular', '~> 3.0', require: 'textacular/rails'
 
 
 #### ActiveRecord outside of Rails
