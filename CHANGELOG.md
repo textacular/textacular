@@ -1,6 +1,6 @@
 # Change Log
 
-## Unreleased
+## 2.2.0
 
 * 1 DEPRECATION
   * The whole gem is being renamed and will no longer be maintained as Texticle.
