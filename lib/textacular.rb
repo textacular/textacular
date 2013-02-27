@@ -1,8 +1,8 @@
 require 'active_record'
 
-require 'texticle/version'
+require 'textacular/version'
 
-module Texticle
+module Textacular
   def self.searchable_language
     'english'
   end
@@ -164,7 +164,7 @@ module Texticle
   end
 
   def searchable_language
-    Texticle.searchable_language
+    Textacular.searchable_language
   end
 
   module Helper
@@ -225,4 +225,4 @@ module Texticle
   end
 end
 
-require File.expand_path(File.dirname(__FILE__) + '/texticle/full_text_indexer')
+require File.expand_path(File.dirname(__FILE__) + '/textacular/full_text_indexer')

@@ -1,4 +1,4 @@
-module Texticle
+module Textacular
   class PostgresModuleInstaller
     def install_module(module_name)
       major, minor, patch = postgres_version.split('.')

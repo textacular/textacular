@@ -1,4 +1,4 @@
-class Texticle::FullTextIndexer
+class Textacular::FullTextIndexer
   def generate_migration(model_name)
     stream_output do |io|
       io.puts(<<-MIGRATION)
@@ -74,6 +74,6 @@ SQL
   end
 
   def dictionary
-    Texticle.searchable_language
+    Textacular.searchable_language
   end
 end

@@ -1,9 +1,9 @@
-require 'texticle'
+require 'textacular'
 
 def Searchable(*searchable_columns)
   Module.new do
 
-    include Texticle
+    include Textacular
 
     define_method(:searchable_columns) do
       searchable_columns.map(&:to_s)
@@ -17,4 +17,4 @@ def Searchable(*searchable_columns)
   end
 end
 
-Searchable = Texticle
+Searchable = Textacular

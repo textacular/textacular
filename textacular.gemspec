@@ -1,19 +1,19 @@
 # -*- encoding: utf-8 -*-
 
-require File.expand_path('../lib/texticle/version', __FILE__)
+require File.expand_path('../lib/textacular/version', __FILE__)
 
 Gem::Specification.new do |s|
-  s.name    = 'texticle'
-  s.version = Texticle::VERSION
+  s.name    = 'textacular'
+  s.version = Textacular::VERSION
 
-  s.summary     = 'Texticle exposes full text search capabilities from PostgreSQL'
-  s.description = 'Texticle exposes full text search capabilities from PostgreSQL, extending
+  s.summary     = 'Textacular exposes full text search capabilities from PostgreSQL'
+  s.description = 'Textacular exposes full text search capabilities from PostgreSQL, extending
     ActiveRecord with scopes making search easy and fun!'
 
   s.license  = 'MIT'
   s.authors  = ['Ben Hamill', 'ecin', 'Aaron Patterson']
   s.email    = ['git-commits@benhamill.com', 'ecin@copypastel.com']
-  s.homepage = 'http://texticle.github.com/texticle'
+  s.homepage = 'http://textacular.github.com/textacular'
 
   s.files         = [
     'CHANGELOG.md',
@@ -21,13 +21,13 @@ Gem::Specification.new do |s|
     'Manifest.txt',
     'README.md',
     'Rakefile',
-    'lib/texticle.rb',
-    'lib/texticle/full_text_indexer.rb',
-    'lib/texticle/postgres_module_installer.rb',
-    'lib/texticle/rails.rb',
-    'lib/texticle/searchable.rb',
-    'lib/texticle/tasks.rb',
-    'lib/texticle/version.rb'
+    'lib/textacular.rb',
+    'lib/textacular/full_text_indexer.rb',
+    'lib/textacular/postgres_module_installer.rb',
+    'lib/textacular/rails.rb',
+    'lib/textacular/searchable.rb',
+    'lib/textacular/tasks.rb',
+    'lib/textacular/version.rb'
   ]
   s.executables   = []
   s.test_files    = [
@@ -36,8 +36,8 @@ Gem::Specification.new do |s|
     'spec/fixtures/game.rb',
     'spec/fixtures/webcomic.rb',
     'spec/spec_helper.rb',
-    'spec/texticle/searchable_spec.rb',
-    'spec/texticle_spec.rb'
+    'spec/textacular/searchable_spec.rb',
+    'spec/textacular_spec.rb'
   ]
   s.require_paths = ['lib']
 

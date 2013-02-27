@@ -3,10 +3,10 @@ CHANGELOG.rdoc
 Manifest.txt
 README.rdoc
 Rakefile
-lib/texticle.rb
-lib/texticle/rails.rb
-lib/texticle/searchable.rb
+lib/textacular.rb
+lib/textacular/rails.rb
+lib/textacular/searchable.rb
 spec/config.yml
 spec/spec_helper.rb
-spec/texticle_spec.rb
-spec/texticle/searchable_spec.rb
+spec/textacular_spec.rb
+spec/textacular/searchable_spec.rb

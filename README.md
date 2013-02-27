@@ -1,11 +1,11 @@
-# texticle
+# textacular
 
-Further documentation available at http://texticle.github.com/texticle.
+Further documentation available at http://textacular.github.com/textacular.
 
 
 ## DESCRIPTION:
 
-Texticle exposes full text search capabilities from PostgreSQL,
+Textacular exposes full text search capabilities from PostgreSQL,
 extending ActiveRecord with scopes making search easy and fun!
 
 
@@ -22,15 +22,15 @@ extending ActiveRecord with scopes making search easy and fun!
 
 In the project's Gemfile add
 
-    gem 'texticle', '~> 2.0', require: 'texticle/rails'
+    gem 'textacular', '~> 2.0', require: 'textacular/rails'
 
 
 #### ActiveRecord outside of Rails 3
 
 ```ruby
-require 'texticle'
+require 'textacular'
 
-ActiveRecord::Base.extend(Texticle)
+ActiveRecord::Base.extend(Textacular)
 ```
 
 
@@ -113,7 +113,7 @@ config.active_record.schema_format = :sql
 ## INSTALL:
 
 ```
-$ gem install texticle
+$ gem install textacular
 ```
 
 

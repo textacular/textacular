@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'texticle/searchable'
+require 'textacular/searchable'
 
 class SearchableTest < Test::Unit::TestCase
   context "when extending an ActiveRecord::Base subclass" do

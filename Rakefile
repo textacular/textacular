@@ -16,7 +16,7 @@ end
 desc "Fire up an interactive terminal to play with"
 task :console do
   require 'pry'
-  require File.expand_path(File.dirname(__FILE__) + '/lib/texticle')
+  require File.expand_path(File.dirname(__FILE__) + '/lib/textacular')
 
   config = YAML.load_file File.expand_path(File.dirname(__FILE__) + '/spec/config.yml')
   ActiveRecord::Base.establish_connection config.merge(:adapter => :postgresql)
@@ -42,7 +42,7 @@ task :console do
 
   # start the console! :-)
   welcome = <<-EOS
-    Welcome to the Texticle devloper console. You have some classes you can play with:
+    Welcome to the Textacular devloper console. You have some classes you can play with:
 
       class Character < ActiveRecord::Base
         # string :name
@@ -72,9 +72,9 @@ task :console do
 end
 
 task :test do
-  require 'texticle_spec'
-  require 'texticle/searchable_spec'
-  require 'texticle/full_text_indexer_spec'
+  require 'textacular_spec'
+  require 'textacular/searchable_spec'
+  require 'textacular/full_text_indexer_spec'
 end
 
 namespace :db do
@@ -96,7 +96,7 @@ namespace :db do
       end
 
       STDOUT.puts "Creating database..."
-      `createdb texticle`
+      `createdb textacular`
 
       STDOUT.puts "Writing configuration file..."
 

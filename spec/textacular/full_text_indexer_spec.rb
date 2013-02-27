@@ -5,7 +5,7 @@ class FullTextIndexerTest < Test::Unit::TestCase
   context ".stream_output" do
     context "when Rails is not defined" do
       setup do
-        @indexer = Texticle::FullTextIndexer.new
+        @indexer = Textacular::FullTextIndexer.new
       end
 
       should "point to stdout" do
@@ -32,7 +32,7 @@ class FullTextIndexerTest < Test::Unit::TestCase
 
         @now = Time.now
 
-        @indexer = Texticle::FullTextIndexer.new
+        @indexer = Textacular::FullTextIndexer.new
       end
 
       teardown do
@@ -56,7 +56,7 @@ class FullTextIndexerTest < Test::Unit::TestCase
 
   context "when we've listed one specific field in a Searchable call" do
     setup do
-      @indexer = Texticle::FullTextIndexer.new
+      @indexer = Textacular::FullTextIndexer.new
       @output = StringIO.new
       @indexer.instance_variable_set(:@output_stream, @output)
     end
@@ -89,7 +89,7 @@ MIGRATION
 
   context "when we've listed two specific fields in a Searchable call" do
     setup do
-      @indexer = Texticle::FullTextIndexer.new
+      @indexer = Textacular::FullTextIndexer.new
       @output = StringIO.new
       @indexer.instance_variable_set(:@output_stream, @output)
     end

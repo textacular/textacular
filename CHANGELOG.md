@@ -11,7 +11,7 @@
 ## 2.1.1
 
 * 1 bugfix
-  * Include `lib/texticle/version.rb` in the gemspec so the gem will load. Sorry!
+  * Include `lib/textacular/version.rb` in the gemspec so the gem will load. Sorry!
 
 
 ## 2.1.0
@@ -39,7 +39,7 @@
   * Allow searching through all model columns irrespective of the column's type; we cast all columns to text
     in the search query. Performance may degrade when searching through anything but a string column.
 * 2 bugfixes
-  * Fix exceptions when adding Texticle to a table-less model.
+  * Fix exceptions when adding Textacular to a table-less model.
   * Column names in a search query are now scoped to the current table.
 * 1 dev improvement
   * Running `rake` from the project root will setup the test environment by creating a test database
@@ -69,19 +69,19 @@
   * Searchable is now available to specify which columns you want searched:
 
       ```ruby
-      require 'texticle/searchable'
+      require 'textacular/searchable'
       class Game
         extend Searchable(:title)
       end
       ```
 
-      This also allows Texticle use in Rails without having #search available to all models:
+      This also allows Textacular use in Rails without having #search available to all models:
 
       ```
-      gem 'texticle', '~> 2.0.pre4', :require => 'texticle/searchable'
+      gem 'textacular', '~> 2.0.pre4', :require => 'textacular/searchable'
       ```
 * 1 bugfix
-  * ActiveRecord::Base.extend(Texticle) doesn't break #method_missing and #respond_to? anymore
+  * ActiveRecord::Base.extend(Textacular) doesn't break #method_missing and #respond_to? anymore
 
 
 ## 2.0.pre3
@@ -99,9 +99,9 @@
 
 ## 2.0.pre
 
-* Complete refactoring of Texticle
+* Complete refactoring of Textacular
   * For users:
-    * Texticle should only be used for its simplicity; if you need to deeply configure your text search, please give `gem install pg_search` a try.
+    * Textacular should only be used for its simplicity; if you need to deeply configure your text search, please give `gem install pg_search` a try.
     * `#search` method is now included in all ActiveRecord models by default, and searches across a model's :string columns.
     * `#search_by_<column>` dynamic methods are now available.
     * `#search` can now be chained; `Game.search_by_title("Street Fighter").search_by_system("PS3")` works.
