@@ -8,8 +8,7 @@ module Textacular
   end
 
   def search(query = "", exclusive = true)
-    warn "[DEPRECATION] `search` is deprecated. Please use `advanced_search` instead. At the next major release `search` will become an alias for `basic_search`."
-    advanced_search(query, exclusive)
+    basic_search(query, exclusive)
   end
 
   def basic_search(query = "", exclusive = true)

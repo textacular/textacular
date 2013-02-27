@@ -1,5 +1,10 @@
 # Change Log
 
+## Unreleased
+
+* All deprecations have been resolved. This breaks backwards compatibility.
+* Rename gem to Textacular.
+
 ## 2.2.0
 
 * 1 DEPRECATION
