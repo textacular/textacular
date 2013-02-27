@@ -37,7 +37,7 @@
       padding: 20px 40px 20px 40px;
     }
 
-    div.gist{
+    div.gist, .gist div {
       padding: 0;
     }
 
@@ -210,7 +210,7 @@
         <div>
           <ul>
             <li><span class='comment'>Inside your Gemfile</span></li>
-            <li>gem <b>'textacular'</b>, "2.0", :require => 'textacular/rails'</li>
+            <li>gem <b>'textacular'</b>, "~> 3.0", require: 'textacular/rails'</li>
           </ul>
           <br>
           <ul>
@@ -234,19 +234,24 @@
       </h2><span class='comment'>forget about LIKE %</span>
       <div>
         <ul>
-          <li>Game.create :title => 'Street Fighter 4', :system => 'PS3'</li>
+          <li>Game.create title: 'Street Fighter 4', system: 'PS3'</li>
           <br>
           <li><span class='comment'>Search across all :string fields</span></li>
           <li>Game.search 'street' <span class='comment'># => [ #&lt;Game id: 1, title: "Street Fighter 4" ...&gt; ]</span></li>
           <br>
           <li><span class='comment'>Can also use a hash to specify a field</span></li>
-          <li>Game.search(:system => "PS3")</li>
+          <li>Game.search(system: "PS3")</li>
           <br>
           <li><span class='comment'>... or a dynamic search method.</span></li>
           <li>Game.search_by_title("fighter")</li>
           <br>
           <li><span class='comment'>Can even chain searches!</span></li>
-          <li>Game.search(:title => "fighter").search(:system => "PS3")</li>
+          <li>Game.search(title: "fighter").search(system: "PS3")</li>
+        </ul>
+      </div>
+      <div>
+        <ul>
+          <li><span class='comment'>Check out the <a href="https://github.com/textacular/textacular#usage">README</a> for more examples.</span></li>
         </ul>
       </div>
     </div>
