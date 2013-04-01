@@ -145,9 +145,17 @@ module Textacular
   def assemble_query(similarities, conditions, exclusive)
     rank = connection.quote_column_name('rank' + rand(100000000000000000).to_s)
 
-    select("#{quoted_table_name + '.*,' if scoped.select_values.empty?} #{similarities.join(" + ")} AS #{rank}").
+    select("#{quoted_table_name + '.*,' if select_values.empty?} #{similarities.join(" + ")} AS #{rank}").
       where(conditions.join(exclusive ? " AND " : " OR ")).
       order("#{rank} DESC")
+  end
+
+  def select_values
+    if ActiveRecord::VERSION::MAJOR == 4
+      all.select_values
+    else
+      scoped.select_values
+    end
   end
 
   def searchable_columns
