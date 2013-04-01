@@ -82,7 +82,7 @@ module Textacular
         results += parse_query_hash(search_term, column_or_table)
       else
         column = connection.quote_column_name(column_or_table)
-        search_term = connection.quote normalize(Helper.normalize(search_term))
+        search_term = connection.quote Helper.normalize(search_term)
 
         results << [table_name, column, search_term]
       end
@@ -145,13 +145,17 @@ module Textacular
   def assemble_query(similarities, conditions, exclusive)
     rank = connection.quote_column_name('rank' + rand.to_s)
 
-    select("#{quoted_table_name + '.*,' if scoped.select_values.empty?} #{similarities.join(" + ")} AS #{rank}").
+    select("#{quoted_table_name + '.*,' if select_values.empty?} #{similarities.join(" + ")} AS #{rank}").
       where(conditions.join(exclusive ? " AND " : " OR ")).
       order("#{rank} DESC")
   end
 
-  def normalize(query)
-    query
+  def select_values
+    if ActiveRecord::VERSION::MAJOR == 4
+      all.select_values
+    else
+      scoped.select_values
+    end
   end
 
   def searchable_columns
