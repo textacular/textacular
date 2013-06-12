@@ -57,7 +57,24 @@ Game.advanced_search(system: '!PS2')
 ```
 
 Finally, the `#fuzzy_search` method lets you use Postgres's trigram search
-funcionality:
+funcionality.
+
+In order to use this, you'll need to make sure your database has the `pg_trgm`
+module installed. On your development machine, you can run
+
+```
+rake textacular:install_trigram
+```
+
+Depending on your production environment, you might be able to use the rake
+task, or you might have to manually run a command. For Postgres 9.1 and above,
+you'll want to run
+
+```sql
+CREATE EXTENSION pg_trgm;
+```
+
+Once that's installed, you can use it like this:
 
 ```ruby
 Comic.fuzzy_search(title: 'Questio') # matches Questionable Content
@@ -69,11 +86,14 @@ Searches are also chainable:
 Game.fuzzy_search(title: 'tree').basic_search(system: 'SNES')
 ```
 
-If you want to search on two or more fields with the OR operator use a hash for the conditions and pass false as 
-the second parameter:
+If you want to search on two or more fields with the OR operator use a hash for
+the conditions and pass false as the second parameter:
+
 ```ruby
 Game.basic_search({name: 'Mario', nickname: 'Mario'}, false)
 ```
+
+
 ### Setting Language
 
 To set proper searching dictionary just override class method on your model:
