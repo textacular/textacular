@@ -187,7 +187,7 @@ class TextacularTest < Test::Unit::TestCase
       end
 
       should "allow for 2 arguments to #respond_to?" do
-        assert GameExtendedWithTextacular.respond_to?(:normalize, true)
+        assert GameExtendedWithTextacular.respond_to?(:searchable_language, true)
       end
     end
 
