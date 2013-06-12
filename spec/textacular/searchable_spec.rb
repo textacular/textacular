@@ -61,7 +61,7 @@ class SearchableTest < Test::Unit::TestCase
         begin
           WebComicWithSearchableName.searchable_columns
         rescue NoMethodError => error
-          assert_match error.message, /private method/
+          assert_match /private method/, error.message
         end
       end
 

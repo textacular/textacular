@@ -138,6 +138,7 @@ namespace :db do
         table.integer :web_comic_id
       end
     end
+    ActiveRecord::Base.connection.execute "CREATE EXTENSION pg_trgm;"
   end
 
   desc 'Drop tables from test database'
