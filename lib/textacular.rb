@@ -143,7 +143,7 @@ module Textacular
   end
 
   def assemble_query(similarities, conditions, exclusive)
-    rank = connection.quote_column_name('rank' + rand.to_s)
+    rank = connection.quote_column_name('rank' + rand(100000000000000000).to_s)
 
     select("#{quoted_table_name + '.*,' if scoped.select_values.empty?} #{similarities.join(" + ")} AS #{rank}").
       where(conditions.join(exclusive ? " AND " : " OR ")).
