@@ -33,7 +33,7 @@ module Textacular
   end
 
   def method_missing(method, *search_terms)
-    return super if self == ActiveRecord::Base
+    return super if self.abstract_class?
     if Helper.dynamic_search_method?(method, self.columns)
       exclusive = Helper.exclusive_dynamic_search_method?(method, self.columns)
       columns = exclusive ? Helper.exclusive_dynamic_search_columns(method) : Helper.inclusive_dynamic_search_columns(method)

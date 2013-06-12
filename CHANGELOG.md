@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* Fix method_missing in ActiveRecord 4.0.0.rc2.
 * Remove unused `Textacular#normalize` method.
 * Add OR example to the README.
 * Fix tests for Ruby 2.0.0 & related improvements.
