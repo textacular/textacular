@@ -69,7 +69,11 @@ Searches are also chainable:
 Game.fuzzy_search(title: 'tree').basic_search(system: 'SNES')
 ```
 
-
+If you want to search on two or more fields with the OR operator use a hash for the conditions and pass false as 
+the second parameter:
+```ruby
+Game.basic_search({name: 'Mario', nickname: 'Mario'}, false)
+```
 ### Setting Language
 
 To set proper searching dictionary just override class method on your model:
