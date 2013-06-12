@@ -47,7 +47,7 @@ class SearchableTest < Test::Unit::TestCase
         should "be not fine with searching for crazy character #{search_term} with advanced search" do
           # Uses to_tsquery
           assert_raise(ActiveRecord::StatementInvalid) do
-            WebComicWithSearchableName.advanced_search(search_term).all
+            WebComicWithSearchableName.advanced_search(search_term).first
           end
         end
       end
