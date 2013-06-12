@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* Avoid Deprecation warnings from ActiveRecord 4.0.0.rc2.
 * Fix method_missing in ActiveRecord 4.0.0.rc2.
 * Remove unused `Textacular#normalize` method.
 * Add OR example to the README.
