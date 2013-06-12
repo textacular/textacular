@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+
+* Fix tests for Ruby 2.0.0 & related improvements.
+
 ## 3.0.0
 
 * All deprecations have been resolved. This breaks backwards compatibility.
