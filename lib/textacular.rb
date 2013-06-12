@@ -53,7 +53,7 @@ module Textacular
   end
 
   def respond_to?(method, include_private = false)
-    return super if self == ActiveRecord::Base
+    return super if self.abstract_class?
     Helper.dynamic_search_method?(method, self.columns) or super
   rescue StandardError
     super
