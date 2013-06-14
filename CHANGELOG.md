@@ -7,6 +7,7 @@
 * Remove unused `Textacular#normalize` method.
 * Add OR example to the README.
 * Fix tests for Ruby 2.0.0 & related improvements.
+* Improve Rails integration.
 
 ## 3.0.0
 

@@ -6,5 +6,9 @@ module Textacular
     initializer "textacular.configure_rails_initialization" do
       ActiveRecord::Base.extend(Textacular)
     end
+
+    rake_tasks do
+      load 'textacular/tasks.rb'
+    end
   end
 end

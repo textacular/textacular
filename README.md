@@ -22,7 +22,7 @@ extending ActiveRecord with scopes making search easy and fun!
 
 In the project's Gemfile add
 
-    gem 'textacular', '~> 3.0', require: 'textacular/rails'
+    gem 'textacular', '~> 3.0'
 
 
 #### ActiveRecord outside of Rails
@@ -60,7 +60,7 @@ Finally, the `#fuzzy_search` method lets you use Postgres's trigram search
 funcionality.
 
 In order to use this, you'll need to make sure your database has the `pg_trgm`
-module installed. On your development machine, you can run
+module installed. On your development machine, you can `require textacular/tasks` and run
 
 ```
 rake textacular:install_trigram
