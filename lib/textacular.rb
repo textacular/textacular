@@ -229,3 +229,4 @@ module Textacular
 end
 
 require File.expand_path(File.dirname(__FILE__) + '/textacular/full_text_indexer')
+require 'textacular/rails' if defined?(::Rails)
