@@ -1,4 +1,5 @@
 database: textacular
-username: <username>
+username: <%= ENV[ 'USER' ] %>
 pool: 5
 timeout: 5000
+adapter: postgresql
