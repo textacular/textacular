@@ -1,5 +1,3 @@
-require 'active_record'
-
 class WebComic < ActiveRecord::Base
   # string :name
   # string :author

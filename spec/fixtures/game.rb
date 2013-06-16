@@ -1,5 +1,3 @@
-require 'active_record'
-
 class Game < ActiveRecord::Base
   # string :system
   # string :title
