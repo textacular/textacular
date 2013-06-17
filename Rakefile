@@ -1,19 +1,12 @@
-require 'rubygems'
-
-require 'rake'
-require 'yaml'
-require 'pg'
 require 'active_record'
-require 'benchmark'
-
+require 'rake/testtask'
 require 'pry'
 
-$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/spec')
-
-task :default do
-  Rake::Task["db:setup"].invoke
-  Rake::Task["test"].invoke
+Rake::TestTask.new do |t|
+  t.libs << 'spec'
+  t.test_files = FileList[ 'spec/**/*_spec.rb' ]
 end
+task :default => :test
 
 file 'spec/config.yml' do |t|
   sh 'erb spec/config.yml.example > spec/config.yml'
@@ -22,12 +15,6 @@ end
 desc 'Fire up an interactive terminal to play with'
 task :console => :'db:connect' do
   Pry.start
-end
-
-task :test do
-  require 'textacular_spec'
-  require 'textacular/searchable_spec'
-  require 'textacular/full_text_indexer_spec'
 end
 
 namespace :db do
