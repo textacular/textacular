@@ -3,6 +3,9 @@ require 'active_record'
 require 'textacular/version'
 
 module Textacular
+  autoload :FullTextIndexer,         'textacular/full_text_indexer'
+  autoload :PostgresModuleInstaller, 'textacular/postgres_module_installer'
+
   def self.searchable_language
     'english'
   end
@@ -228,5 +231,4 @@ module Textacular
   end
 end
 
-require File.expand_path(File.dirname(__FILE__) + '/textacular/full_text_indexer')
 require 'textacular/rails' if defined?(::Rails)
