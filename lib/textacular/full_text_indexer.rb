@@ -1,3 +1,5 @@
+require 'fileutils'
+
 class Textacular::FullTextIndexer
   def generate_migration(model_name)
     stream_output do |io|
@@ -21,6 +23,7 @@ MIGRATION
 
   def stream_output(now = Time.now.utc, &block)
     if !@output_stream && defined?(Rails)
+      FileUtils.mkdir_p(File.dirname(migration_file_name(now)))
       File.open(migration_file_name(now), 'w', &block)
     else
       @output_stream ||= $stdout
