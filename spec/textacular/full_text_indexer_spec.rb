@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'fileutils'
 
 class FullTextIndexerTest < Test::Unit::TestCase
   context ".stream_output" do
@@ -27,8 +26,6 @@ class FullTextIndexerTest < Test::Unit::TestCase
             File.join('.', 'fake_rails')
           end
         end
-
-        FileUtils.mkdir_p(File.join('.', 'fake_rails', 'db', 'migrate'))
 
         @now = Time.now
 
