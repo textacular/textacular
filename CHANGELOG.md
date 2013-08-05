@@ -10,6 +10,7 @@
 * Improve Rails integration.
 * Fix dependency loading for textacular rake tasks.
 * Fix ranking failures when rows had `NULL` column values.
+* Clean up Rakefile; should make developing the gem nicer.
 
 ## 3.0.0
 
