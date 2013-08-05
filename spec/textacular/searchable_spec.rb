@@ -9,6 +9,7 @@ class SearchableTest < Test::Unit::TestCase
         @jhony = WebComicWithSearchable.create :name => "Johnny Wander", :author => "Ananth & Yuko"
         @ddeeg = WebComicWithSearchable.create :name => "Dominic Deegan", :author => "Mookie"
         @penny = WebComicWithSearchable.create :name => "Penny Arcade", :author => "Tycho & Gabe"
+        @null  = WebComicWithSearchable.create :author => 'Foo'
       end
 
       teardown do
@@ -18,6 +19,13 @@ class SearchableTest < Test::Unit::TestCase
       should "search across all columns" do
         assert_equal [@penny], WebComicWithSearchable.advanced_search("Penny")
         assert_equal [@ddeeg], WebComicWithSearchable.advanced_search("Dominic")
+      end
+
+      should "still rank with NULL columns" do
+        comic = WebComicWithSearchable.basic_search('Foo').first
+        rank = comic.attributes.find { |key, value| key.to_s =~ /\Arank\d+\z/ }.last
+
+        assert rank
       end
     end
 
