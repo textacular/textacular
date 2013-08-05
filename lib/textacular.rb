@@ -104,7 +104,7 @@ module Textacular
   end
 
   def basic_similarity_string(table_name, column, search_term)
-    "ts_rank(to_tsvector(#{quoted_language}, #{table_name}.#{column}::text), plainto_tsquery(#{quoted_language}, #{search_term}::text))"
+    "COALESCE(ts_rank(to_tsvector(#{quoted_language}, #{table_name}.#{column}::text), plainto_tsquery(#{quoted_language}, #{search_term}::text)), 0)"
   end
 
   def basic_condition_string(table_name, column, search_term)
@@ -121,7 +121,7 @@ module Textacular
   end
 
   def advanced_similarity_string(table_name, column, search_term)
-    "ts_rank(to_tsvector(#{quoted_language}, #{table_name}.#{column}::text), to_tsquery(#{quoted_language}, #{search_term}::text))"
+    "COALESCE(ts_rank(to_tsvector(#{quoted_language}, #{table_name}.#{column}::text), to_tsquery(#{quoted_language}, #{search_term}::text)), 0)"
   end
 
   def advanced_condition_string(table_name, column, search_term)
