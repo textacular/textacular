@@ -4,7 +4,6 @@ class CreateWebComics < ActiveRecord::Migration
       table.string :name
       table.string :author
       table.text :review
-      table.integer :id
     end
   end
 end
