@@ -98,6 +98,10 @@ class SearchableTest < Test::Unit::TestCase
       should "allow includes" do
         assert_equal [@penny], WebComicWithSearchableNameAndAuthor.includes(:characters).advanced_search("Penny")
       end
+
+      should "allow includes" do
+        assert_equal [@penny], WebComicWithSearchableNameAndAuthor.includes(:characters).basic_search('Penny').where(:characters => { :name => 'Div' })
+      end
     end
   end
 end
