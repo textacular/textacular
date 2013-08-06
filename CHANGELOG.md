@@ -1,6 +1,6 @@
 # Change Log
 
-## Unreleased
+## 3.1.0
 
 * Avoid Deprecation warnings from ActiveRecord 4.0.0.rc2.
 * Fix `method_missing` in ActiveRecord 4.0.0.rc2.
