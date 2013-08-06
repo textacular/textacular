@@ -11,6 +11,8 @@
 * Fix dependency loading for textacular rake tasks.
 * Fix ranking failures when rows had `NULL` column values.
 * Clean up Rakefile; should make developing the gem nicer.
+* DEPRECATION: The dynamic search helpers will be removed at the next major
+  release.
 
 ## 3.0.0
 
