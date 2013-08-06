@@ -38,6 +38,7 @@ module Textacular
   def method_missing(method, *search_terms)
     return super if self.abstract_class?
     if Helper.dynamic_search_method?(method, self.columns)
+      warn("You are using a dynamic Textacular search method #{method}. These methods are deprecated and will be removed at the next major version release. Please use the has syntax for basic_search and advanced_search.")
       exclusive = Helper.exclusive_dynamic_search_method?(method, self.columns)
       columns = exclusive ? Helper.exclusive_dynamic_search_columns(method) : Helper.inclusive_dynamic_search_columns(method)
       metaclass = class << self; self; end
