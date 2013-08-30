@@ -11,6 +11,7 @@ namespace :textacular do
   desc "Install trigram text search module"
   task :install_trigram => [:environment] do
     installer = Textacular::PostgresModuleInstaller.new
+    installer.install_module('fuzzystrmatch')
     installer.install_module('pg_trgm')
 
     puts "Trigram text search module successfully installed into '#{installer.db_name}' database."
