@@ -12,6 +12,8 @@ extending ActiveRecord with scopes making search easy and fun!
 ## FEATURES/PROBLEMS:
 
 * Only works with PostgreSQL
+* Anything that mucks with the `SELECT` statement (notably `pluck`), is likely
+  to [cause problems](https://github.com/textacular/textacular/issues/28).
 
 
 ## SYNOPSIS:
