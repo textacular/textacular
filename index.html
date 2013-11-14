@@ -172,11 +172,6 @@
     <div>
       <h1>Text Search on Postgres</h1>
       <span class='comment'>reduce your text search dependencies</span>
-      <div>
-        <p class="quote">&#8220;Heroku’s <a href="http://docs.heroku.com/full-text-search">documentation</a> lists two ways to get full text indexing working with your Heroku application. They talk about using Ferret and Solr for full text indexes. The Ferret option looks OK, but it requires you to rebuild your indexes every time you push. Solr would work, but it requires an EC2 instance or some third party server. Since my budget is precisely $0, using Solr is out of the picture.</p>
-
-        <p class="quote">But there is a third option. A very secret option. A devious but fun option. You see, <a href="http://docs.heroku.com/database">Heroku runs PostgreSQL</a> for each rails application database. They’re running a version new enough (Version 8.3) to have full text index support built in. If we’re willing to throw out database agnosticism, we can take advantage of the database’s indexing capability. [...]&#8221; <a href="#footnote_1"><sup>1</sup></a></p>
-      </div>
       <h1>The Pros and Cons</h1>
       <span class='comment'>make sure textacular is right for you</span>
       <div>
@@ -290,10 +285,7 @@
         Credits
       </h1><span class='comment'>this gem brought to you by the following committers</span>
       <div id='githubPinboard'></div>
-            <div id='footnotes'>
-        <p><a name="footnote_1"><sup>1</sup></a>Excerpt from Aaron Patterson's artacular on <a href="http://tenderlovemaking.com/2009/10/17/full-text-search-on-heroku/">Full Text Search on Heroku</a>.</p>
-        <p><a name="footnote_2"><sup>2</sup></a>As of Postgres 9.0, <a href="http://github.com/mxcl/homebrew">homebrew</a> includes the 'contrib' modules. Sadly, they're still missing from <a href="http://www.heroku.com">Heroku</a>.</p>
-      </div>
+        <div id='footnotes'></div>
     </div>
   </body>
 </html>
