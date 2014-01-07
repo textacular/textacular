@@ -48,9 +48,12 @@ Game.basic_search(title: 'Mario', system: 'Nintendo')
 ```
 
 The `#advanced_search` method lets you use Postgres's search syntax like '|',
-'&' and '!' ('or', 'and', and 'not') as well as some other craziness. Check [the
-Postgres
-docs](http://www.postgresql.org/docs/9.2/static/datatype-textsearch.html) for more:
+'&' and '!' ('or', 'and', and 'not') as well as some other craziness. The ideal
+use for advanced_search is to take a search DSL you make up for your users and
+translate it to PG's syntax. If for some reason you want to put user input
+directly into an advanced search, you should be sure to catch exceptions from
+syntax errors. Check [the Postgres docs]
+(http://www.postgresql.org/docs/9.2/static/datatype-textsearch.html) for more:
 
 ```ruby
 Game.advanced_search(title: 'Street|Fantasy')
