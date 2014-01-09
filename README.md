@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/textacular/textacular.png)](https://travis-ci.org/textacular/textacular)
+[![Build Status](https://travis-ci.org/textacular/textacular.png)](https://travis-ci.org/textacular/textacular) [![Code Climate](https://codeclimate.com/github/textacular/textacular.png)](https://codeclimate.com/github/textacular/textacular)
 # textacular
 
 Further documentation available at http://textacular.github.com/textacular.
