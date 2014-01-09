@@ -1,0 +1,12 @@
+language: ruby
+rvm:
+  - 2.0.0
+  - 1.9.3
+env:
+  - DB=postgresql
+before_install:
+  - cp spec/config.travis.yml spec/config.yml
+  - psql -c 'create database textacular_test' -U postgres
+script:
+  - bundle exec rake db:migrate
+  - bundle exec rake

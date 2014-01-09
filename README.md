@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/textacular/textacular.png)](https://travis-ci.org/textacular/textacular)
 # textacular
 
 Further documentation available at http://textacular.github.com/textacular.
