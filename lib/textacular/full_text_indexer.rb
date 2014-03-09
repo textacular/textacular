@@ -1,9 +1,6 @@
-require 'fileutils'
-
 class Textacular::FullTextIndexer
   def generate_migration(model_name)
-    stream_output do |io|
-      io.puts(<<-MIGRATION)
+    content = <<-MIGRATION
 class #{model_name}FullTextSearch < ActiveRecord::Migration
   def self.up
     execute(<<-SQL.strip)
@@ -18,25 +15,12 @@ class #{model_name}FullTextSearch < ActiveRecord::Migration
   end
 end
 MIGRATION
-    end
-  end
-
-  def stream_output(now = Time.now.utc, &block)
-    if !@output_stream && defined?(Rails)
-      FileUtils.mkdir_p(File.dirname(migration_file_name(now)))
-      File.open(migration_file_name(now), 'w', &block)
-    else
-      @output_stream ||= $stdout
-
-      yield @output_stream
-    end
+    filename = "#{model_name.underscore}_full_text_search"
+    generator = Textacular::MigrationGenerator.new(content, filename)
+    generator.generate_migration
   end
 
   private
-
-  def migration_file_name(now = Time.now.utc)
-    File.join(Rails.root, 'db', 'migrate',"#{now.strftime('%Y%m%d%H%M%S')}_full_text_search.rb")
-  end
 
   def up_migration(model_name)
     migration_with_type(model_name, :up)
