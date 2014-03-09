@@ -46,6 +46,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', '~> 0.9.0'
   s.add_development_dependency 'pry'
   s.add_development_dependency 'pry-doc'
+  s.add_development_dependency 'flexmock'
 
   s.add_dependency('activerecord', [">= 3.0", "< 4.1"])
 end

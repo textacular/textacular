@@ -6,6 +6,7 @@ require 'pry'
 require 'active_record'
 require 'textacular'
 require 'textacular/searchable'
+require 'flexmock/test_unit'
 
 config = YAML.load_file File.expand_path(File.dirname(__FILE__) + '/config.yml')
 ActiveRecord::Base.establish_connection config.merge(:adapter => :postgresql)
