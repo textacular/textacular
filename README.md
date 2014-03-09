@@ -65,18 +65,11 @@ Finally, the `#fuzzy_search` method lets you use Postgres's trigram search
 funcionality.
 
 In order to use this, you'll need to make sure your database has the `pg_trgm`
-module installed. On your development machine, you can `require textacular/tasks` and run
+module installed. Create and run a migration to install the module:
 
 ```
-rake textacular:install_trigram
-```
-
-Depending on your production environment, you might be able to use the rake
-task, or you might have to manually run a command. For Postgres 9.1 and above,
-you'll want to run
-
-```sql
-CREATE EXTENSION pg_trgm;
+rake textacular:create_trigram_migration
+rake db:migrate
 ```
 
 Once that's installed, you can use it like this:

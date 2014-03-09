@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
     'Rakefile',
     'lib/textacular.rb',
     'lib/textacular/full_text_indexer.rb',
+    'lib/textacular/migration_generator.rb',
     'lib/textacular/postgres_module_installer.rb',
     'lib/textacular/rails.rb',
     'lib/textacular/searchable.rb',

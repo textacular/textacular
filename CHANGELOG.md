@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+
+* Add generator for trigram installation migration.
+
 ## 3.1.0
 
 * Avoid Deprecation warnings from ActiveRecord 4.0.0.rc2.
