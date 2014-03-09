@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
     'lib/textacular/rails.rb',
     'lib/textacular/searchable.rb',
     'lib/textacular/tasks.rb',
+    'lib/textacular/trigram_installer.rb',
     'lib/textacular/version.rb'
   ]
   s.executables   = []
