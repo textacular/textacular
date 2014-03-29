@@ -62,7 +62,7 @@ Game.advanced_search(system: '!PS2')
 ```
 
 Finally, the `#fuzzy_search` method lets you use Postgres's trigram search
-funcionality.
+functionality.
 
 In order to use this, you'll need to make sure your database has the `pg_trgm`
 module installed. On your development machine, you can `require textacular/tasks` and run
@@ -84,6 +84,15 @@ Once that's installed, you can use it like this:
 ```ruby
 Comic.fuzzy_search(title: 'Questio') # matches Questionable Content
 ```
+
+Note that fuzzy searches are subject to a similarity threshold imposed by the `pg_trgm` module. The default is 0.3, meaning that at least 30% of the total string must match your search content. For example:
+
+```ruby
+Comic.fuzzy_search(title: 'Pearls') # matches Pearls Before Swine
+Comic.fuzzy_search(title: 'Pear') # does not match Pearls Before Swine
+```
+
+For more info, view the `pg_trgm` documentation, specifically [F.35.2. Functions and Operators](http://www.postgresql.org/docs/9.1/static/pgtrgm.html).
 
 Searches are also chainable:
 
