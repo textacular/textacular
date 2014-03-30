@@ -15,4 +15,9 @@ namespace :textacular do
 
     puts "Trigram text search module successfully installed into '#{installer.db_name}' database."
   end
+
+  desc "Create trigram installer migration"
+  task :create_trigram_migration => [:environment] do
+    installer = Textacular::TrigramInstaller.new.generate_migration
+  end
 end

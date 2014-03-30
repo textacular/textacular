@@ -5,6 +5,8 @@ require 'textacular/version'
 module Textacular
   autoload :FullTextIndexer,         'textacular/full_text_indexer'
   autoload :PostgresModuleInstaller, 'textacular/postgres_module_installer'
+  autoload :TrigramInstaller,        'textacular/trigram_installer'
+  autoload :MigrationGenerator,      'textacular/migration_generator'
 
   def self.searchable_language
     'english'

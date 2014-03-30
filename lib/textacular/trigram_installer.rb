@@ -1,0 +1,18 @@
+class Textacular::TrigramInstaller
+  def generate_migration
+    content = <<-MIGRATION
+class InstallTrigram < ActiveRecord::Migration
+  def self.up
+    ActiveRecord::Base.connection.execute("CREATE EXTENSION pg_trgm;")
+  end
+
+  def self.down
+    ActiveRecord::Base.connection.execute("DROP EXTENSION pg_trgm;")
+  end
+end
+MIGRATION
+    filename = "install_trigram"
+    generator = Textacular::MigrationGenerator.new(content, filename)
+    generator.generate_migration
+  end
+end
