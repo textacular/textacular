@@ -1,3 +1,5 @@
+require "bundler/gem_tasks"
+
 require 'active_record'
 require 'rake/testtask'
 require 'pry'
