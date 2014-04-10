@@ -1,8 +1,9 @@
 # Change Log
 
-## Unreleased
+## 3.2.0
 
 * Add generator for trigram installation migration.
+* Expand gemspec to allow newest version of ActiveRecord.
 
 ## 3.1.0
 
