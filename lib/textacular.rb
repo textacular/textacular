@@ -141,7 +141,7 @@ module Textacular
   end
 
   def fuzzy_similarity_string(table_name, column, search_term)
-    "similarity(#{table_name}.#{column}, #{search_term})"
+    "COALESCE(similarity(#{table_name}.#{column}, #{search_term}), 0.0)"
   end
 
   def fuzzy_condition_string(table_name, column, search_term)
