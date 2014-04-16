@@ -68,7 +68,7 @@ class SearchableTest < Test::Unit::TestCase
         qcont_with_author = @qcont.becomes(WebComicWithSearchableNameAndAuthor)
         search_result = WebComicWithSearchableNameAndAuthor.fuzzy_search('Questio')
         assert_equal [qcont_with_author], search_result
-        assert_kind_of Numeric, search_result.first.attributes.find { |k, _| k[0..3] == 'rank' }.last
+        assert_kind_of Float, search_result.first.attributes.find { |k, _| k[0..3] == 'rank' }.last
       end
 
       should "define :searchable_columns as private" do
