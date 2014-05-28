@@ -17,7 +17,7 @@ MIGRATION
     migration_generator = flexmock
     flexmock(Textacular::MigrationGenerator).
       should_receive(:new).
-      with(content, filename).
+      with(filename, content).
       and_return(migration_generator)
     migration_generator.should_receive(:generate_migration)
     Textacular::TrigramInstaller.new.generate_migration

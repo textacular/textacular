@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+
+* Fix trigram installation migration reversed filename and content.
+
 ## 3.2.0
 
 * Add generator for trigram installation migration.

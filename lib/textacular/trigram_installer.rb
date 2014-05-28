@@ -12,7 +12,7 @@ class InstallTrigram < ActiveRecord::Migration
 end
 MIGRATION
     filename = "install_trigram"
-    generator = Textacular::MigrationGenerator.new(content, filename)
+    generator = Textacular::MigrationGenerator.new(filename, content)
     generator.generate_migration
   end
 end
