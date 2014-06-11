@@ -85,6 +85,12 @@ Comic.fuzzy_search(title: 'Pearls') # matches Pearls Before Swine
 Comic.fuzzy_search(title: 'Pear') # does not match Pearls Before Swine
 ```
 
+The similarity threshold is hardcoded in PostgreSQL and can be modified on a per-connection basis, for example:
+
+```ruby
+ActiveRecord::Base.connection.execute("SELECT set_limit(0.9);")
+```
+
 For more info, view the `pg_trgm` documentation, specifically [F.35.2. Functions and Operators](http://www.postgresql.org/docs/9.1/static/pgtrgm.html).
 
 Searches are also chainable:
