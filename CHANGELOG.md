@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* Update docs to reflect behaviour of pg_trgm
 * Fix trigram installation migration reversed filename and content.
 
 ## 3.2.0
