@@ -134,6 +134,22 @@ If you create these indexes, you should also switch to sql for your schema_forma
 config.active_record.schema_format = :sql
 ```
 
+### Searching JSON or other non-text fields
+
+You can search Postgres' JSON field (or other fields that are not textual) by converting them to text. For JSON
+fields this might look like:
+
+```ruby
+Game.fuzzy_search({"data->>a" => 'Mario', "data->>b" => 'Mario'}, false)
+```
+
+The Postgres JSON operator `->>` converts the field to a text type. You can also just use `cast(column as text)` in the same way for other non text fields. If you want to search all fields.
+
+For Array fields you can use `array_to_string(array, text_delimiter)`.
+
+```ruby
+Game.fuzzy_search({"array_to_string(list, ' '" => 'Mario'}, false)
+```
 
 ## REQUIREMENTS:
 
