@@ -31,7 +31,7 @@ class SearchableTest < Test::Unit::TestCase
 
     context "with one column as parameter" do
       setup do
-        @qcont = WebComicWithSearchableName.create :name => "Questionable Content", :author => "Jeph Jaques"
+        @qcont = WebComicWithSearchableName.create :name => "Questionable Content", :author => nil
         @jhony = WebComicWithSearchableName.create :name => "Johnny Wander", :author => "Ananth & Yuko"
         @ddeeg = WebComicWithSearchableName.create :name => "Dominic Deegan", :author => "Mookie"
         @penny = WebComicWithSearchableName.create :name => "Penny Arcade", :author => "Tycho & Gabe"
@@ -62,6 +62,13 @@ class SearchableTest < Test::Unit::TestCase
 
       should "fuzzy search stuff" do
         assert_equal [@qcont], WebComicWithSearchableName.fuzzy_search('Questio')
+      end
+
+      should "fuzzy return a valid rank when fuzzy searching on NULL columns" do
+        qcont_with_author = @qcont.becomes(WebComicWithSearchableNameAndAuthor)
+        search_result = WebComicWithSearchableNameAndAuthor.fuzzy_search('Questio')
+        assert_equal [qcont_with_author], search_result
+        assert_kind_of Float, search_result.first.attributes.find { |k, _| k[0..3] == 'rank' }.last
       end
 
       should "define :searchable_columns as private" do
