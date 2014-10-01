@@ -1,0 +1,8 @@
+pool: 5
+timeout: 5000
+host: localhost
+adapter: postgresql
+username: postgres
+password:
+database: textacular_test
+min_messages: ERROR
