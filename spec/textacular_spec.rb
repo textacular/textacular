@@ -55,18 +55,24 @@ RSpec.describe Textacular do
         @cricket = @jw.characters.create :name => 'Cricket', :description => 'Chirrup!'
       end
 
-      after do
-        TextacularWebComic.delete_all
-        Character.delete_all
-      end
-
       it "looks in the related model with nested searching syntax" do
-        expect(TextacularWebComic.joins(:characters).advanced_search(:characters => {:description => 'tall'})).
-          to eq([@jw])
-        expect(TextacularWebComic.joins(:characters).advanced_search(:characters => {:description => 'anger'}).sort).
-          to eq([@pa, @jw, @qc].sort)
-        expect(TextacularWebComic.joins(:characters).advanced_search(:characters => {:description => 'crude'}).sort).
-          to eq([@pa, @qc].sort)
+        expect(
+          TextacularWebComic.joins(:characters).advanced_search(
+            :characters => {:description => 'tall'}
+          )
+        ).to eq([@jw])
+
+        expect(
+          TextacularWebComic.joins(:characters).advanced_search(
+            :characters => {:description => 'anger'}
+          ).sort
+        ).to eq([@pa, @jw, @qc].sort)
+
+        expect(
+          TextacularWebComic.joins(:characters).advanced_search(
+            :characters => {:description => 'crude'}
+          ).sort
+        ).to eq([@pa, @qc].sort)
       end
     end
   end

@@ -46,6 +46,7 @@ Gem::Specification.new do |s|
   # s.add_development_dependency 'minitest', '~> 4.x'
   # s.add_development_dependency 'shoulda', '~> 2.11.3'
   s.add_development_dependency 'rspec'
+  s.add_development_dependency 'database_cleaner'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'pry'
   s.add_development_dependency 'pry-doc'
