@@ -32,12 +32,12 @@ Gem::Specification.new do |s|
   ]
   s.executables   = []
   s.test_files    = [
-    'spec/config.yml.example',
-    'spec/fixtures/character.rb',
-    'spec/fixtures/game.rb',
-    'spec/fixtures/webcomic.rb',
+    # 'spec/config.yml.example',
+    # 'spec/fixtures/character.rb',
+    # 'spec/fixtures/game.rb',
+    # 'spec/fixtures/webcomic.rb',
     'spec/spec_helper.rb',
-    'spec/textacular/searchable_spec.rb',
+    # 'spec/textacular/searchable_spec.rb',
     'spec/textacular_spec.rb'
   ]
   s.require_paths = ['lib']
@@ -51,5 +51,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pry-doc'
   s.add_development_dependency 'flexmock'
 
-  s.add_dependency('activerecord', [">= 3.0", "< 4.2"])
+  s.add_dependency('activerecord', "3.2.19")
+  # s.add_dependency('activerecord', [">= 3.0", "< 4.2"])
 end
