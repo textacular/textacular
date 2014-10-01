@@ -36,23 +36,41 @@ RSpec.describe Textacular do
     end
 
     context "when finding models based on searching a related model" do
-      before do
-        @qc = TextacularWebComic.create :name => "Questionable Content", :author => "Jeph Jaques"
-        @jw = TextacularWebComic.create :name => "Johnny Wander", :author => "Ananth & Yuko"
-        @pa = TextacularWebComic.create :name => "Penny Arcade", :author => "Tycho & Gabe"
+      let(:webcomics_with_tall_characters) do
+        [johnny_wander]
+      end
 
-        @gabe = @pa.characters.create :name => 'Gabe', :description => 'the simple one'
-        @tycho = @pa.characters.create :name => 'Tycho', :description => 'the wordy one'
-        @div = @pa.characters.create :name => 'Div', :description => 'a crude divx player with anger management issues'
+      let(:webcomics_with_angry_characters) do
+        [johnny_wander, penny_arcade, questionable_content]
+      end
 
-        @martin = @qc.characters.create :name => 'Martin', :description => 'the insecure protagonist'
-        @faye = @qc.characters.create :name => 'Faye', :description => 'a sarcastic barrista with anger management issues'
-        @pintsize = @qc.characters.create :name => 'Pintsize', :description => 'a crude AnthroPC'
+      let(:webcomics_with_crude_characters) do
+        [penny_arcade, questionable_content]
+      end
 
-        @ananth = @jw.characters.create :name => 'Ananth', :description => 'Stubble! What is under that hat?!?'
-        @yuko = @jw.characters.create :name => 'Yuko', :description => 'So... small. Carl Sagan haircut.'
-        @john = @jw.characters.create :name => 'John', :description => 'Tall. Anger issues?'
-        @cricket = @jw.characters.create :name => 'Cricket', :description => 'Chirrup!'
+      let!(:johnny_wander) do
+        TextacularWebComic.create(:name => "Johnny Wander", :author => "Ananth & Yuko").tap do |comic|
+          comic.characters.create :name => 'Ananth', :description => 'Stubble! What is under that hat?!?'
+          comic.characters.create :name => 'Yuko', :description => 'So... small. Carl Sagan haircut.'
+          comic.characters.create :name => 'John', :description => 'Tall. Anger issues?'
+          comic.characters.create :name => 'Cricket', :description => 'Chirrup!'
+        end
+      end
+
+      let!(:questionable_content) do
+        TextacularWebComic.create(:name => "Questionable Content", :author => "Jeph Jaques").tap do |comic|
+          comic.characters.create :name => 'Martin', :description => 'the insecure protagonist'
+          comic.characters.create :name => 'Faye', :description => 'a sarcastic barrista with anger management issues'
+          comic.characters.create :name => 'Pintsize', :description => 'a crude AnthroPC'
+        end
+      end
+
+      let!(:penny_arcade) do
+        TextacularWebComic.create(:name => "Penny Arcade", :author => "Tycho & Gabe").tap do |comic|
+          comic.characters.create :name => 'Gabe', :description => 'the simple one'
+          comic.characters.create :name => 'Tycho', :description => 'the wordy one'
+          comic.characters.create :name => 'Div', :description => 'a crude divx player with anger management issues'
+        end
       end
 
       it "looks in the related model with nested searching syntax" do
@@ -60,19 +78,19 @@ RSpec.describe Textacular do
           TextacularWebComic.joins(:characters).advanced_search(
             :characters => {:description => 'tall'}
           )
-        ).to eq([@jw])
+        ).to eq(webcomics_with_tall_characters)
 
         expect(
           TextacularWebComic.joins(:characters).advanced_search(
             :characters => {:description => 'anger'}
           ).sort
-        ).to eq([@pa, @jw, @qc].sort)
+        ).to eq(webcomics_with_angry_characters.sort)
 
         expect(
           TextacularWebComic.joins(:characters).advanced_search(
             :characters => {:description => 'crude'}
           ).sort
-        ).to eq([@pa, @qc].sort)
+        ).to eq(webcomics_with_crude_characters.sort)
       end
     end
   end
