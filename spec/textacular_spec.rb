@@ -1,6 +1,8 @@
 require 'support/ar_stand_in'
 require 'support/not_there'
 require 'support/textacular_web_comic'
+require 'support/game_extended_with_textacular'
+require 'support/game_fail_extended_with_textacular'
 
 RSpec.describe Textacular do
   context "after extending ActiveRecord::Base" do
@@ -91,6 +93,35 @@ RSpec.describe Textacular do
             :characters => {:description => 'crude'}
           ).sort
         ).to eq(webcomics_with_crude_characters.sort)
+      end
+    end
+  end
+
+  context "after extending an ActiveRecord::Base subclass" do
+    context "when the DB connection is unavailable" do
+      before do
+        GameFailExtendedWithTextacular.establish_connection({:adapter => :postgresql, :database =>'unavailable', :username=>'bad', :pool=>5, :timeout=>5000}) rescue nil
+      end
+
+      it "doesn't break respond_to? when connection is unavailable" do
+        expect { GameFailExtendedWithTextacular.respond_to?(:advanced_search) }.to_not raise_error
+      end
+    end
+
+    context "when the DB connection is available" do
+      before do
+        @zelda = GameExtendedWithTextacular.create :system => "NES",     :title => "Legend of Zelda",    :description => "A Link to the Past."
+        @mario = GameExtendedWithTextacular.create :system => "NES",     :title => "Super Mario Bros.",  :description => "The original platformer."
+        @sonic = GameExtendedWithTextacular.create :system => "Genesis", :title => "Sonic the Hedgehog", :description => "Spiky."
+        @dkong = GameExtendedWithTextacular.create :system => "SNES",    :title => "Diddy's Kong Quest", :description => "Donkey Kong Country 2"
+        @megam = GameExtendedWithTextacular.create :system => nil,       :title => "Mega Man",           :description => "Beware Dr. Brain"
+        @sfnes = GameExtendedWithTextacular.create :system => "SNES",    :title => "Street Fighter 2",   :description => "Yoga Flame!"
+        @sfgen = GameExtendedWithTextacular.create :system => "Genesis", :title => "Street Fighter 2",   :description => "Yoga Flame!"
+        @takun = GameExtendedWithTextacular.create :system => "Saturn",  :title => "Magical Tarurūto-kun", :description => "カッコイイ！"
+      end
+
+      it "defines a #search method" do
+        expect(GameExtendedWithTextacular).to respond_to(:search)
       end
     end
   end
