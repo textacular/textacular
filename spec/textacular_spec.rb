@@ -1,3 +1,6 @@
+# coding: utf-8
+# Above for Ruby 1.9 tests
+
 require 'support/ar_stand_in'
 require 'support/not_there'
 require 'support/textacular_web_comic'
