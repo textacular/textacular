@@ -1,7 +1,7 @@
+require 'minitest/autorun'
 require 'bundler/setup'
 require 'yaml'
 require 'textacular'
-require 'shoulda'
 require 'pry'
 require 'active_record'
 require 'textacular'
