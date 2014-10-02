@@ -128,7 +128,7 @@ RSpec.describe Textacular do
       end
 
       describe "#advanced_search" do
-        describe "with a String argument" do
+        context "with a String argument" do
           it "searches across all :string columns (if not indexes have been specified)" do
             expect(
               GameExtendedWithTextacular.advanced_search("Mario")
@@ -137,6 +137,28 @@ RSpec.describe Textacular do
             expect(
               GameExtendedWithTextacular.advanced_search("NES").to_set
             ).to eq(Set.new([@mario, @zelda]))
+          end
+
+          it "works if a query has an apostrophe" do
+            expect(GameExtendedWithTextacular.advanced_search("Diddy's")).to eq([@dkong])
+          end
+
+          it "works if the query contains whitespace" do
+            expect(GameExtendedWithTextacular.advanced_search("Mega Man")).to eq([@megam])
+          end
+
+          it "works if the query contains an accent" do
+            expect(GameExtendedWithTextacular.advanced_search("Tarurūto-kun")).to eq([@takun])
+          end
+
+          it "searches across records with NULL values" do
+            expect(GameExtendedWithTextacular.advanced_search("Mega")).to eq([@megam])
+          end
+
+          it "scopes consecutively" do
+            expect(
+              GameExtendedWithTextacular.advanced_search("Genesis").advanced_search("Street Fighter")
+            ).to eq([@sfgen])
           end
         end
       end
