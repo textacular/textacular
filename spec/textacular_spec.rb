@@ -1,4 +1,3 @@
-puts 'spec'
 require 'support/ar_stand_in'
 require 'support/not_there'
 require 'support/textacular_web_comic'
