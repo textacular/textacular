@@ -126,6 +126,20 @@ RSpec.describe Textacular do
       it "defines a #search method" do
         expect(GameExtendedWithTextacular).to respond_to(:search)
       end
+
+      describe "#advanced_search" do
+        describe "with a String argument" do
+          it "searches across all :string columns (if not indexes have been specified)" do
+            expect(
+              GameExtendedWithTextacular.advanced_search("Mario")
+            ).to eq([@mario])
+
+            expect(
+              GameExtendedWithTextacular.advanced_search("NES").to_set
+            ).to eq(Set.new([@mario, @zelda]))
+          end
+        end
+      end
     end
   end
 end
