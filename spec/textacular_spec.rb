@@ -1,22 +1,22 @@
 # coding: utf-8
 require 'spec_helper'
 
-class TextacularTest < Test::Unit::TestCase
-  context "after extending ActiveRecord::Base" do
-    should "not break #respond_to?" do
+describe Textacular do
+  describe "after extending ActiveRecord::Base" do
+    it "not break #respond_to?" do
       assert_nothing_raised do
         ARStandIn.respond_to? :abstract_class?
       end
     end
 
-    should "not break #respond_to? for table-less classes" do
+    it "not break #respond_to? for table-less classes" do
       assert !NotThere.table_exists?
       assert_nothing_raised do
         NotThere.respond_to? :system
       end
     end
 
-    should "not break #method_missing" do
+    it "not break #method_missing" do
       assert_raise(NoMethodError) { ARStandIn.random }
       begin
         ARStandIn.random
@@ -25,7 +25,7 @@ class TextacularTest < Test::Unit::TestCase
       end
     end
 
-    should "not break #method_missing for table-less classes" do
+    it "not break #method_missing for table-less classes" do
       assert !NotThere.table_exists?
       assert_raise(NoMethodError) { NotThere.random }
       begin
@@ -35,8 +35,8 @@ class TextacularTest < Test::Unit::TestCase
       end
     end
 
-    context "when finding models based on searching a related model" do
-      setup do
+    describe "when finding models based on searching a related model" do
+      before do
         @qc = TextacularWebComic.create :name => "Questionable Content", :author => "Jeph Jaques"
         @jw = TextacularWebComic.create :name => "Johnny Wander", :author => "Ananth & Yuko"
         @pa = TextacularWebComic.create :name => "Penny Arcade", :author => "Tycho & Gabe"
@@ -55,12 +55,12 @@ class TextacularTest < Test::Unit::TestCase
         @cricket = @jw.characters.create :name => 'Cricket', :description => 'Chirrup!'
       end
 
-      teardown do
+      after do
         TextacularWebComic.delete_all
         Character.delete_all
       end
 
-      should "look in the related model with nested searching syntax" do
+      it "look in the related model with nested searching syntax" do
         assert_equal [@jw], TextacularWebComic.joins(:characters).advanced_search(:characters => {:description => 'tall'})
         assert_equal [@pa, @jw, @qc].sort, TextacularWebComic.joins(:characters).advanced_search(:characters => {:description => 'anger'}).sort
         assert_equal [@pa, @qc].sort, TextacularWebComic.joins(:characters).advanced_search(:characters => {:description => 'crude'}).sort
@@ -68,8 +68,8 @@ class TextacularTest < Test::Unit::TestCase
     end
   end
 
-  context "after extending an ActiveRecord::Base subclass" do
-    setup do
+  describe "after extending an ActiveRecord::Base subclass" do
+    before do
       @zelda = GameExtendedWithTextacular.create :system => "NES",     :title => "Legend of Zelda",    :description => "A Link to the Past."
       @mario = GameExtendedWithTextacular.create :system => "NES",     :title => "Super Mario Bros.",  :description => "The original platformer."
       @sonic = GameExtendedWithTextacular.create :system => "Genesis", :title => "Sonic the Hedgehog", :description => "Spiky."
@@ -80,11 +80,11 @@ class TextacularTest < Test::Unit::TestCase
       @takun = GameExtendedWithTextacular.create :system => "Saturn",  :title => "Magical Tarurūto-kun", :description => "カッコイイ！"
     end
 
-    teardown do
+    after do
       GameExtendedWithTextacular.delete_all
     end
 
-    should "not break respond_to? when connection is unavailable" do
+    it "not break respond_to? when connection is unavailable" do
       GameFailExtendedWithTextacular.establish_connection({:adapter => :postgresql, :database =>'unavailable', :username=>'bad', :pool=>5, :timeout=>5000}) rescue nil
 
       assert_nothing_raised do
@@ -92,39 +92,39 @@ class TextacularTest < Test::Unit::TestCase
       end
     end
 
-    should "define a #search method" do
+    it "define a #search method" do
       assert GameExtendedWithTextacular.respond_to?(:search)
     end
 
-    context "when searching with a String argument" do
-      should "search across all :string columns if no indexes have been specified" do
+    describe "when searching with a String argument" do
+      it "search across all :string columns if no indexes have been specified" do
         assert_equal [@mario], GameExtendedWithTextacular.advanced_search("Mario")
         assert_equal Set.new([@mario, @zelda]), GameExtendedWithTextacular.advanced_search("NES").to_set
       end
 
-      should "work if the query contains an apostrophe" do
+      it "work if the query contains an apostrophe" do
         assert_equal [@dkong], GameExtendedWithTextacular.advanced_search("Diddy's")
       end
 
-      should "work if the query contains whitespace" do
+      it "work if the query contains whitespace" do
         assert_equal [@megam], GameExtendedWithTextacular.advanced_search("Mega Man")
       end
 
-      should "work if the query contains an accent" do
+      it "work if the query contains an accent" do
         assert_equal [@takun], GameExtendedWithTextacular.advanced_search("Tarurūto-kun")
       end
 
-      should "search across records with NULL values" do
+      it "search across records with NULL values" do
         assert_equal [@megam], GameExtendedWithTextacular.advanced_search("Mega")
       end
 
-      should "scope consecutively" do
+      it "scope consecutively" do
         assert_equal [@sfgen], GameExtendedWithTextacular.advanced_search("Genesis").advanced_search("Street Fighter")
       end
     end
 
-    context "when searching with a Hash argument" do
-      should "search across the given columns" do
+    describe "when searching with a Hash argument" do
+      it "search across the given columns" do
         assert_empty GameExtendedWithTextacular.advanced_search(:title => "NES")
         assert_empty GameExtendedWithTextacular.advanced_search(:system => "Mario")
         assert_empty GameExtendedWithTextacular.advanced_search(:system => "NES", :title => "Sonic")
@@ -137,45 +137,45 @@ class TextacularTest < Test::Unit::TestCase
         assert_equal [@megam], GameExtendedWithTextacular.advanced_search(:title => "Mega")
       end
 
-      should "scope consecutively" do
+      it "scope consecutively" do
         assert_equal [@sfgen], GameExtendedWithTextacular.advanced_search(:system => "Genesis").advanced_search(:title => "Street Fighter")
       end
 
-      should "cast non-:string columns as text" do
+      it "cast non-:string columns as text" do
         assert_equal [@mario], GameExtendedWithTextacular.advanced_search(:id => @mario.id)
       end
     end
 
-    context "when using dynamic search methods" do
-      should "generate methods for each :string column" do
+    describe "when using dynamic search methods" do
+      it "generate methods for each :string column" do
         assert_equal [@mario], GameExtendedWithTextacular.advanced_search_by_title("Mario")
         assert_equal [@takun], GameExtendedWithTextacular.advanced_search_by_system("Saturn")
       end
 
-      should "generate methods for each :text column" do
+      it "generate methods for each :text column" do
         assert_equal [@mario], GameExtendedWithTextacular.advanced_search_by_description("platform")
       end
 
-      should "generate methods for any combination of :string and :text columns" do
+      it "generate methods for any combination of :string and :text columns" do
         assert_equal [@mario], GameExtendedWithTextacular.advanced_search_by_title_and_system("Mario", "NES")
         assert_equal [@sonic], GameExtendedWithTextacular.advanced_search_by_system_and_title("Genesis", "Sonic")
         assert_equal [@mario], GameExtendedWithTextacular.advanced_search_by_title_and_title("Mario", "Mario")
         assert_equal [@megam], GameExtendedWithTextacular.advanced_search_by_title_and_description("Man", "Brain")
       end
 
-      should "generate methods for inclusive searches" do
+      it "generate methods for inclusive searches" do
         assert_equal Set.new([@megam, @takun]), GameExtendedWithTextacular.advanced_search_by_system_or_title("Saturn", "Mega Man").to_set
       end
 
-      should "scope consecutively" do
+      it "scope consecutively" do
         assert_equal [@sfgen], GameExtendedWithTextacular.advanced_search_by_system("Genesis").advanced_search_by_title("Street Fighter")
       end
 
-      should "generate methods for non-:string columns" do
+      it "generate methods for non-:string columns" do
         assert_equal [@mario], GameExtendedWithTextacular.advanced_search_by_id(@mario.id)
       end
 
-      should "work with #respond_to?" do
+      it "work with #respond_to?" do
         assert GameExtendedWithTextacular.respond_to?(:advanced_search_by_system)
         assert GameExtendedWithTextacular.respond_to?(:advanced_search_by_title)
         assert GameExtendedWithTextacular.respond_to?(:advanced_search_by_system_and_title)
@@ -186,29 +186,29 @@ class TextacularTest < Test::Unit::TestCase
         assert !GameExtendedWithTextacular.respond_to?(:advanced_search_by_title_and_title_or_title)
       end
 
-      should "allow for 2 arguments to #respond_to?" do
+      it "allow for 2 arguments to #respond_to?" do
         assert GameExtendedWithTextacular.respond_to?(:searchable_language, true)
       end
     end
 
-    context "when searching after selecting columns to return" do
-      should "not fetch extra columns" do
+    describe "when searching after selecting columns to return" do
+      it "not fetch extra columns" do
         assert_raise(ActiveModel::MissingAttributeError) do
           GameExtendedWithTextacular.select(:title).advanced_search("Mario").first.system
         end
       end
     end
 
-    context "when setting a custom search language" do
-      setup do
+    describe "when setting a custom search language" do
+      before do
         GameExtendedWithTextacularAndCustomLanguage.create :system => "PS3", :title => "Harry Potter & the Deathly Hallows"
       end
 
-      teardown do
+      after do
         GameExtendedWithTextacularAndCustomLanguage.delete_all
       end
 
-      should "still find results" do
+      it "still find results" do
         assert_not_empty GameExtendedWithTextacularAndCustomLanguage.advanced_search_by_title("harry")
       end
     end

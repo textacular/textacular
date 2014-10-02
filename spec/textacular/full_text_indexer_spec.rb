@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-class FullTextIndexerTest < Test::Unit::TestCase
-  context "when we've listed one specific field in a Searchable call" do
-    should "generate the right sql" do
+describe Textacular::FullTextIndexer do
+  describe "when we've listed one specific field in a Searchable call" do
+    it "generate the right sql" do
       filename = "web_comic_with_searchable_name_full_text_search"
       content = <<-MIGRATION
 class WebComicWithSearchableNameFullTextSearch < ActiveRecord::Migration
@@ -25,16 +25,16 @@ MIGRATION
 
       migration_generator = flexmock
       flexmock(Textacular::MigrationGenerator).
-        should_receive(:new).
+        it_receive(:new).
         with(content, filename).
         and_return(migration_generator)
-      migration_generator.should_receive(:generate_migration)
+      migration_generator.it_receive(:generate_migration)
       Textacular::FullTextIndexer.new.generate_migration('WebComicWithSearchableName')
     end
   end
 
-  context "when we've listed two specific fields in a Searchable call" do
-    should "generate the right sql" do
+  describe "when we've listed two specific fields in a Searchable call" do
+    it "generate the right sql" do
       filename = "web_comic_with_searchable_name_and_author_full_text_search"
       content = <<-MIGRATION
 class WebComicWithSearchableNameAndAuthorFullTextSearch < ActiveRecord::Migration
@@ -62,10 +62,10 @@ MIGRATION
 
       migration_generator = flexmock
       flexmock(Textacular::MigrationGenerator).
-        should_receive(:new).
+        it_receive(:new).
         with(content, filename).
         and_return(migration_generator)
-      migration_generator.should_receive(:generate_migration)
+      migration_generator.it_receive(:generate_migration)
       Textacular::FullTextIndexer.new.generate_migration('WebComicWithSearchableNameAndAuthor')
     end
   end
