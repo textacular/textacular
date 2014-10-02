@@ -1,4 +1,6 @@
+puts 'before'
 require 'active_record'
+puts 'after'
 
 require 'textacular/version'
 
