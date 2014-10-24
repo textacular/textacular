@@ -161,6 +161,49 @@ RSpec.describe Textacular do
             ).to eq([@sfgen])
           end
         end
+
+        context "with a Hash argument" do
+          it "searches across the given columns" do
+            expect(
+              GameExtendedWithTextacular.advanced_search(:title => 'NES')
+            ).to be_empty
+            expect(
+              GameExtendedWithTextacular.advanced_search(:system => "Mario")
+            ).to be_empty
+            expect(
+              GameExtendedWithTextacular.advanced_search(:system => "NES", :title => "Sonic")
+            ).to be_empty
+
+            expect(
+              GameExtendedWithTextacular.advanced_search(:title => "Mario")
+            ).to eq([@mario])
+
+            expect(
+              GameExtendedWithTextacular.advanced_search(:system => "NES").count
+            ).to eq(2)
+
+            expect(
+              GameExtendedWithTextacular.advanced_search(:system => "NES", :title => "Zelda")
+            ).to eq([@zelda])
+            expect(
+              GameExtendedWithTextacular.advanced_search(:title => "Mega")
+            ).to eq([@megam])
+          end
+
+          it "scopes consecutively" do
+            expect(
+              GameExtendedWithTextacular
+                .advanced_search(:system => "Genesis")
+                .advanced_search(:title => "Street Fighter")
+            ).to eq([@sfgen])
+          end
+
+          it "casts non-string columns as text" do
+            expect(
+              GameExtendedWithTextacular.advanced_search(:id => @mario.id)
+            ).to eq([@mario])
+          end
+        end
       end
     end
   end
