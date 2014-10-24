@@ -339,18 +339,17 @@ RSpec.describe Textacular do
         end
 
         context "after setting a custom language" do
-          before do
-            GameExtendedWithTextacularAndCustomLanguage.create :system => "PS3", :title => "Harry Potter & the Deathly Hallows"
-          end
-
-          after do
-            GameExtendedWithTextacularAndCustomLanguage.delete_all
+          let!(:harry_potter_7) do
+            GameExtendedWithTextacularAndCustomLanguage.create(
+              :system => "PS3",
+              :title => "Harry Potter & the Deathly Hallows"
+            )
           end
 
           it "finds results" do
             expect(
               GameExtendedWithTextacularAndCustomLanguage.advanced_search_by_title("harry")
-            ).to_not be_empty
+            ).to eq([harry_potter_7])
           end
         end
       end
