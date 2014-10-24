@@ -5,6 +5,7 @@ require 'support/ar_stand_in'
 require 'support/not_there'
 require 'support/textacular_web_comic'
 require 'support/game_extended_with_textacular'
+require 'support/game_extended_with_textacular_and_custom_language'
 require 'support/game_fail_extended_with_textacular'
 
 RSpec.describe Textacular do
@@ -273,6 +274,30 @@ RSpec.describe Textacular do
 
           it "allows for 2 arguments to #respond_to?" do
             expect(GameExtendedWithTextacular.respond_to?(:searchable_language, true)).to be_truthy
+          end
+        end
+
+        context "after selecting columns to return" do
+          it "doesn't fetch extra columns" do
+            expect {
+              GameExtendedWithTextacular.select(:title).advanced_search("Mario").first.system
+            }.to raise_error(ActiveModel::MissingAttributeError)
+          end
+        end
+
+        context "after setting a custom language" do
+          before do
+            GameExtendedWithTextacularAndCustomLanguage.create :system => "PS3", :title => "Harry Potter & the Deathly Hallows"
+          end
+
+          after do
+            GameExtendedWithTextacularAndCustomLanguage.delete_all
+          end
+
+          it "finds results" do
+            expect(
+              GameExtendedWithTextacularAndCustomLanguage.advanced_search_by_title("harry")
+            ).to_not be_empty
           end
         end
       end
