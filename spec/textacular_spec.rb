@@ -204,6 +204,77 @@ RSpec.describe Textacular do
             ).to eq([@mario])
           end
         end
+
+        context "via dynamic method names" do
+          it "only exists prior to 4.0.0" do
+            current_version = Gem::Version.new(Textacular.version)
+
+            expect(current_version).to be < Gem::Version.new("4.0.0")
+          end
+
+          it "generates methods for each string column" do
+            expect(
+              GameExtendedWithTextacular.advanced_search_by_title("Mario")
+            ).to eq([@mario])
+            expect(
+              GameExtendedWithTextacular.advanced_search_by_system("Saturn")
+            ).to eq([@takun])
+          end
+
+          it "generates methods for each text column" do
+            expect(
+              GameExtendedWithTextacular.advanced_search_by_description("platform")
+            ).to eq([@mario])
+          end
+
+          it "generates methods for any combination of string and text columns" do
+            expect(
+              GameExtendedWithTextacular.advanced_search_by_title_and_system("Mario", "NES")
+            ).to eq([@mario])
+            expect(
+              GameExtendedWithTextacular.advanced_search_by_system_and_title("Genesis", "Sonic")
+            ).to eq([@sonic])
+            expect(
+              GameExtendedWithTextacular.advanced_search_by_title_and_title("Mario", "Mario")
+            ).to eq([@mario])
+            expect(
+              GameExtendedWithTextacular.advanced_search_by_title_and_description("Man", "Brain")
+            ).to eq([@megam])
+          end
+
+          it "generates methods for inclusive searches" do
+            expect(
+              GameExtendedWithTextacular.advanced_search_by_system_or_title("Saturn", "Mega Man").to_set
+            ).to eq(Set.new([@megam, @takun]))
+          end
+
+          it "scopes consecutively" do
+            expect(
+              GameExtendedWithTextacular.advanced_search_by_system("Genesis").advanced_search_by_title("Street Fighter")
+            ).to eq([@sfgen])
+          end
+
+          it "generates methods for non-string columns" do
+            expect(
+              GameExtendedWithTextacular.advanced_search_by_id(@mario.id)
+            ).to eq([@mario])
+          end
+
+          it "works with #respond_to?" do
+            expect(GameExtendedWithTextacular).to respond_to(:advanced_search_by_system)
+            expect(GameExtendedWithTextacular).to respond_to(:advanced_search_by_title)
+            expect(GameExtendedWithTextacular).to respond_to(:advanced_search_by_system_and_title)
+            expect(GameExtendedWithTextacular).to respond_to(:advanced_search_by_system_or_title)
+            expect(GameExtendedWithTextacular).to respond_to(:advanced_search_by_title_and_title_and_title)
+            expect(GameExtendedWithTextacular).to respond_to(:advanced_search_by_id)
+
+            expect(GameExtendedWithTextacular).to_not respond_to(:advanced_search_by_title_and_title_or_title)
+          end
+
+          it "allows for 2 arguments to #respond_to?" do
+            expect(GameExtendedWithTextacular.respond_to?(:searchable_language, true)).to be_truthy
+          end
+        end
       end
     end
   end
