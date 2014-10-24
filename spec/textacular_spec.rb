@@ -106,7 +106,7 @@ RSpec.describe Textacular do
         GameFailExtendedWithTextacular.establish_connection({:adapter => :postgresql, :database =>'unavailable', :username=>'bad', :pool=>5, :timeout=>5000}) rescue nil
       end
 
-      it "doesn't break respond_to? when connection is unavailable" do
+      it "doesn't break respond_to?" do
         expect { GameFailExtendedWithTextacular.respond_to?(:advanced_search) }.to_not raise_error
       end
     end
