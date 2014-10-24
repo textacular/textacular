@@ -1,4 +1,7 @@
 require 'support/web_comic_with_searchable'
+require 'support/web_comic_with_searchable_name'
+require 'support/web_comic_with_searchable_name_and_author'
+require 'support/character'
 
 RSpec.describe "Searchable" do
   context "when extending an ActiveRecord::Base subclass" do
@@ -51,6 +54,130 @@ RSpec.describe "Searchable" do
         rank = comic.attributes.find { |key, value| key.to_s =~ /\Arank\d+\z/ }.last
 
         expect(rank).to be_present
+      end
+    end
+
+    context "with one column as a parameter" do
+      let!(:questionable_content) do
+        WebComicWithSearchableName.create(
+          name: 'Questionable Content',
+          author: 'Jeph Jaques',
+        )
+      end
+
+      let!(:johnny_wander) do
+        WebComicWithSearchableName.create(
+          name: 'Johnny Wander',
+          author: 'Ananth & Yuko',
+        )
+      end
+
+      let!(:dominic_deegan) do
+        WebComicWithSearchableName.create(
+          name: 'Dominic Deegan',
+          author: 'Mookie',
+        )
+      end
+
+      let!(:penny_arcade) do
+        WebComicWithSearchableName.create(
+          name: 'Penny Arcade',
+          author: 'Tycho & Gabe',
+        )
+      end
+
+      it "only searches across the given column" do
+        expect(WebComicWithSearchableName.advanced_search("Penny")).to eq([penny_arcade])
+
+        expect(WebComicWithSearchableName.advanced_search("Tycho")).to be_empty
+      end
+
+      describe "basic search" do # Uses plainto_tsquery
+        ["hello \\", "tebow!" , "food &"].each do |search_term|
+          it "works with interesting term \"#{search_term}\"" do
+            expect(WebComicWithSearchableName.basic_search(search_term)).to be_empty
+          end
+        end
+      end
+
+      describe "advanced_search" do # Uses to_tsquery
+        ["hello \\", "tebow!" , "food &"].each do |search_term|
+          it "fails with interesting term \"#{search_term}\"" do
+            expect {
+              WebComicWithSearchableName.advanced_search(search_term).first
+            }.to raise_error(ActiveRecord::StatementInvalid)
+          end
+        end
+      end
+
+      it "does fuzzy searching" do
+        expect(
+          WebComicWithSearchableName.fuzzy_search('Questio')
+        ).to eq([questionable_content])
+      end
+
+      it "defines :searchable_columns as private" do
+        expect { WebComicWithSearchableName.searchable_columns }.to raise_error(NoMethodError)
+
+        begin
+          WebComicWithSearchableName.searchable_columns
+        rescue NoMethodError => error
+          expect(error.message).to match(/private method/)
+        end
+      end
+
+      it "defines #indexable_columns which returns a write-proof Enumerable" do
+        expect(WebComicWithSearchableName.indexable_columns).to be_an(Enumerator)
+
+        expect {
+          WebComicWithSearchableName.indexable_columns[0] = 'foo'
+        }.to raise_error(NoMethodError)
+      end
+    end
+
+    context "with two columns as parameters" do
+      let!(:questionable_content) do
+        WebComicWithSearchableNameAndAuthor.create(
+          name: 'Questionable Content',
+          author: 'Jeph Jaques',
+        )
+      end
+
+      let!(:johnny_wander) do
+        WebComicWithSearchableNameAndAuthor.create(
+          name: 'Johnny Wander',
+          author: 'Ananth & Yuko',
+        )
+      end
+
+      let!(:dominic_deegan) do
+        WebComicWithSearchableNameAndAuthor.create(
+          name: 'Dominic Deegan',
+          author: 'Mookie',
+        )
+      end
+
+      let!(:penny_arcade) do
+        WebComicWithSearchableNameAndAuthor.create(
+          name: 'Penny Arcade',
+          author: 'Tycho & Gabe',
+        )
+      end
+
+      it "only searches across the given columns" do
+        expect(
+          WebComicWithSearchableNameAndAuthor.advanced_search("Penny")
+        ).to eq([penny_arcade])
+
+        expect(
+          WebComicWithSearchableNameAndAuthor.advanced_search("Tycho")
+        ).to eq([penny_arcade])
+      end
+
+      it "allows includes" do
+        expect(
+          WebComicWithSearchableNameAndAuthor.includes(:characters).advanced_search("Penny")
+        ).to eq([penny_arcade])
       end
     end
   end
