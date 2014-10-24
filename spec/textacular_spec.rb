@@ -113,15 +113,68 @@ RSpec.describe Textacular do
     end
 
     context "when the DB connection is available" do
-      before do
-        @zelda = GameExtendedWithTextacular.create :system => "NES",     :title => "Legend of Zelda",    :description => "A Link to the Past."
-        @mario = GameExtendedWithTextacular.create :system => "NES",     :title => "Super Mario Bros.",  :description => "The original platformer."
-        @sonic = GameExtendedWithTextacular.create :system => "Genesis", :title => "Sonic the Hedgehog", :description => "Spiky."
-        @dkong = GameExtendedWithTextacular.create :system => "SNES",    :title => "Diddy's Kong Quest", :description => "Donkey Kong Country 2"
-        @megam = GameExtendedWithTextacular.create :system => nil,       :title => "Mega Man",           :description => "Beware Dr. Brain"
-        @sfnes = GameExtendedWithTextacular.create :system => "SNES",    :title => "Street Fighter 2",   :description => "Yoga Flame!"
-        @sfgen = GameExtendedWithTextacular.create :system => "Genesis", :title => "Street Fighter 2",   :description => "Yoga Flame!"
-        @takun = GameExtendedWithTextacular.create :system => "Saturn",  :title => "Magical Tarurūto-kun", :description => "カッコイイ！"
+      let!(:zelda) do
+        GameExtendedWithTextacular.create(
+          :system => "NES",
+          :title => "Legend of Zelda",
+          :description => "A Link to the Past."
+        )
+      end
+
+      let!(:mario) do
+        GameExtendedWithTextacular.create(
+          :system => "NES",
+          :title => "Super Mario Bros.",
+          :description => "The original platformer."
+        )
+      end
+
+      let!(:sonic) do
+        GameExtendedWithTextacular.create(
+          :system => "Genesis",
+          :title => "Sonic the Hedgehog",
+          :description => "Spiky."
+        )
+      end
+
+      let!(:donkey_kong) do
+        GameExtendedWithTextacular.create(
+          :system => "SNES",
+          :title => "Diddy's Kong Quest",
+          :description => "Donkey Kong Country 2"
+        )
+      end
+
+      let!(:mega_man) do
+        GameExtendedWithTextacular.create(
+          :system => nil,
+          :title => "Mega Man",
+          :description => "Beware Dr. Brain"
+        )
+      end
+
+      let!(:sf_nes) do
+        GameExtendedWithTextacular.create(
+          :system => "SNES",
+          :title => "Street Fighter 2",
+          :description => "Yoga Flame!"
+        )
+      end
+
+      let!(:sf_genesis) do
+        GameExtendedWithTextacular.create(
+          :system => "Genesis",
+          :title => "Street Fighter 2",
+          :description => "Yoga Flame!"
+        )
+      end
+
+      let!(:takun) do
+        GameExtendedWithTextacular.create(
+          :system => "Saturn",
+          :title => "Magical Tarurūto-kun",
+          :description => "カッコイイ！"
+        )
       end
 
       it "defines a #search method" do
@@ -133,33 +186,33 @@ RSpec.describe Textacular do
           it "searches across all :string columns (if not indexes have been specified)" do
             expect(
               GameExtendedWithTextacular.advanced_search("Mario")
-            ).to eq([@mario])
+            ).to eq([mario])
 
             expect(
               GameExtendedWithTextacular.advanced_search("NES").to_set
-            ).to eq(Set.new([@mario, @zelda]))
+            ).to eq(Set.new([mario, zelda]))
           end
 
           it "works if a query has an apostrophe" do
-            expect(GameExtendedWithTextacular.advanced_search("Diddy's")).to eq([@dkong])
+            expect(GameExtendedWithTextacular.advanced_search("Diddy's")).to eq([donkey_kong])
           end
 
           it "works if the query contains whitespace" do
-            expect(GameExtendedWithTextacular.advanced_search("Mega Man")).to eq([@megam])
+            expect(GameExtendedWithTextacular.advanced_search("Mega Man")).to eq([mega_man])
           end
 
           it "works if the query contains an accent" do
-            expect(GameExtendedWithTextacular.advanced_search("Tarurūto-kun")).to eq([@takun])
+            expect(GameExtendedWithTextacular.advanced_search("Tarurūto-kun")).to eq([takun])
           end
 
           it "searches across records with NULL values" do
-            expect(GameExtendedWithTextacular.advanced_search("Mega")).to eq([@megam])
+            expect(GameExtendedWithTextacular.advanced_search("Mega")).to eq([mega_man])
           end
 
           it "scopes consecutively" do
             expect(
               GameExtendedWithTextacular.advanced_search("Genesis").advanced_search("Street Fighter")
-            ).to eq([@sfgen])
+            ).to eq([sf_genesis])
           end
         end
 
@@ -177,7 +230,7 @@ RSpec.describe Textacular do
 
             expect(
               GameExtendedWithTextacular.advanced_search(:title => "Mario")
-            ).to eq([@mario])
+            ).to eq([mario])
 
             expect(
               GameExtendedWithTextacular.advanced_search(:system => "NES").count
@@ -185,10 +238,10 @@ RSpec.describe Textacular do
 
             expect(
               GameExtendedWithTextacular.advanced_search(:system => "NES", :title => "Zelda")
-            ).to eq([@zelda])
+            ).to eq([zelda])
             expect(
               GameExtendedWithTextacular.advanced_search(:title => "Mega")
-            ).to eq([@megam])
+            ).to eq([mega_man])
           end
 
           it "scopes consecutively" do
@@ -196,13 +249,13 @@ RSpec.describe Textacular do
               GameExtendedWithTextacular
                 .advanced_search(:system => "Genesis")
                 .advanced_search(:title => "Street Fighter")
-            ).to eq([@sfgen])
+            ).to eq([sf_genesis])
           end
 
           it "casts non-string columns as text" do
             expect(
-              GameExtendedWithTextacular.advanced_search(:id => @mario.id)
-            ).to eq([@mario])
+              GameExtendedWithTextacular.advanced_search(:id => mario.id)
+            ).to eq([mario])
           end
         end
 
@@ -216,49 +269,49 @@ RSpec.describe Textacular do
           it "generates methods for each string column" do
             expect(
               GameExtendedWithTextacular.advanced_search_by_title("Mario")
-            ).to eq([@mario])
+            ).to eq([mario])
             expect(
               GameExtendedWithTextacular.advanced_search_by_system("Saturn")
-            ).to eq([@takun])
+            ).to eq([takun])
           end
 
           it "generates methods for each text column" do
             expect(
               GameExtendedWithTextacular.advanced_search_by_description("platform")
-            ).to eq([@mario])
+            ).to eq([mario])
           end
 
           it "generates methods for any combination of string and text columns" do
             expect(
               GameExtendedWithTextacular.advanced_search_by_title_and_system("Mario", "NES")
-            ).to eq([@mario])
+            ).to eq([mario])
             expect(
               GameExtendedWithTextacular.advanced_search_by_system_and_title("Genesis", "Sonic")
-            ).to eq([@sonic])
+            ).to eq([sonic])
             expect(
               GameExtendedWithTextacular.advanced_search_by_title_and_title("Mario", "Mario")
-            ).to eq([@mario])
+            ).to eq([mario])
             expect(
               GameExtendedWithTextacular.advanced_search_by_title_and_description("Man", "Brain")
-            ).to eq([@megam])
+            ).to eq([mega_man])
           end
 
           it "generates methods for inclusive searches" do
             expect(
               GameExtendedWithTextacular.advanced_search_by_system_or_title("Saturn", "Mega Man").to_set
-            ).to eq(Set.new([@megam, @takun]))
+            ).to eq(Set.new([mega_man, takun]))
           end
 
           it "scopes consecutively" do
             expect(
               GameExtendedWithTextacular.advanced_search_by_system("Genesis").advanced_search_by_title("Street Fighter")
-            ).to eq([@sfgen])
+            ).to eq([sf_genesis])
           end
 
           it "generates methods for non-string columns" do
             expect(
-              GameExtendedWithTextacular.advanced_search_by_id(@mario.id)
-            ).to eq([@mario])
+              GameExtendedWithTextacular.advanced_search_by_id(mario.id)
+            ).to eq([mario])
           end
 
           it "works with #respond_to?" do
