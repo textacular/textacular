@@ -43,8 +43,6 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
 
   s.add_development_dependency 'pg', '~> 0.14'
-  # s.add_development_dependency 'minitest', '~> 4.x'
-  # s.add_development_dependency 'shoulda', '~> 2.11.3'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'database_cleaner'
   s.add_development_dependency 'rake'
@@ -53,5 +51,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'flexmock'
 
   s.add_dependency('activerecord', "3.2.19")
-  # s.add_dependency('activerecord', [">= 3.0", "< 4.2"])
 end
