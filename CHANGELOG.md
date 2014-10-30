@@ -3,6 +3,7 @@
 ## Unreleased
 
 * Fix trigram installation migration reversed filename and content.
+* Rewrite all tests using RSpec.
 
 ## 3.2.0
 

@@ -1,9 +1,10 @@
-require 'spec_helper'
+require 'support/web_comic_with_searchable_name'
+require 'support/web_comic_with_searchable_name_and_author'
 
-class FullTextIndexerTest < Test::Unit::TestCase
-  context "when we've listed one specific field in a Searchable call" do
-    should "generate the right sql" do
-      filename = "web_comic_with_searchable_name_full_text_search"
+RSpec.describe Textacular::FullTextIndexer do
+  context "with one specific field in a Searchable call" do
+    it "generates the right SQL" do
+      file_name = "web_comic_with_searchable_name_full_text_search"
       content = <<-MIGRATION
 class WebComicWithSearchableNameFullTextSearch < ActiveRecord::Migration
   def self.up
@@ -23,19 +24,17 @@ class WebComicWithSearchableNameFullTextSearch < ActiveRecord::Migration
 end
 MIGRATION
 
-      migration_generator = flexmock
-      flexmock(Textacular::MigrationGenerator).
-        should_receive(:new).
-        with(content, filename).
-        and_return(migration_generator)
-      migration_generator.should_receive(:generate_migration)
+      generator = double(:migration_generator)
+      expect(Textacular::MigrationGenerator).to receive(:new).with(content, file_name).and_return(generator)
+      expect(generator).to receive(:generate_migration)
+
       Textacular::FullTextIndexer.new.generate_migration('WebComicWithSearchableName')
     end
   end
 
-  context "when we've listed two specific fields in a Searchable call" do
-    should "generate the right sql" do
-      filename = "web_comic_with_searchable_name_and_author_full_text_search"
+  context "with two specific fields in a Searchable call" do
+    it "generates the right SQL" do
+      file_name = "web_comic_with_searchable_name_and_author_full_text_search"
       content = <<-MIGRATION
 class WebComicWithSearchableNameAndAuthorFullTextSearch < ActiveRecord::Migration
   def self.up
@@ -60,12 +59,10 @@ class WebComicWithSearchableNameAndAuthorFullTextSearch < ActiveRecord::Migratio
 end
 MIGRATION
 
-      migration_generator = flexmock
-      flexmock(Textacular::MigrationGenerator).
-        should_receive(:new).
-        with(content, filename).
-        and_return(migration_generator)
-      migration_generator.should_receive(:generate_migration)
+      generator = double(:migration_generator)
+      expect(Textacular::MigrationGenerator).to receive(:new).with(content, file_name).and_return(generator)
+      expect(generator).to receive(:generate_migration)
+
       Textacular::FullTextIndexer.new.generate_migration('WebComicWithSearchableNameAndAuthor')
     end
   end

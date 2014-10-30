@@ -1,8 +1,6 @@
-require 'spec_helper'
-
-class TrigramInstallerTest < Test::Unit::TestCase
-  should "generate a migration" do
-    content = <<-MIGRATION
+RSpec.describe "Textacular::TrigramInstaller" do
+  let(:content) do
+    <<-MIGRATION
 class InstallTrigram < ActiveRecord::Migration
   def self.up
     ActiveRecord::Base.connection.execute("CREATE EXTENSION pg_trgm;")
@@ -13,13 +11,14 @@ class InstallTrigram < ActiveRecord::Migration
   end
 end
 MIGRATION
-    filename = "install_trigram"
-    migration_generator = flexmock
-    flexmock(Textacular::MigrationGenerator).
-      should_receive(:new).
-      with(filename, content).
-      and_return(migration_generator)
-    migration_generator.should_receive(:generate_migration)
+  end
+
+  it "generates a migration" do
+    generator = double(:migration_generator)
+
+    expect(Textacular::MigrationGenerator).to receive(:new).with('install_trigram', content).and_return(generator)
+    expect(generator).to receive(:generate_migration)
+
     Textacular::TrigramInstaller.new.generate_migration
   end
 end
