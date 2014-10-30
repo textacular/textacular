@@ -11,3 +11,8 @@ before_install:
 script:
   - bundle exec rake db:migrate
   - bundle exec rake
+gemfile:
+  - Gemfile
+  - gemfiles/activerecord-3.2.gemfile
+  - gemfiles/activerecord-4.0.gemfile
+  - gemfiles/activerecord-4.1.gemfile
