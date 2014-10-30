@@ -32,13 +32,27 @@ Gem::Specification.new do |s|
   ]
   s.executables   = []
   s.test_files    = [
-    # 'spec/config.yml.example',
-    # 'spec/fixtures/character.rb',
-    # 'spec/fixtures/game.rb',
-    # 'spec/fixtures/webcomic.rb',
+    'spec/config.yml.example',
+    'spec/config.travis.yml',
     'spec/spec_helper.rb',
-    # 'spec/textacular/searchable_spec.rb',
-    'spec/textacular_spec.rb'
+    'spec/support/ar_stand_in.rb',
+    'spec/support/character.rb',
+    'spec/support/game.rb',
+    'spec/support/game_extended_with_textacular.rb',
+    'spec/support/game_extended_with_textacular_and_custom_language.rb',
+    'spec/support/game_fail.rb',
+    'spec/support/game_fail_extended_with_textacular.rb',
+    'spec/support/not_there.rb',
+    'spec/support/textacular_web_comic.rb',
+    'spec/support/web_comic.rb',
+    'spec/support/web_comic_with_searchable.rb',
+    'spec/support/web_comic_with_searchable_name.rb',
+    'spec/support/web_comic_with_searchable_name_and_author.rb',
+    'spec/textacular_spec.rb',
+    'spec/textacular/full_text_indexer_spec.rb',
+    'spec/textacular/migration_generator_spec.rb',
+    'spec/textacular/searchable_spec.rb',
+    'spec/textacular/trigram_installer_spec.rb',
   ]
   s.require_paths = ['lib']
 
@@ -48,7 +62,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake'
   s.add_development_dependency 'pry'
   s.add_development_dependency 'pry-doc'
-  s.add_development_dependency 'flexmock'
 
   s.add_dependency('activerecord', "3.2.19")
 end
