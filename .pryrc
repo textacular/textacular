@@ -22,6 +22,7 @@ end
 config = YAML.load_file File.expand_path(File.dirname(__FILE__) + '/spec/config.yml')
 ActiveRecord::Base.establish_connection config.merge(:adapter => :postgresql)
 DatabaseCleaner.clean_with(:truncation)
+ActiveRecord::Base.logger = Logger.new(STDOUT)
 
 ##
 # Reloads the console.
