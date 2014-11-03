@@ -233,7 +233,7 @@ RSpec.describe Textacular do
             ).to eq([mario])
 
             expect(
-              GameExtendedWithTextacular.advanced_search(:system => "NES").count
+              GameExtendedWithTextacular.advanced_search(:system => "NES").size
             ).to eq(2)
 
             expect(
