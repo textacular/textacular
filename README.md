@@ -1,6 +1,6 @@
 # textacular
 [![Gem Version](http://img.shields.io/gem/v/textacular.svg)][rubygems]
-[![Build Status](https://img.shields.io/travis/textacular/textacular.svg)][travis]
+[![Build Status](https://img.shields.io/travis/textacular/textacular/master.svg)][travis]
 [![Code Climate](https://img.shields.io/codeclimate/github/textacular/textacular.svg)][codeclimate]
 
 [rubygems]: http://rubygems.org/gems/textacular
