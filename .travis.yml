@@ -16,3 +16,4 @@ gemfile:
   - gemfiles/activerecord-3.2.gemfile
   - gemfiles/activerecord-4.0.gemfile
   - gemfiles/activerecord-4.1.gemfile
+  - gemfiles/activerecord-4.2.gemfile
