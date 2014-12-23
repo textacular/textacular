@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+
+* Update the README to illustrate how to change the similarity threshold.
+
 ## 3.2.1
 
 * Fix trigram installation migration reversed filename and content.
