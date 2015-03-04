@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* Trigram installation migration only install extension if not installed yet.
 * Update the README to illustrate how to change the similarity threshold.
 
 ## 3.2.1
