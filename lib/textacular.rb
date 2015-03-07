@@ -179,7 +179,7 @@ module Textacular
   module Helper
     class << self
       def normalize(query)
-        query.to_s.gsub(' ', '\\\\ ')
+        query.to_s.gsub(/\s(?![\&|\!|\|])/, '\\\\ ')
       end
 
       def method_name_regex
