@@ -108,6 +108,9 @@ RSpec.describe "Searchable" do
             }.to raise_error(ActiveRecord::StatementInvalid)
           end
         end
+        it "searches with negation" do
+          expect(WebComicWithSearchableName.advanced_search('foo & ! bar')).to be_empty
+        end
       end
 
       it "does fuzzy searching" do
