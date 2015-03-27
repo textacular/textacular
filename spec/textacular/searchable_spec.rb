@@ -61,7 +61,7 @@ RSpec.describe "Searchable" do
       let!(:questionable_content) do
         WebComicWithSearchableName.create(
           name: 'Questionable Content',
-          author: 'Jeph Jaques',
+          author: nil,
         )
       end
 
@@ -117,6 +117,13 @@ RSpec.describe "Searchable" do
         expect(
           WebComicWithSearchableName.fuzzy_search('Questio')
         ).to eq([questionable_content])
+      end
+
+      it "return a valid rank when fuzzy searching on NULL columns" do
+        qcont_with_author = questionable_content.becomes(WebComicWithSearchableNameAndAuthor)
+        search_result = WebComicWithSearchableNameAndAuthor.fuzzy_search('Questio')
+        expect([qcont_with_author]).to eq(search_result)
+        expect(search_result.first.attributes.find { |k, _| k[0..3] == 'rank' }.last).to be_truthy
       end
 
       it "defines :searchable_columns as private" do
