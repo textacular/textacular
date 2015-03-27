@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* Fallback to zero similarity when trying to match null values
 * Fix search term escaping
 * Trigram installation migration only install extension if not installed yet.
 * Update the README to illustrate how to change the similarity threshold.
