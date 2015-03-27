@@ -37,34 +37,6 @@ module Textacular
     assemble_query(similarities, conditions, exclusive)
   end
 
-  def method_missing(method, *search_terms)
-    return super if self.abstract_class?
-    if Helper.dynamic_search_method?(method, self.columns)
-      warn("You are using a dynamic Textacular search method #{method}. These methods are deprecated and will be removed at the next major version release. Please use the has syntax for basic_search and advanced_search.")
-      exclusive = Helper.exclusive_dynamic_search_method?(method, self.columns)
-      columns = exclusive ? Helper.exclusive_dynamic_search_columns(method) : Helper.inclusive_dynamic_search_columns(method)
-      metaclass = class << self; self; end
-      metaclass.__send__(:define_method, method) do |*args|
-        query = columns.inject({}) do |query, column|
-          query.merge column => args.shift
-        end
-        self.send(Helper.search_type(method), query, exclusive)
-      end
-      __send__(method, *search_terms, exclusive)
-    else
-      super
-    end
-  rescue ActiveRecord::StatementInvalid
-    super
-  end
-
-  def respond_to?(method, include_private = false)
-    return super if self.abstract_class?
-    Helper.dynamic_search_method?(method, self.columns) or super
-  rescue StandardError
-    super
-  end
-
   private
 
   def munge_exclusive_and_query(exclusive, query)
@@ -180,55 +152,6 @@ module Textacular
     class << self
       def normalize(query)
         query.to_s.gsub(/\s(?![\&|\!|\|])/, '\\\\ ')
-      end
-
-      def method_name_regex
-        /^(?<search_type>((basic|advanced|fuzzy)_)?search)_by_(?<columns>[_a-zA-Z]\w*)$/
-      end
-
-      def search_type(method)
-        method.to_s.match(method_name_regex)[:search_type]
-      end
-
-      def exclusive_dynamic_search_columns(method)
-        if match = method.to_s.match(method_name_regex)
-          match[:columns].split('_and_')
-        else
-          []
-        end
-      end
-
-      def inclusive_dynamic_search_columns(method)
-        if match = method.to_s.match(method_name_regex)
-          match[:columns].split('_or_')
-        else
-          []
-        end
-      end
-
-      def exclusive_dynamic_search_method?(method, class_columns)
-        string_columns = class_columns.map(&:name)
-        columns = exclusive_dynamic_search_columns(method)
-        unless columns.empty?
-          columns.all? {|column| string_columns.include?(column) }
-        else
-          false
-        end
-      end
-
-      def inclusive_dynamic_search_method?(method, class_columns)
-        string_columns = class_columns.map(&:name)
-        columns = inclusive_dynamic_search_columns(method)
-        unless columns.empty?
-          columns.all? {|column| string_columns.include?(column) }
-        else
-          false
-        end
-      end
-
-      def dynamic_search_method?(method, class_columns)
-        exclusive_dynamic_search_method?(method, class_columns) or
-          inclusive_dynamic_search_method?(method, class_columns)
       end
     end
   end

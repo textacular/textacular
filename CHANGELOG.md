@@ -6,6 +6,7 @@
 * Fix search term escaping
 * Trigram installation migration only install extension if not installed yet.
 * Update the README to illustrate how to change the similarity threshold.
+* Remove deprecated dynamic search methods.
 
 ## 3.2.1
 
