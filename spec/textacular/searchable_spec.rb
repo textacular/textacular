@@ -123,7 +123,7 @@ RSpec.describe "Searchable" do
         qcont_with_author = questionable_content.becomes(WebComicWithSearchableNameAndAuthor)
         search_result = WebComicWithSearchableNameAndAuthor.fuzzy_search('Questio')
         expect([qcont_with_author]).to eq(search_result)
-        expect(search_result.first.attributes.find { |k, _| k[0..3] == 'rank' }.last).to be_kind_of(Numeric)
+        expect(search_result.first.attributes.find { |k, _| k[0..3] == 'rank' }.last).to be_truthy
       end
 
       it "defines :searchable_columns as private" do
