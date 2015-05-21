@@ -83,6 +83,9 @@ module Textacular
   end
 
   def basic_condition_string(table_name, column, search_term)
+    # body_vector = Arel::Nodes::NamedFunction.new('to_tsvector', [quoted_language, Arel::Nodes::SqlLiteral.new("#{table_name}.#{column}::text")])
+    # query_vector = Arel::Nodes::NamedFunction.new('to_tsquery', [quoted_language, search_term])
+    # Arel::Nodes::InfixOperation.new('@@', body_vector, query_vector)
     "to_tsvector(#{quoted_language}, #{table_name}.#{column}::text) @@ plainto_tsquery(#{quoted_language}, #{search_term}::text)"
   end
 
@@ -124,7 +127,7 @@ module Textacular
     rank = connection.quote_column_name('rank' + rand(100000000000000000).to_s)
 
     select("#{quoted_table_name + '.*,' if select_values.empty?} #{similarities.join(" + ")} AS #{rank}").
-      where(conditions.join(exclusive ? " AND " : " OR ")).
+      where(Arel::Nodes::SqlLiteral.new(conditions.join(exclusive ? " AND " : " OR "))).
       order("#{rank} DESC")
   end
 
