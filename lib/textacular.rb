@@ -129,7 +129,7 @@ module Textacular
   end
 
   def select_values
-    if ActiveRecord::VERSION::MAJOR == 4
+    if ActiveRecord::VERSION::MAJOR >= 4
       all.select_values
     else
       scoped.select_values
