@@ -6,3 +6,4 @@ pkg
 *.rbc
 Gemfile.lock
 .ruby-version
+gemfiles/*.lock
