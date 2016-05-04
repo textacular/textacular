@@ -25,7 +25,7 @@ extending ActiveRecord with scopes making search easy and fun!
 
 ### Quick Start
 
-#### Rails 3 (or 4!)
+#### Rails 3, Rails 4 and Rails 5!
 
 In the project's Gemfile add
 

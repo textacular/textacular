@@ -1,5 +1,5 @@
 module Textacular
-  VERSION = '4.0.0.alpha'
+  VERSION = '4.0.0'
 
   def self.version
     VERSION
