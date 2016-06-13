@@ -125,6 +125,16 @@ end
 
 And all your queries would go right! And don`t forget to change the migration for indexes, like shown below.
 
+### Setting Searchable Columns
+
+To change the default behavior of searching all text and string columns,
+override the searchable_columns class method on your model:
+
+```ruby
+def self.searchable_columns
+  [:column1, :column2]
+end
+```
 
 ### Creating Indexes for Super Speed
 You can have Postgresql use an index for the full-text search.  To declare a full-text index, in a
