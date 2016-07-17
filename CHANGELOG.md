@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 4.0.0
+
+* ActiveRecord 5 compatibility
+
 ## 3.2.2
 
 * Fallback to zero similarity when trying to match null values
