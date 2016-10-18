@@ -1,7 +1,7 @@
 RSpec.describe "Textacular::TrigramInstaller" do
   let(:content) do
     <<-MIGRATION
-class InstallTrigram < ActiveRecord::Migration
+class InstallTrigram < ActiveRecord::Migration[5.0]
   def self.up
     ActiveRecord::Base.connection.execute("CREATE EXTENSION IF NOT EXISTS pg_trgm;")
   end
