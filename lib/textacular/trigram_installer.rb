@@ -1,7 +1,7 @@
 class Textacular::TrigramInstaller
   def generate_migration
     content = <<-MIGRATION
-class InstallTrigram < ActiveRecord::Migration
+class InstallTrigram < ActiveRecord::Migration[5.0]
   def self.up
     ActiveRecord::Base.connection.execute("CREATE EXTENSION IF NOT EXISTS pg_trgm;")
   end
