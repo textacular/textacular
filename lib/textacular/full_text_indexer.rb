@@ -52,7 +52,7 @@ MIGRATION
     <<-SQL
 CREATE index #{index_name_for(model, column)}
   ON #{model.table_name}
-  USING gin(to_tsvector("#{dictionary}", "#{model.table_name}"."#{column}"::text));
+  USING gin(to_tsvector('#{dictionary}', "#{model.table_name}"."#{column}"::text));
 SQL
   end
 
