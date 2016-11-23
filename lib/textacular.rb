@@ -113,11 +113,11 @@ module Textacular
   end
 
   def fuzzy_similarity_string(table_name, column, search_term)
-    "COALESCE(similarity(#{table_name}.#{column}, #{search_term}), 0)"
+    "COALESCE(similarity(#{table_name}.#{column}::text, #{search_term}), 0)"
   end
 
   def fuzzy_condition_string(table_name, column, search_term)
-    "(#{table_name}.#{column} % #{search_term})"
+    "(#{table_name}.#{column}::text % #{search_term})"
   end
 
   def assemble_query(similarities, conditions, exclusive)
