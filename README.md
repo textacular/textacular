@@ -140,10 +140,18 @@ end
 You can have Postgresql use an index for the full-text search.  To declare a full-text index, in a
 migration add code like the following:
 
+#### For basic_search
 ```ruby
 execute "
     create index on email_logs using gin(to_tsvector('english', subject));
     create index on email_logs using gin(to_tsvector('english', email_address));"
+```
+
+#### For fuzzy_search
+```ruby
+execute "
+    CREATE INDEX trgm_subject_indx ON users USING gist (subject gist_trgm_ops);
+    CREATE INDEX trgm_email_address_indx ON users USING gist (email_address gist_trgm_ops);
 ```
 
 In the above example, the table email_logs has two text columns that we search against, subject and email_address.
