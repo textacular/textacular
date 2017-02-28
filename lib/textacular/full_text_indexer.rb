@@ -16,7 +16,7 @@ class #{model_name}FullTextSearch < ActiveRecord::Migration
 end
 MIGRATION
     filename = "#{model_name.underscore}_full_text_search"
-    generator = Textacular::MigrationGenerator.new(content, filename)
+    generator = Textacular::MigrationGenerator.new(filename, content)
     generator.generate_migration
   end
 
@@ -52,7 +52,7 @@ MIGRATION
     <<-SQL
 CREATE index #{index_name_for(model, column)}
   ON #{model.table_name}
-  USING gin(to_tsvector("#{dictionary}", "#{model.table_name}"."#{column}"::text));
+  USING gin(to_tsvector('#{dictionary}', "#{model.table_name}"."#{column}"::text));
 SQL
   end
 
