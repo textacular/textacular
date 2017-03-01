@@ -25,7 +25,7 @@ end
 MIGRATION
 
       generator = double(:migration_generator)
-      expect(Textacular::MigrationGenerator).to receive(:new).with(content, file_name).and_return(generator)
+      expect(Textacular::MigrationGenerator).to receive(:new).with(file_name, content).and_return(generator)
       expect(generator).to receive(:generate_migration)
 
       Textacular::FullTextIndexer.new.generate_migration('WebComicWithSearchableName')
@@ -60,7 +60,7 @@ end
 MIGRATION
 
       generator = double(:migration_generator)
-      expect(Textacular::MigrationGenerator).to receive(:new).with(content, file_name).and_return(generator)
+      expect(Textacular::MigrationGenerator).to receive(:new).with(file_name, content).and_return(generator)
       expect(generator).to receive(:generate_migration)
 
       Textacular::FullTextIndexer.new.generate_migration('WebComicWithSearchableNameAndAuthor')
