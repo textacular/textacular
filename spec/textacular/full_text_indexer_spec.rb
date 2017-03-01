@@ -12,7 +12,7 @@ class WebComicWithSearchableNameFullTextSearch < ActiveRecord::Migration
       DROP index IF EXISTS web_comics_name_fts_idx;
       CREATE index web_comics_name_fts_idx
         ON web_comics
-        USING gin(to_tsvector("english", "web_comics"."name"::text));
+        USING gin(to_tsvector('english', "web_comics"."name"::text));
     SQL
   end
 
@@ -42,11 +42,11 @@ class WebComicWithSearchableNameAndAuthorFullTextSearch < ActiveRecord::Migratio
       DROP index IF EXISTS web_comics_name_fts_idx;
       CREATE index web_comics_name_fts_idx
         ON web_comics
-        USING gin(to_tsvector("english", "web_comics"."name"::text));
+        USING gin(to_tsvector('english', "web_comics"."name"::text));
       DROP index IF EXISTS web_comics_author_fts_idx;
       CREATE index web_comics_author_fts_idx
         ON web_comics
-        USING gin(to_tsvector("english", "web_comics"."author"::text));
+        USING gin(to_tsvector('english', "web_comics"."author"::text));
     SQL
   end
 
