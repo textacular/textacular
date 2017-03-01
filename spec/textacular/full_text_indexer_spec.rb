@@ -12,7 +12,7 @@ class WebComicWithSearchableNameFullTextSearch < ActiveRecord::Migration
       DROP index IF EXISTS web_comics_name_fts_idx;
       CREATE index web_comics_name_fts_idx
         ON web_comics
-        USING gin(to_tsvector("english", "web_comics"."name"::text));
+        USING gin(to_tsvector('english', "web_comics"."name"::text));
     SQL
   end
 
@@ -25,7 +25,7 @@ end
 MIGRATION
 
       generator = double(:migration_generator)
-      expect(Textacular::MigrationGenerator).to receive(:new).with(content, file_name).and_return(generator)
+      expect(Textacular::MigrationGenerator).to receive(:new).with(file_name, content).and_return(generator)
       expect(generator).to receive(:generate_migration)
 
       Textacular::FullTextIndexer.new.generate_migration('WebComicWithSearchableName')
@@ -42,11 +42,11 @@ class WebComicWithSearchableNameAndAuthorFullTextSearch < ActiveRecord::Migratio
       DROP index IF EXISTS web_comics_name_fts_idx;
       CREATE index web_comics_name_fts_idx
         ON web_comics
-        USING gin(to_tsvector("english", "web_comics"."name"::text));
+        USING gin(to_tsvector('english', "web_comics"."name"::text));
       DROP index IF EXISTS web_comics_author_fts_idx;
       CREATE index web_comics_author_fts_idx
         ON web_comics
-        USING gin(to_tsvector("english", "web_comics"."author"::text));
+        USING gin(to_tsvector('english', "web_comics"."author"::text));
     SQL
   end
 
@@ -60,7 +60,7 @@ end
 MIGRATION
 
       generator = double(:migration_generator)
-      expect(Textacular::MigrationGenerator).to receive(:new).with(content, file_name).and_return(generator)
+      expect(Textacular::MigrationGenerator).to receive(:new).with(file_name, content).and_return(generator)
       expect(generator).to receive(:generate_migration)
 
       Textacular::FullTextIndexer.new.generate_migration('WebComicWithSearchableNameAndAuthor')
