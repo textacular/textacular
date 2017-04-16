@@ -244,6 +244,12 @@ RSpec.describe Textacular do
             ).to eq([mega_man])
           end
 
+          it "plays well with the count method" do
+            expect(
+              GameExtendedWithTextacular.advanced_search(:system => "NES").count
+            ).to eq(2)
+          end
+
           it "scopes consecutively" do
             expect(
               GameExtendedWithTextacular
