@@ -189,6 +189,10 @@ RSpec.describe "Searchable" do
           WebComicWithSearchableNameAndAuthor.includes(:characters).advanced_search("Penny")
         ).to eq([penny_arcade])
       end
+
+      should "allow includes" do
+        assert_equal [@penny], WebComicWithSearchableNameAndAuthor.includes(:characters).basic_search('Penny').where(:characters => { :name => 'Div' })
+      end
     end
   end
 end
