@@ -1,4 +1,4 @@
-class CreateGames < ActiveRecord::Migration
+class CreateGames < ActiveRecord::Migration[ActiveRecord.version.to_s.match(/^(\d+\.)?(\d+)/)[0]]
   def change
     create_table :games do |table|
       table.string :system
