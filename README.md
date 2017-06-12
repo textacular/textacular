@@ -25,12 +25,20 @@ extending ActiveRecord with scopes making search easy and fun!
 
 ### Quick Start
 
-#### Rails 3, Rails 4 and Rails 5!
+#### Rails 3, Rails 4
 
 In the project's Gemfile add
 
 ```ruby
-gem 'textacular', '~> 3.0'
+gem 'textacular', '~> 4.0'
+```
+
+#### Rails 5.0 and Rails 5.1!
+
+In the project's Gemfile add
+
+```ruby
+gem 'textacular', '~> 5.0'
 ```
 
 #### ActiveRecord outside of Rails

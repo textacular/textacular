@@ -2,8 +2,6 @@ language: ruby
 rvm:
   - 2.3.1
   - 2.2.5
-  - 2.1.10
-  - 2.0.0
 env:
   - DB=postgresql
 before_install:
@@ -14,16 +12,5 @@ script:
   - bundle exec rake
 gemfile:
   - Gemfile
-  - gemfiles/activerecord-3.2.gemfile
-  - gemfiles/activerecord-4.0.gemfile
-  - gemfiles/activerecord-4.1.gemfile
-  - gemfiles/activerecord-4.2.gemfile
-
-matrix:
-  exclude:
-  - rvm: 2.0.0
-    gemfile: Gemfile
-    env: DB=postgresql
-  - rvm: 2.1.10
-    gemfile: Gemfile
-    env: DB=postgresql
+  - gemfiles/activerecord-5.0.gemfile
+  - gemfiles/activerecord-5.1.gemfile
