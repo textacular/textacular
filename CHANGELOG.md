@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 5.0.0
+
+* ActiveRecord 5.1 compatibility
+* drop support for ActiveRecord older than 5.0 and Ruby version lower than 2.2.5
+
 ## 4.0.1
 
 * ActiveRecord 5 compatibility above 5.0.0
