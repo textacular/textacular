@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* Fix fuzzy search when field contains multiple strings (like a sentence). Was returning empty results.
+
 ## 5.0.0
 
 * ActiveRecord 5.1 compatibility
