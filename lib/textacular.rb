@@ -117,7 +117,11 @@ module Textacular
   end
 
   def fuzzy_condition_string(table_name, column, search_term)
-    "(#{table_name}.#{column} % #{search_term})"
+    # At this point, search_term is already quoted and query ready. Insert % between the quotes and the actual string.
+    search_term.insert 1, '%'
+    search_term.insert -2, '%'
+
+    "(#{table_name}.#{column} ILIKE #{search_term})"
   end
 
   def assemble_query(similarities, conditions, exclusive)
