@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* ActiveRecord 5.2 compatibility by wrapping string queries with `Arel.sql()`
+
 ## 5.0.0
 
 * ActiveRecord 5.1 compatibility

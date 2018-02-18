@@ -123,9 +123,9 @@ module Textacular
   def assemble_query(similarities, conditions, exclusive)
     rank = connection.quote_column_name('rank' + rand(100000000000000000).to_s)
 
-    select("#{quoted_table_name + '.*,' if select_values.empty?} #{similarities.join(" + ")} AS #{rank}").
+    select(Arel.sql("#{quoted_table_name + '.*,' if select_values.empty?} #{similarities.join(" + ")} AS #{rank}")).
       where(conditions.join(exclusive ? " AND " : " OR ")).
-      order("#{rank} DESC")
+      order(Arel.sql("#{rank} DESC"))
   end
 
   def select_values
