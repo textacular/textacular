@@ -56,12 +56,12 @@ Gem::Specification.new do |s|
   ]
   s.require_paths = ['lib']
 
-  s.add_development_dependency 'pg', '~> 0.14'
+  s.add_development_dependency 'pg', '~> 1.0.0'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'database_cleaner'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'pry'
   s.add_development_dependency 'pry-doc'
 
-  s.add_dependency('activerecord', [">= 3.0", "< 5.2"])
+  s.add_dependency('activerecord', [">= 5.0", "< 5.3"])
 end

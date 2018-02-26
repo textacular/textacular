@@ -43,12 +43,22 @@ namespace :db do
 
     desc 'Run the test database migrations'
     task :up => :'db:connect' do
-      ActiveRecord::Migrator.up 'db/migrate'
+      migrations = if ActiveRecord.version.version >= '5.2'
+        ActiveRecord::Migration.new.migration_context.migrations
+      else
+        ActiveRecord::Migrator.migrations('db/migrate')
+      end
+      ActiveRecord::Migrator.new(:up, migrations, nil).migrate
     end
 
     desc 'Reverse the test database migrations'
     task :down => :'db:connect' do
-      ActiveRecord::Migrator.down 'db/migrate'
+      migrations = if ActiveRecord.version.version >= '5.2'
+        ActiveRecord::Migration.new.migration_context.migrations
+      else
+        ActiveRecord::Migrator.migrations('db/migrate')
+      end
+      ActiveRecord::Migrator.new(:down, migrations, nil).migrate
     end
   end
   task :migrate => :'migrate:up'
