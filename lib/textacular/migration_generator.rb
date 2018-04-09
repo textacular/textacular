@@ -4,6 +4,7 @@ class Textacular::MigrationGenerator
   def initialize(filename, content)
     @filename = filename
     @content = content
+    @output_stream = nil
   end
 
   def generate_migration
