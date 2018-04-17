@@ -151,7 +151,7 @@ module Textacular
   module Helper
     class << self
       def normalize(query)
-        query.to_s.gsub(/\s(?![\&|\!|\|])/, '\\\\ ')
+        query.to_s.gsub(/\s(?![\&\!\|])/, '\\\\ ')
       end
     end
   end
