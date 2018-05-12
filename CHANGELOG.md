@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 5.1.0
+
 * ActiveRecord 5.2 compatibility by wrapping string queries with `Arel.sql()`
 * Adds latest Ruby, Rails and Postgres-dependencies to Travis.
 * Rewrite development migration code to support Rails 5.0-5.2.
