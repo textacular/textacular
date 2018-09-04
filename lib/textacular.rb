@@ -113,7 +113,7 @@ module Textacular
   end
 
   def fuzzy_similarity_string(table_name, column, search_term)
-    "COALESCE(similarity(#{table_name}.#{column}, #{search_term}), 0)"
+    "COALESCE(similarity(#{table_name}.#{column}::text, #{search_term}), 0)"
   end
 
   def fuzzy_condition_string(table_name, column, search_term)
@@ -121,15 +121,15 @@ module Textacular
     search_term.insert 1, '%'
     search_term.insert -2, '%'
 
-    "(#{table_name}.#{column} ILIKE #{search_term})"
+    "(#{table_name}.#{column}::text ILIKE #{search_term})"
   end
 
   def assemble_query(similarities, conditions, exclusive)
     rank = connection.quote_column_name('rank' + rand(100000000000000000).to_s)
 
-    select("#{quoted_table_name + '.*,' if select_values.empty?} #{similarities.join(" + ")} AS #{rank}").
+    select(Arel.sql("#{quoted_table_name + '.*,' if select_values.empty?} #{similarities.join(" + ")} AS #{rank}")).
       where(conditions.join(exclusive ? " AND " : " OR ")).
-      order("#{rank} DESC")
+      order(Arel.sql("#{rank} DESC"))
   end
 
   def select_values
@@ -155,7 +155,7 @@ module Textacular
   module Helper
     class << self
       def normalize(query)
-        query.to_s.gsub(/\s(?![\&|\!|\|])/, '\\\\ ')
+        query.to_s.gsub(/\s(?![\&\!\|])/, '\\\\ ')
       end
     end
   end

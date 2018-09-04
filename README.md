@@ -33,7 +33,7 @@ In the project's Gemfile add
 gem 'textacular', '~> 4.0'
 ```
 
-#### Rails 5.0 and Rails 5.1!
+#### Rails > 5.0
 
 In the project's Gemfile add
 

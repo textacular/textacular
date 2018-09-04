@@ -181,6 +181,13 @@ RSpec.describe Textacular do
         expect(GameExtendedWithTextacular).to respond_to(:search)
       end
 
+      describe "#fuzzy_search" do
+        it 'searches non-text columns' do
+          expect(GameExtendedWithTextacular.fuzzy_search(id: mario.id)
+          ).to eq([mario])
+        end
+      end
+
       describe "#advanced_search" do
         context "with a String argument" do
           it "searches across all :string columns (if not indexes have been specified)" do

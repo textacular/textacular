@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
-gemspec :path=>"../"
+gemspec path: "../"
 
-gem 'activerecord', '~> 5.0.x'
+gem 'activerecord', '>= 5.0', '< 5.1'
+gem 'pg', '~> 0.21'
