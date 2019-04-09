@@ -12,29 +12,29 @@ module Textacular
     'english'
   end
 
-  def search(query = "", exclusive = true)
-    basic_search(query, exclusive)
+  def search(query = "", exclusive = true, rank_alias = nil)
+    basic_search(query, exclusive, rank_alias)
   end
 
-  def basic_search(query = "", exclusive = true)
+  def basic_search(query = "", exclusive = true, rank_alias = nil)
     exclusive, query = munge_exclusive_and_query(exclusive, query)
     parsed_query_hash = parse_query_hash(query)
     similarities, conditions = basic_similarities_and_conditions(parsed_query_hash)
-    assemble_query(similarities, conditions, exclusive)
+    assemble_query(similarities, conditions, exclusive, rank_alias)
   end
 
-  def advanced_search(query = "", exclusive = true)
+  def advanced_search(query = "", exclusive = true, rank_alias = nil)
     exclusive, query = munge_exclusive_and_query(exclusive, query)
     parsed_query_hash = parse_query_hash(query)
     similarities, conditions = advanced_similarities_and_conditions(parsed_query_hash)
-    assemble_query(similarities, conditions, exclusive)
+    assemble_query(similarities, conditions, exclusive, rank_alias)
   end
 
-  def fuzzy_search(query = '', exclusive = true)
+  def fuzzy_search(query = '', exclusive = true, rank_alias = nil)
     exclusive, query = munge_exclusive_and_query(exclusive, query)
     parsed_query_hash = parse_query_hash(query)
     similarities, conditions = fuzzy_similarities_and_conditions(parsed_query_hash)
-    assemble_query(similarities, conditions, exclusive)
+    assemble_query(similarities, conditions, exclusive, rank_alias)
   end
 
   private
@@ -120,8 +120,9 @@ module Textacular
     "(#{table_name}.#{column}::text % #{search_term})"
   end
 
-  def assemble_query(similarities, conditions, exclusive)
-    rank = connection.quote_column_name('rank' + rand(100000000000000000).to_s)
+  def assemble_query(similarities, conditions, exclusive, rank_alias)
+    rank_alias ||= 'rank' + rand(100000000000000000).to_s
+    rank = connection.quote_column_name(rank_alias)
 
     select(Arel.sql("#{quoted_table_name + '.*,' if select_values.empty?} #{similarities.join(" + ")} AS #{rank}")).
       where(conditions.join(exclusive ? " AND " : " OR ")).

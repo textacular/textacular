@@ -190,5 +190,34 @@ RSpec.describe "Searchable" do
         ).to eq([penny_arcade])
       end
     end
+
+    context 'custom rank' do
+      let!(:questionable_content) do
+        WebComicWithSearchableName.create(
+          name: 'Questionable Content',
+          author: nil,
+        )
+      end
+
+      it "is selected for search" do
+        search_result = WebComicWithSearchableNameAndAuthor.search('Questionable Content', true, 'my_rank')
+        expect(search_result.first.attributes['my_rank']).to be_truthy
+      end
+
+      it "is selected for basic_search" do
+        search_result = WebComicWithSearchableNameAndAuthor.basic_search('Questionable Content', true, 'my_rank')
+        expect(search_result.first.attributes['my_rank']).to be_truthy
+      end
+
+      it "is selected for advanced_search" do
+        search_result = WebComicWithSearchableNameAndAuthor.advanced_search('Questionable Content', true, 'my_rank')
+        expect(search_result.first.attributes['my_rank']).to be_truthy
+      end
+
+      it "is selected for fuzzy_search" do
+        search_result = WebComicWithSearchableNameAndAuthor.fuzzy_search('Questionable Content', true, 'my_rank')
+        expect(search_result.first.attributes['my_rank']).to be_truthy
+      end
+    end
   end
 end
