@@ -19,3 +19,4 @@ gemfile:
   - gemfiles/activerecord-5.0.gemfile
   - gemfiles/activerecord-5.1.gemfile
   - gemfiles/activerecord-5.2.gemfile
+  - gemfiles/activerecord-6.0.gemfile
