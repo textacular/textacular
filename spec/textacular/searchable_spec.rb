@@ -113,6 +113,14 @@ RSpec.describe "Searchable" do
         end
       end
 
+      describe "web search" do # Uses websearch_to_tsquery
+        ["hello \\", "tebow!" , "food &"].each do |search_term|
+          it "works with interesting term \"#{search_term}\"" do
+            expect(WebComicWithSearchableName.web_search(search_term)).to be_empty
+          end
+        end
+      end
+
       it "does fuzzy searching" do
         expect(
           WebComicWithSearchableName.fuzzy_search('Questio')
@@ -182,6 +190,14 @@ RSpec.describe "Searchable" do
         expect(
           WebComicWithSearchableNameAndAuthor.advanced_search("Tycho")
         ).to eq([penny_arcade])
+
+        expect(
+          WebComicWithSearchableNameAndAuthor.web_search("Penny")
+        ).to eq([penny_arcade])
+
+        expect(
+          WebComicWithSearchableNameAndAuthor.web_search("Tycho")
+        ).to eq([penny_arcade])
       end
 
       it "allows includes" do
@@ -216,6 +232,11 @@ RSpec.describe "Searchable" do
 
       it "is selected for fuzzy_search" do
         search_result = WebComicWithSearchableNameAndAuthor.fuzzy_search('Questionable Content', true, 'my_rank')
+        expect(search_result.first.attributes['my_rank']).to be_truthy
+      end
+
+      it "is selected for web_search" do
+        search_result = WebComicWithSearchableNameAndAuthor.web_search('Questionable Content', true, 'my_rank')
         expect(search_result.first.attributes['my_rank']).to be_truthy
       end
     end
