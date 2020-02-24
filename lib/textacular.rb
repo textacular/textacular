@@ -37,6 +37,13 @@ module Textacular
     assemble_query(similarities, conditions, exclusive, rank_alias)
   end
 
+  def web_search(query = '', exclusive = true, rank_alias = nil)
+    exclusive, query = munge_exclusive_and_query(exclusive, query)
+    parsed_query_hash = parse_query_hash(query)
+    similarities, conditions = web_similarities_and_conditions(parsed_query_hash)
+    assemble_query(similarities, conditions, exclusive, rank_alias)
+  end
+
   private
 
   def munge_exclusive_and_query(exclusive, query)
@@ -118,6 +125,24 @@ module Textacular
 
   def fuzzy_condition_string(table_name, column, search_term)
     "(#{table_name}.#{column}::text % #{search_term})"
+  end
+
+
+  def web_similarities_and_conditions(parsed_query_hash)
+    parsed_query_hash.inject([[], []]) do |(similarities, conditions), query_args|
+      similarities << web_similarity_string(*query_args)
+      conditions << web_condition_string(*query_args)
+
+      [similarities, conditions]
+    end
+  end
+
+  def web_similarity_string(table_name, column, search_term)
+    "COALESCE(ts_rank(to_tsvector(#{quoted_language}, #{table_name}.#{column}::text), websearch_to_tsquery(#{quoted_language}, #{search_term}::text)), 0)"
+  end
+
+  def web_condition_string(table_name, column, search_term)
+    "to_tsvector(#{quoted_language}, #{table_name}.#{column}::text) @@ websearch_to_tsquery(#{quoted_language}, #{search_term}::text)"
   end
 
   def assemble_query(similarities, conditions, exclusive, rank_alias)
