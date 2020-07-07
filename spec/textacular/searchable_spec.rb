@@ -119,6 +119,17 @@ RSpec.describe "Searchable" do
             expect(WebComicWithSearchableName.web_search(search_term)).to be_empty
           end
         end
+        it "doesn't return dupes" do
+          WebComicWithSearchableName.create(
+            name: 'Batman',
+            author: 'Bill Finger',
+            characters: Character.create([
+              { name: "Batman" },
+              { name: "Robin" },
+            ])
+          )
+          expect(WebComicWithSearchableName.joins(:characters).web_search({name: "Batman", characters: { name: "Batman" }}).size).to eq(1)
+        end
       end
 
       it "does fuzzy searching" do
