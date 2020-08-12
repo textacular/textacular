@@ -7,4 +7,4 @@ pkg
 Gemfile.lock
 .ruby-version
 gemfiles/*.lock
-.idea
+.byebug_history

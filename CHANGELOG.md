@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## 5.3.0
+
+* Add `#web_search` method to use Postgres' 11+ `websearch_to_tsquery`
+
+## 5.2.0
+
+* Active Record 6.0 compatibility
+
 ## 5.1.0
 
 * ActiveRecord 5.2 compatibility by wrapping string queries with `Arel.sql()`

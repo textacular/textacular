@@ -75,6 +75,20 @@ Game.advanced_search(title: 'Street|Fantasy')
 Game.advanced_search(system: '!PS2')
 ```
 
+The `#web_search` method lets you use Postgres' 11+ `websearch_to_tsquery` function
+ supporting websearch like syntax:
+
+- unquoted text: text not inside quote marks will be converted to terms separated by & operators, as if processed by plainto_tsquery.
+- "quoted text": text inside quote marks will be converted to terms separated by <-> operators, as if processed by phraseto_tsquery.
+- OR: logical or will be converted to the | operator.
+- -: the logical not operator, converted to the the ! operator.
+
+```ruby
+Game.web_search(title: '"Street Fantasy"')
+Game.web_search(title: 'Street OR Fantasy')
+Game.web_search(system: '-PS2')
+```
+
 Finally, the `#fuzzy_search` method lets you use Postgres's trigram search
 functionality.
 

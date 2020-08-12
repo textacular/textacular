@@ -3,6 +3,6 @@ timeout: 5000
 host: localhost
 adapter: postgresql
 username: postgres
-password:
+password: password
 database: textacular_test
 min_messages: ERROR
