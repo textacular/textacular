@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* ActiveRecord 6.1 compatibility
+
 ## 5.3.0
 
 * Add `#web_search` method to use Postgres' 11+ `websearch_to_tsquery`
