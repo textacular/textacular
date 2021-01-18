@@ -289,6 +289,12 @@ RSpec.describe Textacular do
           end
         end
       end
+
+      describe "#fuzzy_search" do
+        it "works if column contains multiple space delimited strings" do
+          expect(GameExtendedWithTextacular.fuzzy_search(title: 'mar')).to eq([mario])
+        end
+      end
     end
   end
 end
