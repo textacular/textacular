@@ -164,28 +164,19 @@ migration add code like the following:
 
 #### For basic_search
 ```ruby
-execute "
-    create index on email_logs using gin(to_tsvector('english', subject));
-    create index on email_logs using gin(to_tsvector('english', email_address));"
+add_index :email_logs, %{to_tsvector('english', subject)}, using: :gin
+add_index :email_logs, %{to_tsvector('english', email_address)}, using: :gin
 ```
 
 #### For fuzzy_search
 ```ruby
-execute "
-    CREATE INDEX trgm_subject_indx ON users USING gist (subject gist_trgm_ops);
-    CREATE INDEX trgm_email_address_indx ON users USING gist (email_address gist_trgm_ops);
+add_index :email_logs, :subject, using: :gist, opclass: :gist_trgm_ops
+add_index :email_logs, :email_address, using: :gist, opclass: :gist_trgm_ops
 ```
 
 In the above example, the table email_logs has two text columns that we search against, subject and email_address.
 You will need to add an index for every text/string column you query against, or else Postgresql will revert to a
 full table scan instead of using the indexes.
-
-If you create these indexes, you should also switch to sql for your schema_format in `config/application.rb`:
-
-```ruby
-config.active_record.schema_format = :sql
-```
-
 
 ## REQUIREMENTS:
 
