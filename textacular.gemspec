@@ -64,5 +64,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pry-doc'
   s.add_development_dependency 'byebug'
 
-  s.add_dependency('activerecord', [">= 5.0", "< 6.2"])
+  s.add_dependency('activerecord', [">= 5.0", "< 7.0"])
 end
