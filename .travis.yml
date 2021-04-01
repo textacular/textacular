@@ -2,6 +2,7 @@ language: ruby
 rvm:
   - 2.5.3
   - 2.6.0
+  - 2.7.2
 services:
   - docker
 env:
@@ -21,3 +22,10 @@ gemfile:
   - gemfiles/activerecord-5.2.gemfile
   - gemfiles/activerecord-6.0.gemfile
   - gemfiles/activerecord-6.1.gemfile
+
+jobs:
+  exclude:
+  - rvm: 2.5.3
+    gemfile: Gemfile
+  - rvm: 2.6.0
+    gemfile: Gemfile
