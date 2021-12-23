@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 5.5.0
+
+* ActiveRecord 7.0 compatibility
+
 ## 5.4.0
 
 * ActiveRecord 6.1 compatibility
