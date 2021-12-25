@@ -33,7 +33,7 @@ Gem::Specification.new do |s|
   s.executables   = []
   s.test_files    = [
     'spec/config.yml.example',
-    'spec/config.travis.yml',
+    'spec/config.github.yml',
     'spec/spec_helper.rb',
     'spec/support/ar_stand_in.rb',
     'spec/support/character.rb',
