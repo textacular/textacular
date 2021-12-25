@@ -56,6 +56,8 @@ jobs:
         rails: ['5.0', '5.1', '5.2', '6.0', '6.1']
         include:
           - rails: '7.0'
+            ruby: '2.7'
+          - rails: '7.0'
             ruby: '3.0'
           - rails: '7.0'
             ruby: '3.1'
