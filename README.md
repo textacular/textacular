@@ -1,10 +1,9 @@
 # textacular
 [![Gem Version](http://img.shields.io/gem/v/textacular.svg)][rubygems]
-[![Build Status](https://img.shields.io/travis/textacular/textacular/master.svg)][travis]
+[![Build Status](https://github.com/textacular/textacular/actions/workflows/main.yml/badge.svg)](https://github.com/textacular/textacular/actions/workflows/main.yml)
 [![Code Climate](https://img.shields.io/codeclimate/github/textacular/textacular.svg)][codeclimate]
 
 [rubygems]: http://rubygems.org/gems/textacular
-[travis]: https://travis-ci.org/textacular/textacular
 [codeclimate]: https://codeclimate.com/github/textacular/textacular
 
 Further documentation available at http://textacular.github.com/textacular.
