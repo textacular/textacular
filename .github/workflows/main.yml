@@ -1,6 +1,5 @@
 name: Main
-on:
-  push:
+on: [push, pull_request]
 
 jobs:
   base:
@@ -8,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: [2.7, 3.0]
+        ruby: [2.7, '3.0', 3.1]
     name: Gemfile - Ruby ${{ matrix.ruby }}
     services:
       postgres:
