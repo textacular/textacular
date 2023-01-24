@@ -32,33 +32,35 @@ Gem::Specification.new do |s|
   ]
   s.executables   = []
   s.test_files    = [
-    'spec/config.yml.example',
-    'spec/config.github.yml',
-    'spec/spec_helper.rb',
-    'spec/support/ar_stand_in.rb',
-    'spec/support/character.rb',
-    'spec/support/game.rb',
-    'spec/support/game_extended_with_textacular.rb',
-    'spec/support/game_extended_with_textacular_and_custom_language.rb',
-    'spec/support/game_fail.rb',
-    'spec/support/game_fail_extended_with_textacular.rb',
-    'spec/support/not_there.rb',
-    'spec/support/textacular_web_comic.rb',
-    'spec/support/web_comic.rb',
-    'spec/support/web_comic_with_searchable.rb',
-    'spec/support/web_comic_with_searchable_name.rb',
-    'spec/support/web_comic_with_searchable_name_and_author.rb',
-    'spec/textacular_spec.rb',
-    'spec/textacular/full_text_indexer_spec.rb',
-    'spec/textacular/migration_generator_spec.rb',
-    'spec/textacular/searchable_spec.rb',
-    'spec/textacular/trigram_installer_spec.rb',
+    'test/config.yml.example',
+    'test/config.github.yml',
+    'test/spec_helper.rb',
+    'test/support/ar_stand_in.rb',
+    'test/support/character.rb',
+    'test/support/game.rb',
+    'test/support/game_extended_with_textacular.rb',
+    'test/support/game_extended_with_textacular_and_custom_language.rb',
+    'test/support/game_fail.rb',
+    'test/support/game_fail_extended_with_textacular.rb',
+    'test/support/not_there.rb',
+    'test/support/textacular_web_comic.rb',
+    'test/support/web_comic.rb',
+    'test/support/web_comic_with_searchable.rb',
+    'test/support/web_comic_with_searchable_name.rb',
+    'test/support/web_comic_with_searchable_name_and_author.rb',
+    'test/textacular_spec.rb',
+    'test/textacular/full_text_indexer_spec.rb',
+    'test/textacular/migration_generator_spec.rb',
+    'test/textacular/searchable_spec.rb',
+    'test/textacular/trigram_installer_spec.rb',
   ]
   s.require_paths = ['lib']
 
   s.add_development_dependency 'pg'
   s.add_development_dependency 'rspec'
-  s.add_development_dependency 'database_cleaner'
+  s.add_development_dependency 'activesupport'
+  s.add_development_dependency 'minitest'
+  s.add_development_dependency 'database_cleaner-active_record'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'pry'
   s.add_development_dependency 'pry-doc'

@@ -6,8 +6,15 @@ require 'pry'
 require 'rspec/core/rake_task'
 
 RSpec::Core::RakeTask.new(:spec)
+require "rake/testtask"
 
-task :default => :spec
+Rake::TestTask.new(:test) do |t|
+  t.libs << "test"
+  t.libs << "lib"
+  t.test_files = FileList["test/**/*_test.rb"]
+end
+
+task :default => :test
 
 file 'spec/config.yml' do |t|
   sh 'erb spec/config.yml.example > spec/config.yml'
@@ -20,9 +27,9 @@ end
 
 namespace :db do
 
-  task :connect => 'spec/config.yml' do |t|
+  task :connect => 'test/config.yml' do |t|
     ActiveRecord::Base.establish_connection \
-      YAML.load_file 'spec/config.yml'
+      YAML.load_file 'test/config.yml'
   end
 
   task :disconnect do
@@ -44,17 +51,16 @@ namespace :db do
     desc 'Run the test database migrations'
     task :up => :'db:connect' do
       if ActiveRecord.version >= Gem::Version.new('6.0.0')
-        context = ActiveRecord::Migration.new.migration_context
-        migrations = context.migrations
-        schema_migration = context.schema_migration
+        ActiveRecord::Migration.new.migration_context.migrate
       elsif ActiveRecord.version >= Gem::Version.new('5.2')
         migrations = ActiveRecord::Migration.new.migration_context.migrations
         schema_migration = nil
+        ActiveRecord::Migrator.new(:up, migrations, schema_migration).migrate
       else
         migrations = ActiveRecord::Migrator.migrations('db/migrate')
         schema_migration = nil
+        ActiveRecord::Migrator.new(:up, migrations, schema_migration).migrate
       end
-      ActiveRecord::Migrator.new(:up, migrations, schema_migration).migrate
     end
 
     desc 'Reverse the test database migrations'
