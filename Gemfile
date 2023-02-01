@@ -9,6 +9,7 @@ end
 
 github 'rails/rails', branch: 'main' do
   gem 'activerecord'
+  gem 'activesupport'
 end
 
 gem "pg", "~> 1.1"

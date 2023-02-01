@@ -3,4 +3,5 @@ source 'https://rubygems.org'
 gemspec :path=>"../"
 
 gem 'activerecord', '< 7.1', '>= 7.0'
+gem 'activesupport', '< 7.1', '>= 7.0'
 gem "pg", ">= 0.18", "< 2.0"

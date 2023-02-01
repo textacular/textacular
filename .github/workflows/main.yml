@@ -1,5 +1,5 @@
 name: Main
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   base:
@@ -32,7 +32,7 @@ jobs:
 
       - name: Setup database
         run: |
-          cp spec/config.github.yml spec/config.yml
+          cp test/config.github.yml test/config.yml
           bundle exec rake db:migrate
 
       - name: Run tests
@@ -75,7 +75,7 @@ jobs:
 
       - name: Setup database
         run: |
-          cp spec/config.github.yml spec/config.yml
+          cp test/config.github.yml test/config.yml
           bundle exec rake db:migrate
 
       - name: Run tests

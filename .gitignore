@@ -8,3 +8,4 @@ Gemfile.lock
 .ruby-version
 gemfiles/*.lock
 .byebug_history
+test/config.yml

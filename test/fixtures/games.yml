@@ -1,0 +1,36 @@
+zelda:
+  system: "NES"
+  title: "Legend of Zelda"
+  description: "A Link to the Past."
+mario:
+  system: "NES"
+  title: "Super Mario Bros."
+  description: "The original platformer."
+sonic:
+  system: "Genesis"
+  title: "Sonic the Hedgehog"
+  description: "Spiky."
+donkey_kong:
+  system: "SNES"
+  title: "Diddy's Kong Quest"
+  description: "Donkey Kong Country 2"
+mega_man:
+  system: nil
+  title: "Mega Man"
+  description: "Beware Dr. Brain"
+sf_nes:
+  system: "SNES"
+  title: "Street Fighter 2"
+  description: "Yoga Flame!"
+sf_genesis:
+  system: "Genesis"
+  title: "Street Fighter 2"
+  description: "Yoga Flame!"
+takun:
+  system: "Saturn"
+  title: "Magical Tarurūto-kun"
+  description: "カッコイイ！"
+harry_potter_7:
+  system: "PS3"
+  title: "Harry Potter & the Deathly Hallows"
+
