@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* ActiveRecord 7.1 compatibility
+
 ## 5.5.1
 
 * Revert breaking change to fuzzy_search introduced in 49f09b389d2f2b18cbe9de565b7ac5fcac14d7c6
