@@ -31,29 +31,7 @@ Gem::Specification.new do |s|
     'lib/textacular/version.rb'
   ]
   s.executables   = []
-  s.test_files    = [
-    'test/config.yml.example',
-    'test/config.github.yml',
-    'test/spec_helper.rb',
-    'test/support/ar_stand_in.rb',
-    'test/support/character.rb',
-    'test/support/game.rb',
-    'test/support/game_extended_with_textacular.rb',
-    'test/support/game_extended_with_textacular_and_custom_language.rb',
-    'test/support/game_fail.rb',
-    'test/support/game_fail_extended_with_textacular.rb',
-    'test/support/not_there.rb',
-    'test/support/textacular_web_comic.rb',
-    'test/support/web_comic.rb',
-    'test/support/web_comic_with_searchable.rb',
-    'test/support/web_comic_with_searchable_name.rb',
-    'test/support/web_comic_with_searchable_name_and_author.rb',
-    'test/textacular_spec.rb',
-    'test/textacular/full_text_indexer_spec.rb',
-    'test/textacular/migration_generator_spec.rb',
-    'test/textacular/searchable_spec.rb',
-    'test/textacular/trigram_installer_spec.rb',
-  ]
+
   s.require_paths = ['lib']
 
   s.add_development_dependency 'pg'
