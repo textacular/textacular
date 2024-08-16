@@ -50,27 +50,32 @@ namespace :db do
 
     desc 'Run the test database migrations'
     task :up => :'db:connect' do
-      if ActiveRecord.version >= Gem::Version.new('6.0.0')
-        ActiveRecord::Migration.new.migration_context.migrate
+      if ActiveRecord.version >= Gem::Version.new('7.2.0')
+        ActiveRecord::Base.connection_pool.migration_context.up
+      elsif ActiveRecord.version >= Gem::Version.new('6.0.0')
+        ActiveRecord::Migration.new.migration_context.up
       elsif ActiveRecord.version >= Gem::Version.new('5.2')
         migrations = ActiveRecord::Migration.new.migration_context.migrations
-        schema_migration = nil
-        ActiveRecord::Migrator.new(:up, migrations, schema_migration).migrate
+        ActiveRecord::Migrator.new(:up, migrations, nil).migrate
       else
         migrations = ActiveRecord::Migrator.migrations('db/migrate')
-        schema_migration = nil
-        ActiveRecord::Migrator.new(:up, migrations, schema_migration).migrate
+        ActiveRecord::Migrator.new(:up, migrations, nil).migrate
       end
     end
 
     desc 'Reverse the test database migrations'
     task :down => :'db:connect' do
-      migrations = if ActiveRecord.version.version >= '5.2'
-        ActiveRecord::Migration.new.migration_context.migrations
+      if ActiveRecord.version >= Gem::Version.new('7.2.0')
+        ActiveRecord::Base.connection_pool.migration_context.down
+      elsif ActiveRecord.version >= Gem::Version.new('6.0.0')
+        ActiveRecord::Migration.new.migration_context.down
+      elsif ActiveRecord.version >= Gem::Version.new('5.2')
+        migrations = ActiveRecord::Migration.new.migration_context.migrations
+        ActiveRecord::Migrator.new(:down, migrations, nil).migrate
       else
-        ActiveRecord::Migrator.migrations('db/migrate')
+        migrations = ActiveRecord::Migrator.migrations('db/migrate')
+        ActiveRecord::Migrator.new(:down, migrations, nil).migrate
       end
-      ActiveRecord::Migrator.new(:down, migrations, nil).migrate
     end
   end
   task :migrate => :'migrate:up'
