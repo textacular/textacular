@@ -2,7 +2,10 @@
 
 ## Unreleased
 
+## 5.7.0
+
 * ActiveRecord 7.2 compatibility
+* Defer extending ActiveRecord::Base until Active Record is loaded
 
 ## 5.6.0
 
