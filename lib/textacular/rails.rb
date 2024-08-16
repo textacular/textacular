@@ -4,7 +4,9 @@ require File.expand_path(File.dirname(__FILE__) + '/../textacular')
 module Textacular
   class Railtie < Rails::Railtie
     initializer "textacular.configure_rails_initialization" do
-      ActiveRecord::Base.extend(Textacular)
+      ActiveSupport.on_load(:active_record) do
+        ActiveRecord::Base.extend(Textacular)
+      end
     end
 
     rake_tasks do
