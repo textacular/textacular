@@ -1,0 +1,7 @@
+source 'https://rubygems.org'
+
+gemspec :path=>"../"
+
+gem 'activerecord', '< 8.1', '>= 8.0'
+gem 'activesupport', '< 8.1', '>= 8.0'
+gem "pg", ">= 0.18", "< 2.0"
