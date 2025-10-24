@@ -175,7 +175,7 @@ full table scan instead of using the indexes.
 ## REQUIREMENTS:
 
 * ActiveRecord
-* Ruby 1.9.2
+* Ruby 3 onwards
 
 
 ## INSTALL:
